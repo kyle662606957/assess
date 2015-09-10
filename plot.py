@@ -1,3 +1,5 @@
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -5,7 +7,7 @@ import io
 def generate_svg_plot(dictionary, min, max, liste_cord, width):
 
 	# img
-	imgdata = io.StringIO()
+	imgdata = io.BytesIO()
 
 	# creation des listes des abscisses et ordonnees
 	lx = []
