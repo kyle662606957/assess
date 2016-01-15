@@ -13,6 +13,7 @@
     <th>Unit</th>
     <th>Values</th>
     <th>Method</th> 
+	<th>Mode</th>
     <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu"/></th>
     </tr>
   </thead>
@@ -47,11 +48,13 @@
           <option>Probability Equivalence</option>
           <option>Lottery Equivalence</option>
           <option>Certainty Equivalence - Constant Probability</option>
+		  <option>Certainty Equivalence - Variable Probability</option>
         </select>
     </div>
     <div class="checkbox">
         <label>
-          <input name="mode" type="checkbox"> The min value is preferred (decreasing utility function)
+		</select>
+          <input name="mode" type="checkbox" id="att_mode" placeholder="Mode"> The min value is preferred (decreasing utility function)
         </label>
     </div>
 
@@ -94,7 +97,7 @@
 			
 				
 			
-                    text_table += '<td>'+ attribute.name +'</td><td>'+ attribute.unit +'</td><td>['+ attribute.val_min +','+ attribute.val_max +']</td><td>'+ attribute.method +'</td>';
+                    text_table += '<td>'+ attribute.name +'</td><td>'+ attribute.unit +'</td><td>['+ attribute.val_min +','+ attribute.val_max +']</td><td>'+ attribute.method +'</td><td>'+ attribute.mode +'</td>';
 					text_table+='<td><img id="deleteK'+i+'" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
 					
 					$('#table_attributes').append(text_table);
@@ -139,7 +142,11 @@
             {
                 method="CE_Constant_Prob";
             }
-
+			else if($( "select option:selected" ).text()=="Certainty Equivalence - Variable Probability")
+            {
+                method="CE_Variable_Prob";
+            }
+			
             if( $('input[name=mode]').is(':checked') ) {
                 var mode = "reversed";	
             }
