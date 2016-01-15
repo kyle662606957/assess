@@ -69,20 +69,12 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
 			if funclog(99.*max/100,a,b,c,d)<1 and funclog(101.*min/100,a,b,c,d)>0:
 				plt.plot(x, funclog(x,a,b,c, d), '#D9585A', label="Log Fitted Curve") 
 		
-		# elif func == 'lin':
-			# a = 1./max 
-			# b = 0
-			# plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
-			
 		elif func == 'lin':
-			if mode == 'reversed':
-				a=-1./max
-				b=1
-				plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
-			else:
-				a = 1./max 
-				b = 0
-				plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
+			a = 1./max 
+			b = 0
+			plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
+			
+		 
 
 
 	plt.savefig(imgdata, format='svg')
