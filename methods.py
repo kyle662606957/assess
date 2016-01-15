@@ -75,6 +75,22 @@ def CE(valeurmin,valeurmax,gain,choix, mode):
 # pour les deux autres questionnaires, il suffit de recuperer la valeur du gain (que je note gain1) en fin de questionnaire 1 et le nouvel intervalle est alors: [valeurmin,gain1]. Pour le 3eme questionnaire l intervalle est [gain1,valeurmin]
 
 ###################Programme CE probabilite variable######################################
-	
+
+def CEPV(valeurmin,valeurmax,gain,p,choix, mode):
+	if mode == 'reversed':
+		choix = (choix + 1)%2
+	Liste=[valeurmin,valeurmax]
+	if choix == 1: #choix = 1 correspond a l equivalent certain (comme pour la PE)
+		valeurmax = gain
+		gain = round(valeurmin + ((valeurmax-valeurmin)/4),0)
+		liste = [valeurmin,valeurmax]
+		return ({"interval": liste,"gain": gain})
+
+	else:
+		valeurmin = gain
+		gain = round(valeurmax - ((valeurmax-valeurmin)/4),0)
+		liste = [valeurmin,valeurmax]
+		return ({"interval": liste,"gain": gain})
+		
 # pour les differents questionnaires seule la probabilite de la lotterie va changer: elle passe de 0.5 a 0.25 puis 0.75
 # le code est exactement le meme
