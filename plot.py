@@ -44,31 +44,45 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
 			a = dictionary[func]['a']
 			b = dictionary[func]['b']
 			c = dictionary[func]['c']
-			plt.plot(x, funcexp(x,a,b,c), '#401539', label="Exp Fitted Curve")
+			if funcexp(99.*max/100,a,b,c)<1 and funcexp(101.*min/100,a,b,c)>0:
+				plt.plot(x, funcexp(x,a,b,c), '#401539', label="Exp Fitted Curve")
 
 		elif func == 'quad':
 			a = dictionary[func]['a']
 			b = dictionary[func]['b']
 			c = dictionary[func]['c']
-			plt.plot(x, funcquad(x,a,b,c), '#458C8C', label="Quad Fitted Curve") 
+			if funcquad(99.*max/100,a,b,c)<1 and funcquad(101.*min/100,a,b,c)>0:
+				plt.plot(x, funcquad(x,a,b,c), '#458C8C', label="Quad Fitted Curve") 
 
 		elif func == 'pow':
 			a = dictionary[func]['a']
 			b = dictionary[func]['b']
 			c = dictionary[func]['c']
-			plt.plot(x, funcpuis(x,a,b,c), '#6DA63C', label="Pow Fitted Curve") 
+			if funcpuis(99.*max/100,a,b,c)<1 and funcpuis(101.*min/100,a,b,c)>0:
+				plt.plot(x, funcpuis(x,a,b,c), '#6DA63C', label="Pow Fitted Curve") 
 
 		elif func == 'log':
 			a = dictionary[func]['a']
 			b = dictionary[func]['b']
 			c = dictionary[func]['c']
 			d= dictionary[func]['d']
-			plt.plot(x, funclog(x,a,b,c, d), '#D9585A', label="Log Fitted Curve") 
-
+			if funclog(99.*max/100,a,b,c,d)<1 and funclog(101.*min/100,a,b,c,d)>0:
+				plt.plot(x, funclog(x,a,b,c, d), '#D9585A', label="Log Fitted Curve") 
+		
+		# elif func == 'lin':
+			# a = 1./max 
+			# b = 0
+			# plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
+			
 		elif func == 'lin':
-			a = dictionary[func]['a']
-			b = dictionary[func]['b']
-			plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
+			if mode == 'reversed':
+				a=-1./max
+				b=1
+				plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
+			else:
+				a = 1./max 
+				b = 0
+				plt.plot(x, funclin(x,a,b), '#D9B504', label="Lin Fitted Curve") 
 
 
 	plt.savefig(imgdata, format='svg')
