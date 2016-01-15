@@ -403,8 +403,15 @@ function k_multilinear_answer(i)
 					}
 					else
 						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-					gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
-					gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					if(mode=="normal")
+					{
+					gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					}
+					else
+						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					
 				}
 				
 				
@@ -417,8 +424,14 @@ function k_multilinear_answer(i)
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
-				arbre_gauche.questions_val_max = gain_haut;
-				arbre_gauche.questions_val_min = gain_bas;
+				if(mode=="normal")
+				{arbre_gauche.questions_val_max = gain_haut;
+				arbre_gauche.questions_val_min = gain_bas;}
+				else
+					arbre_gauche.questions_val_max = gain_bas;
+					arbre_gauche.questions_val_min = gain_haut;
+				//arbre_gauche.questions_val_max = gain_haut;
+				//arbre_gauche.questions_val_min = gain_bas;
 				arbre_gauche.questions_val_mean = gain_certain;
 				arbre_gauche.display();
 				arbre_gauche.update();
@@ -576,10 +589,15 @@ function k_answer(i, type)
 				var max_interval = 1;
 				
 				// VARIABLES
-				var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				if(mode=="normal")
+				{var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				
+				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;}
+				else 
+				var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;	
+			
 				for (var l = 0; l < i; l++){
 					var pre_k = asses_session.k_calculus[type].k[l];
 					gain_certain += ' <br/> ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
@@ -604,6 +622,12 @@ function k_answer(i, type)
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
+				// if(mode=="normal")
+				// {arbre_gauche.questions_val_max = gain_haut;
+				// arbre_gauche.questions_val_min = gain_bas;}
+				// else
+					// arbre_gauche.questions_val_max = gain_bas;
+					// arbre_gauche.questions_val_min = gain_haut;
 				arbre_gauche.questions_val_max = gain_haut;
 				arbre_gauche.questions_val_min = gain_bas;
 				arbre_gauche.questions_val_mean = gain_certain;
