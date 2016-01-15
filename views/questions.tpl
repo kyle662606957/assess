@@ -445,7 +445,7 @@ $(function() {
 				indice = j;
 			}
 		}
-
+		
 		var val_min = asses_session.attributes[indice].val_min;
 		var val_max = asses_session.attributes[indice].val_max;
 		var mode = asses_session.attributes[indice].mode;
