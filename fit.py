@@ -99,7 +99,7 @@ def regressions(liste_cord):
 
 	try:
 		# Meme principe pour la logarithmic function
-		popt4, pcov4 = curve_fit(funclog, x,y , [0,0,1,0])
+		popt4, pcov4 = curve_fit(funclog, x,y , [0,0,0,0])
 		dictionnaire['log'] = {}
 		dictionnaire['log']['a']=popt4[0]
 		dictionnaire['log']['b']=popt4[1]
