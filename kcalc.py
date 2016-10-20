@@ -58,11 +58,11 @@ def utilite2(k1,k2,k,u1,u2):
 def calculk3(k1,k2,k3):
     if k1+k2+k3==1:
         return {'success':True, 'k':0}
-    coeff=[k1*k2*k3,k1*k2+k2*k3+k1*k3,k1+k2+k3-1] 
+    coeff=[k1*k2*k3,k1*k2+k2*k3+k1*k3,k1+k2+k3-1]
     solution = np.roots(coeff)
     liste=[solution[0],solution[1]]
-    
-    
+
+
     if k1+k2+k3>1:
         k=float(round(liste[0],1))
         return {'success':True, 'k':k}
@@ -79,7 +79,7 @@ def utilite3(k1,k2,k3,k,u1,u2,u3):
     U+=str(k*k2*k3)+"*"+u2+"*"+u3+"+"
     U+=str(k**2*k1*k2*k3)+"*"+u1+"*"+u2+"*"+u3
     return (U)
-    
+
 
 
 # ---- 4 -----
@@ -92,7 +92,7 @@ def calculk4(k1,k2,k3,k4):
 
     if solution[0]==x0:
         return {'success':False, 'k':"Unable to calculate K, please change your ki values"}
-    else: 
+    else:
         return {'success':True, 'k':float(solution[0])}
 
 
@@ -130,10 +130,10 @@ def calculk5(k1,k2,k3,k4,k5):
     x0=0
     p_k=lambda k:k1*k2*k3*k4*k5*k**4+(k1*k2*k3*k5 + k1*k2*k4*k5 + k2*k3*k4*k5 + k1*k3*k4*k5 + k1*k2*k3*k4)*k**3+(k1*k2*k3 + k1*k2*k4 + k1*k2*k5 + k1*k3*k4 +k1*k3*k5 + k1*k4*k5 + k2*k3*k4 + k2*k3*k5 + k2*k4*k5 + k3*k4*k5)*k**2+ (k2*k3 + k1*k3 + k1*k4 + k2*k4 + k3*k4 + k1*k2 + k1*k5 + k2*k5 + k3*k5 + k4*k5)*k + k1+k2+k3+k4+k5-1
     solution=fsolve(p_k, x0, xtol=1.49012e-12, maxfev=1000)
-      
+
     if solution[0]==x0:
         return {'success':False, 'k':"Unable to calculate K, please change your ki values"}
-    else: 
+    else:
         return {'success':True, 'k':float(solution[0])}
 
 
@@ -193,7 +193,7 @@ def calculk6(k1,k2,k3,k4,k5,k6):
     e=(k2*k3 + k1*k3 + k1*k4 + k1*k6 + k1*k5 + k1*k2 + k2*k4 + k3*k4 + k2*k5 + k3*k5 + k4*k5 + k2*k6 + k3*k6 + k4*k6 + k5*k6)
     f= k1+k2+k3+k4+k5+k6-1
     p_k=lambda k: a*k**5+b*k**4+c*k**3+d*k**2+e*k+f
-    
+
     solutions=fsolve(p_k, 0, xtol=1.49012e-08, maxfev=1000)
     return {'success':True, 'k':float(solutions[0])}
 
@@ -251,7 +251,7 @@ def utilite6(k1,k2,k3,k4, k5, k6,k,u1,u2,u3, u4, u5, u6):
     U+=str(k**2*k2*k5*k6)+"*"+u2+"*"+u5+"*"+u6+"+"
     U+=str(k**2*k3*k4*k6)+"*"+u3+"*"+u4+"*"+u6+"+"
     U+=str(k**2*k3*k5*k6)+"*"+u3+"*"+u5+"*"+u6+"+"
-    U+=str(k**2*k4*k5*k6)+"*"+u4+"*"+u5+"*"+u6+"+" 
+    U+=str(k**2*k4*k5*k6)+"*"+u4+"*"+u5+"*"+u6+"+"
     U+=str(k**3*k1*k2*k3*k4)+"*"+u1+"*"+u2+"*"+u3+"*"+u4+"+"
     U+=str(k**3*k1*k3*k4*k5)+"*"+u1+"*"+u5+"*"+u3+"*"+u4+"+"
     U+=str(k**3*k1*k2*k3*k5)+"*"+u1+"*"+u2+"*"+u3+"*"+u5+"+"
@@ -277,8 +277,8 @@ def utilite6(k1,k2,k3,k4, k5, k6,k,u1,u2,u3, u4, u5, u6):
     return U
 
 
-def reduce(nombre):
-    return math.floor(nombre*100000000.0)/100000000.0;
+# def reduce(nombre):
+#     return math.floor(nombre*100000000.0)/100000000.0;
 
 def signe(nombre):
     if nombre>=0:
@@ -289,16 +289,12 @@ def signe(nombre):
 
 def convert_to_text(data, x):
     if data['type']=="exp":
-        return "("+str(reduce(data['a']))+"*exp("+signe(-reduce(data['b']))+"*"+x+")"+signe(reduce(data['c']))+")";
+        return "("+str(round(data['a'],8))+"*exp("+signe(-round(data['b'],8))+"*"+x+")"+signe(round(data['c'],8))+")";
     elif data['type']=="log":
-        return "("+str(reduce(data['a']))+"*log("+str(reduce(data['b']))+"*"+x+signe(reduce(data['c']))+")"+signe(reduce(data['d']))+")";
+        return "("+str(round(data['a'],8))+"*log("+str(round(data['b'],8))+"*"+x+signe(round(data['c'],8))+")"+signe(round(data['d'],8))+")";
     elif data['type']=="pow":
-        return "("+str(reduce(data['a']))+"*(pow("+x+","+str(reduce(1-data['b']))+")-1)/("+str(reduce(1-data['b']))+")"+signe(reduce(data['c']))+")";
+        return "("+str(round(data['a'],8))+"*(pow("+x+","+str(round(1-data['b'],8))+")-1)/("+str(round(1-data['b'],8))+")"+signe(round(data['c'],8))+")";
     elif data['type']=="quad":
-        return "("+str(reduce(data['c']))+"*"+x+signe(reduce(-data['b']))+"*pow("+x+",2)"+signe(reduce(data['a']))+")";
+        return "("+str(round(data['c'],8))+"*"+x+signe(round(-data['b'],8))+"*pow("+x+",2)"+signe(round(data['a'],8))+")";
     elif data['type']=="lin":
-        return "("+str(reduce(data['a']))+"*"+x+"+"+signe(reduce(data['b']))+")";
-
-
-
-
+        return "("+str(round(data['a'],8))+"*"+x+"+"+signe(round(data['b'],8))+")";
