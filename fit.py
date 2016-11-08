@@ -4,128 +4,193 @@ import numpy as np
 from scipy.optimize import curve_fit
 import traceback
 from functions import *
+from functools import partial
 #from scipy import numpy
 #import matplotlib.pyplot as plt
 #import sys
 
-def regressions(liste_cord, liste=False):
 
-	# creation des fonctions utilisees pour les differentes
-	# creation d'un dictionnaire pour stocker les donnees essentielles
-	dictionnaire = {}
-	myList=[]
-	# creation des listes des abscisses et ordonnees
-	lx = []
-	ly = []
+def regressions(liste_cord, liste=False, dictionnaire={}):
 
-	for coord in liste_cord:
-		lx.append(coord[0])
-		ly.append(coord[1])
+    # creation des fonctions utilisees pour les differentes
+    # creation d'un dictionnaire pour stocker les donnees essentielles
+    myList = []
+    # creation des listes des abscisses et ordonnees
+    lx = []
+    ly = []
 
-	# creation des valeurs en abscisses et en ordonnee avec les listes lx et ly
-	x = np.array(lx)
-	y = np.array(ly)
+    for coord in liste_cord:
+        lx.append(coord[0])
+        ly.append(coord[1])
+
+    # creation des valeurs en abscisses et en ordonnee avec les listes lx et ly
+    x = np.array(lx)
+    y = np.array(ly)
+    min = x[-1]
+    max = x[-2]
+
+    # creation of the fitted curves
+
+    try:
+        # exponential function
+        funcexpParam = lambda x, b: funcexp2(x, b, min, max)
+        # fonction regression utilisant la funcexp du fichier functions.py avec CI
+        # nulles
+        popt1, pcov1 = curve_fit(funcexpParam, x, y, [0.1])
+        # popt1 = matrice ligne contenant les coefficients de la regression exponentielle optimisee apres calcul / popcov1 = matrice de covariances pour cette regression exp
+        # ajout des coeeficients a, b et c dans le dictionnaire pour la regression
+        # exponentielle
+        b1 = popt1[0]
+        a1 = (1. / (np.exp(-b1 * max) - np.exp(-b1 * min)))
+        c1 = (1. / (1 - np.exp(b1 * (min - max))))
+        dictionnaire['exp'] = {}
+        dictionnaire['exp']['a'] = a1
+        dictionnaire['exp']['b'] = b1
+        dictionnaire['exp']['c'] = c1
+        # calcul et affichage du mean squared error et du r2
+        # print "Mean Squared Error exp : ", np.mean((y-funcexp(x, *popt1))**2)
+        ss_res = np.dot((y - funcexp(x, a1, b1, c1)), (y - funcexp(x, a1, b1, c1)))
+        ymean = np.mean(y)
+        ss_tot = np.dot((y - ymean), (y - ymean))
+        # ajout du r2 dans le dictionnaire pour la regression exponentielle
+        dictionnaire['exp']['r2'] = 1 - ss_res / ss_tot
+        myList.append(dictionnaire)
+    except:
+        pass
 
 
-	# creation of the fitted curves
+    try:
+        # Meme principe pour la quadratic function
+        funcquadParam = lambda x, b: funcquad2(x, b, min, max)
+        popt2, pcov2 = curve_fit(funcquadParam, x, y, [0.1])
+        b2 = popt2[0]
+        a2 = b2 * min**2 - min*((1 + b2 * (max**2 - min**2)) / (max - min))
+        c2 = (1 + b2 * (max**2 - min**2)) / (max - min)
+        dictionnaire['quad'] = {}
+        dictionnaire['quad']['a'] = a2
+        dictionnaire['quad']['b'] = b2
+        dictionnaire['quad']['c'] = c2
+        # print "Mean Squared Error quad : ", np.mean((y-funcquad(x,
+        # *popt2))**2)
+        ss_res = np.dot((y - funcquad(x, a2, b2, c2)), (y - funcquad2(x, a2, b2, c2)))
+        ymean = np.mean(y)
+        ss_tot = np.dot((y - ymean), (y - ymean))
+        dictionnaire['quad']['r2'] = 1 - ss_res / ss_tot
+        myList.append(dictionnaire)
+    except Exception,e: print str(e)
 
-	try:
-		# exponential function
-		popt1, pcov1 = curve_fit(funcexp, x, y,[0,0,0]) # fonction regression utilisant la funcexp du fichier functions.py avec CI nulles
-		#popt1 = matrice ligne contenant les coefficients de la regression exponentielle optimisee apres calcul / popcov1 = matrice de covariances pour cette regression exp
-		# ajout des coeeficients a, b et c dans le dictionnaire pour la regression exponentielle
-		dictionnaire['exp'] = {}
-		dictionnaire['exp']['a']=popt1[0]
-		dictionnaire['exp']['b']=popt1[1]
-		dictionnaire['exp']['c']=popt1[2]
+    try:
+        # Meme principe pour la puissance function
+        funcpuisParam = lambda x, b: funcpuis2(x, b, min, max)
+        popt3, pcov3 = curve_fit(funcpuisParam, x, y, [0.1])
+        b3=popt3[0]
+        a3 = (1 - b3) / (max**(1 - b3) - min**(1 - b3))
+        c3 = -(min**(1 - b3) - 1) / (max**(1 - b3) - min**(1 - b3))
+        dictionnaire['pow'] = {}
+        dictionnaire['pow']['a'] = a3
+        dictionnaire['pow']['b'] = b3
+        dictionnaire['pow']['c'] = c3
+        # print "Mean Squared Error puis : ", np.mean((y-funcpuis(x,
+        # *popt3))**2)
+        ss_res = np.dot((y - funcpuis(x, a3, b3, c3)), (y - funcpuis(x, a3, b3, c3)))
+        ymean = np.mean(y)
+        ss_tot = np.dot((y - ymean), (y - ymean))
+        dictionnaire['pow']['r2'] = 1 - ss_res / ss_tot
+        myList.append(dictionnaire)
+    except:
+        pass
 
-		# calcul et affichage du mean squared error et du r2
-		#print "Mean Squared Error exp : ", np.mean((y-funcexp(x, *popt1))**2)
-		ss_res = np.dot((y - funcexp(x, *popt1)),(y - funcexp(x, *popt1)))
-		ymean = np.mean(y)
-		ss_tot = np.dot((y-ymean),(y-ymean))
+    try:
+        # Meme principe pour la logarithmic function
+        funclogParam = lambda x, b, c: funclog2(x, b, c, min, max)
+        popt4, pcov4 = curve_fit(funclogParam, x, y, [0.1,0.1])
+        b4=popt4[0]
+        c4=popt4[1]
+        a4 = 1. / (np.log(b4 * max + c4) - np.log(b4 * min + c4))
+        d4 = 1. / (1 - np.log(b4 * max + c4) / np.log(b4 * min + c4))
+        dictionnaire['log'] = {}
+        dictionnaire['log']['a'] = a4
+        dictionnaire['log']['b'] = b4
+        dictionnaire['log']['c'] = c4
+        dictionnaire['log']['d'] = d4
+        # print "Mean Squared Error log : ", np.mean((y-funclog(x, *popt4))**2)
+        ss_res = np.dot((y - funclog(x, a4, b4, c4, d4)), (y - funclog(x, a4, b4, c4, d4)))
+        ymean = np.mean(y)
+        ss_tot = np.dot((y - ymean), (y - ymean))
+        dictionnaire['log']['r2'] = 1 - ss_res / ss_tot
+        myList.append(dictionnaire)
+    except:
+        pass
 
-		# ajout du r2 dans le dictionnaire pour la regression exponentielle
-		dictionnaire['exp']['r2']= 1-ss_res/ss_tot
-		myList.append(dictionnaire)
-	except:
-		pass
-
-
-	try:
-		# Meme principe pour la quadratic function
-		popt2, pcov2 = curve_fit(funcquad,x,y)
-		dictionnaire['quad'] = {}
-		dictionnaire['quad']['a']=popt2[0]
-		dictionnaire['quad']['b']=popt2[1]
-		dictionnaire['quad']['c']=popt2[2]
-		#print "Mean Squared Error quad : ", np.mean((y-funcquad(x, *popt2))**2)
-		ss_res = np.dot((y - funcquad(x, *popt2)),(y - funcquad(x, *popt2)))
-		ymean = np.mean(y)
-		ss_tot = np.dot((y-ymean),(y-ymean))
-		dictionnaire['quad']['r2']= 1-ss_res/ss_tot
-		myList.append(dictionnaire)
-	except:
-		pass
-
-	try:
-		# Meme principe pour la puissance function
-		popt3, pcov3 = curve_fit(funcpuis, x,y)
-		dictionnaire['pow'] = {}
-		dictionnaire['pow']['a']=popt3[0]
-		dictionnaire['pow']['b']=popt3[1]
-		dictionnaire['pow']['c']=popt3[2]
-		#print "Mean Squared Error puis : ", np.mean((y-funcpuis(x, *popt3))**2)
-		ss_res = np.dot((y - funcpuis(x, *popt3)),(y - funcpuis(x, *popt3)))
-		ymean = np.mean(y)
-		ss_tot = np.dot((y-ymean),(y-ymean))
-		dictionnaire['pow']['r2']= 1-ss_res/ss_tot
-		myList.append(dictionnaire)
-	except:
-		pass
-
-	try:
-		# Meme principe pour la logarithmic function
-		popt4, pcov4 = curve_fit(funclog, x,y)
-		dictionnaire['log'] = {}
-		dictionnaire['log']['a']=popt4[0]
-		dictionnaire['log']['b']=popt4[1]
-		dictionnaire['log']['c']=popt4[2]
-		dictionnaire['log']['d']=popt4[3]
-		#print "Mean Squared Error log : ", np.mean((y-funclog(x, *popt4))**2)
-		ss_res = np.dot((y - funclog(x, *popt4)),(y - funclog(x, *popt4)))
-		ymean = np.mean(y)
-		ss_tot = np.dot((y-ymean),(y-ymean))
-		dictionnaire['log']['r2']= 1-ss_res/ss_tot
-		myList.append(dictionnaire)
-	except:
-		pass
-
-	try:
+    try:
 		# Meme principe pour la linear function
-		popt5, pcov5 = curve_fit(funclin, x,y)
+		a5 = 1. / (max - min)
+		b5 = -min / (max - min)
 		dictionnaire['lin'] = {}
-		dictionnaire['lin']['a']=popt5[0]
-		dictionnaire['lin']['b']=popt5[1]
-		#print "Mean Squared Error lin: ", np.mean((y-funclin(x, *popt5))**2)
-		ss_res = np.dot((y - funclin(x, *popt5)),(y - funclin(x, *popt5)))
+		dictionnaire['lin']['a'] = a5
+		dictionnaire['lin']['b'] = b5
+		# print "Mean Squared Error lin: ", np.mean((y-funclin(x, *popt5))**2)
+		ss_res = np.dot((y - funclin(x, a5, b5)), (y - funclin(x, a5, b5)))
 		ymean = np.mean(y)
-		ss_tot = np.dot((y-ymean),(y-ymean))
-		dictionnaire['lin']['r2']= 1-ss_res/ss_tot
+		ss_tot = np.dot((y - ymean), (y - ymean))
+		dictionnaire['lin']['r2'] = 1 - ss_res / ss_tot
 		myList.append(dictionnaire)
-	except:
-		pass
+    except:
+        pass
 
-	if liste:
-		return (myList)
-	else:
-		return(dictionnaire)
-
-
+    if liste:
+        return (myList)
+    else:
+        return(dictionnaire)
 
 
-# La partie ci-dessous permet d'afficher sur python les points ainsi que les differentes regressions directement sur python avec leur legende respective
+def multipoints(liste_cord):
+    liste_dictionnaires=[]
+    dictionnaire = {}
+    if len(liste_cord) == 3:
+        dictionnaire['points'] = [1]
+        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
+    elif len(liste_cord) == 4:
+        dictionnaire['points'] = [1,2]
+        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1]
+        liste=[liste_cord[0]]+liste_cord[2:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [2]
+        liste=liste_cord[1:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+    elif len(liste_cord) == 5:
+        dictionnaire['points'] = [1,2,3]
+        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1,2]
+        liste=liste_cord[:1]+liste_cord[3:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1,3]
+        liste=[liste_cord[0]]+liste_cord[2:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [2,3]
+        liste=liste_cord[1:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1]
+        liste=[liste_cord[0]]+liste_cord[3:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [2]
+        liste=[liste_cord[1]]+liste_cord[3:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [3]
+        liste=liste_cord[2:]
+        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+    return liste_dictionnaires
 
+
+
+
+
+
+
+# La partie ci-dessous permet d'afficher sur python les points ainsi que
+# les differentes regressions directement sur python avec leur legende
+# respective
 
 
 # #creation of the points and abscisse
