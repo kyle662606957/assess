@@ -26,8 +26,13 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     # creation des valeurs en abscisses et en ordonnee avec les listes lx et ly
     x = np.array(lx)
     y = np.array(ly)
-    min = x[-1]
-    max = x[-2]
+
+    if y[-1] == 1:
+        min = x[-2]
+        max = x[-1]
+    else:
+        min = x[-1]
+        max = x[-2]
 
     # creation of the fitted curves
 
@@ -72,7 +77,7 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         dictionnaire['quad']['c'] = c2
         # print "Mean Squared Error quad : ", np.mean((y-funcquad(x,
         # *popt2))**2)
-        ss_res = np.dot((y - funcquad(x, a2, b2, c2)), (y - funcquad2(x, a2, b2, c2)))
+        ss_res = np.dot((y - funcquad(x, a2, b2, c2)), (y - funcquad(x, a2, b2, c2)))
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         dictionnaire['quad']['r2'] = 1 - ss_res / ss_tot

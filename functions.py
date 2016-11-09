@@ -16,6 +16,7 @@ def funclin(x, a, b):				# function for the linear regression
   return a * x + b
 
 
+# Fonctions parametrees pour avoir U(xmin)=0 et U(xmax)=1
 def funcexp2(x, b, min, max):
     return (1./(np.exp(-b*max)-np.exp(-b*min))) * np.exp(-b * x) + (1./(1-np.exp(b*(min-max))))
 
