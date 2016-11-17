@@ -18,7 +18,7 @@
             </div>
             <div id="charts">
             	<h2>Select the regression function you want to use</h2>
-            </div>	
+            </div>
 
 %include('header_end.tpl')
 %include('js.tpl')
@@ -29,7 +29,7 @@
 <script src="{{ get_url('static', path='js/tree.js') }}"></script>
 
 <script>
-$(function() { 
+$(function() {
 	$('li.questions').addClass("active");
 	$('#charts').hide();
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
@@ -39,9 +39,9 @@ $(function() {
 		if(!asses_session.attributes[i].checked)//if note activated
 			continue;//we pass to the next one
 		var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>'+ asses_session.attributes[i].method + '</td><td>'+ asses_session.attributes[i].questionnaire.number +'</td>';
-		
+
 			text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name  + '">Assess</button></td>';
-		
+
 		if (asses_session.attributes[i].questionnaire.number > 0) {
 			text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name  + '">Utility function</button></td>';
 		}
@@ -53,7 +53,7 @@ $(function() {
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////// CLICK ON THE ANSWER BUTTON //////////////////////////////////////////////////////////////// 
+	///////////////////////////////////////////////////////////////// CLICK ON THE ANSWER BUTTON ////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	$('.answer_quest').click(function() {
@@ -87,7 +87,7 @@ $(function() {
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////// PE METHOD //////////////////////////////////////////////////////////////// 
+		///////////////////////////////////////////////////////////////// PE METHOD ////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (method == 'PE') {
@@ -165,7 +165,7 @@ $(function() {
 						var final_proba = parseFloat($('#final_proba').val());
 
 						if (final_proba <= 1 && final_proba >= 0) {
-							// we save it 
+							// we save it
 							asses_session.attributes[indice].questionnaire.points.push([gain_certain, final_proba]);
 							asses_session.attributes[indice].questionnaire.number += 1;
 							// backup local
@@ -194,7 +194,7 @@ $(function() {
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////// LE METHOD //////////////////////////////////////////////////////////////// 
+		///////////////////////////////////////////////////////////////// LE METHOD ////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		else if (method == 'LE') {
@@ -267,7 +267,7 @@ $(function() {
 						var final_proba = parseFloat($('#final_proba').val());
 
 						if (final_proba <= 1 && final_proba >= 0) {
-							// we save it 
+							// we save it
 							asses_session.attributes[indice].questionnaire.points.push([arbre_droite.questions_val_max, final_proba * 2]);
 							asses_session.attributes[indice].questionnaire.number += 1;
 							// backup local
@@ -298,7 +298,7 @@ $(function() {
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////// CE METHOD //////////////////////////////////////////////////////////////// 
+		///////////////////////////////////////////////////////////////// CE METHOD ////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		else if (method == 'CE_Constant_Prob') {
@@ -397,7 +397,7 @@ $(function() {
 						console.log(utility_finder(arbre_gauche.questions_val_max));
 						console.log(utility_finder(arbre_gauche.questions_val_min));
 						if (final_gain <= max_interval && final_gain >= min_interval) {
-							// we save it 
+							// we save it
 							asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
 							asses_session.attributes[indice].questionnaire.number += 1;
 							// backup local
@@ -429,7 +429,7 @@ $(function() {
 	});
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////// CLICK ON THE UTILITY BUTTON //////////////////////////////////////////////////////////////// 
+	///////////////////////////////////////////////////////////////// CLICK ON THE UTILITY BUTTON ////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$('.calc_util').click(function() {
 		// we store the name of the attribute
@@ -445,7 +445,7 @@ $(function() {
 				indice = j;
 			}
 		}
-		
+
 		var val_min = asses_session.attributes[indice].val_min;
 		var val_max = asses_session.attributes[indice].val_max;
 		var mode = asses_session.attributes[indice].mode;
@@ -461,19 +461,19 @@ $(function() {
 		}
 		json_2_send = {"type":"calc_util"};
 		json_2_send["points"] = points;
-        
+
         function reduce(nombre){return Math.round(nombre*100000000)/100000000;}
         function signe(nombre){if(nombre>=0){return "+"+nombre}else{return nombre}};
-                          
+
         function addTextForm(div_function, copie)
         {
               var text=$('<div class="functions_text_form"><pre>'+copie+'</pre></div>');
               var copy_button=$('<button class="btn functions_text_form" data-clipboard-text="'+copie+'" title="Click to copy me.">Copy to clipboard</button>');
-              
+
               div_function.append(text);
               div_function.append(copy_button);
               $('#charts').append(div_function);
-              
+
               var client = new ZeroClipboard(copy_button);
               client.on( "aftercopy", function( event ) {
                         copy_button.text("Done !");
@@ -481,39 +481,39 @@ $(function() {
                         } );
 
         }
-                          
+
 		$.post('ajax', JSON.stringify(json_2_send), function(data) {
 
-			$.post('ajax', JSON.stringify({"type":"svg", "data": data, "min": val_min, "max": val_max, "liste_cord": points, "width":8}), function(data2) {
+			$.post('ajax', JSON.stringify({"type":"svg", "data": data['data'][0], "min": val_min, "max": val_max, "liste_cord": data['data'][0]['coord'], "width":8}), function(data2) {
 				$('#charts').append('<div id="main_graph">'+ data2+'</div>');
 
-				for (var key in data) {
+				for (var key in data['data'][0]) {
 					$('#charts').show();
 					if (key == 'exp') {
-						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data[key]['r2'] * 100) / 100 + '<br /><br/></div>');
-                        var copie=reduce(data[key]['a'])+"*exp("+signe(-reduce(data[key]['b']))+"x)"+signe(reduce(data[key]['c']));
+						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data['data'][0][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+                        var copie=reduce(data['data'][0][key]['a'])+"*exp("+signe(-reduce(data['data'][0][key]['b']))+"x)"+signe(reduce(data['data'][0][key]['c']));
                         addTextForm(div_function, copie);
                                            	}
 					else if (key == 'log') {
-						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data[key]['r2'] * 100) / 100 + '<br /><br/></div>');
-                        var copie=reduce(data[key]['a'])+"*log("+reduce(data[key]['b'])+"x"+signe(reduce(data[key]['c']))+")"+signe(reduce(data[key]['d']));
+						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data['data'][0][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+                        var copie=reduce(data['data'][0][key]['a'])+"*log("+reduce(data['data'][0][key]['b'])+"x"+signe(reduce(data['data'][0][key]['c']))+")"+signe(reduce(data['data'][0][key]['d']));
                         addTextForm(div_function, copie);
-                 
-						
+
+
 					}
 					else if (key == 'pow') {
-						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data[key]['r2'] * 100) / 100 + '<br /><br/></div>');
-                        var copie=reduce(data[key]['a'])+"*(pow(x,"+reduce(1-data[key]['b'])+")-1)/("+reduce(1-data[key]['b'])+")"+signe(reduce(data[key]['c']));
+						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data['data'][0][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+                        var copie=reduce(data['data'][0][key]['a'])+"*(pow(x,"+reduce(1-data['data'][0][key]['b'])+")-1)/("+reduce(1-data['data'][0][key]['b'])+")"+signe(reduce(data['data'][0][key]['c']));
                         addTextForm(div_function, copie);
 					}
 					else if (key == 'quad') {
-						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data[key]['r2'] * 100) / 100 + '<br /><br/></div>');
-                        var copie=reduce(data[key]['c'])+"*x"+signe(reduce(-data[key]['b']))+"*pow(x,2)"+signe(reduce(data[key]['a']));
+						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data['data'][0][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+                        var copie=reduce(data['data'][0][key]['c'])+"*x"+signe(reduce(-data['data'][0][key]['b']))+"*pow(x,2)"+signe(reduce(data['data'][0][key]['a']));
                         addTextForm(div_function, copie);
 					}
 					else if (key == 'lin') {
-						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data[key]['r2'] * 100) / 100 + '<br /><br/></div>');
-                        var copie=reduce(data[key]['a'])+"*x"+signe(reduce(data[key]['b']));
+						var div_function = $('<div id="' + key +'" class="functions_graph"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data['data'][0][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+                        var copie=reduce(data['data'][0][key]['a'])+"*x"+signe(reduce(data['data'][0][key]['b']));
                         addTextForm(div_function, copie);
 					}
 				}

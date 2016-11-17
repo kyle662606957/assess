@@ -90,7 +90,7 @@ def ajax():
         return template('authentification', get_url=app.get_url)
     reader = codecs.getreader("utf-8")
     query = json.load(reader(request.body))
-    
+
     if query['type'] == "question":
         if query['method']=='PE':
             return methods.PE(float(query['min_interval']),float(query['max_interval']),float(query['proba']), int(query['choice']), str(query['mode']))
@@ -101,7 +101,7 @@ def ajax():
         else:
             return query['method']
     elif query['type'] == "calc_util":
-        return fit.regressions(query['points'])
+        return fit.multipoints(query['points'])
 
     elif query['type'] == "k_calculus":
         print("on va calculer k_calculus sur le fichier kcalc")
@@ -120,7 +120,7 @@ def ajax():
         return kcalc.calculUtilityMultiplicative(query['k'],query['utility'])
     elif query['type'] == "utility_calculus_multilinear":
         return kcalc.calculUtilityMultilinear(query['k'],query['utility'])
-    
+
     elif query['type'] == "svg":
         dictionary = query['data']
         min = query['min']
@@ -154,12 +154,12 @@ def do_upload():
     if check_passwd(request.get_cookie("mdp"))==False:
         return template('authentification', get_url=app.get_url)
     try:
-    
+
         upload = request.files.get('upload')
         name, ext = os.path.splitext(upload.filename)
         if ext not in ('.xlsx'):
             return { 'get_url':  app.get_url, 'success':'false', 'data_fail':"File extension not allowed. You must import xlsx only", 'data':''}
-        
+
         #we add a random name to the file:
         r = random.randint(1,1000)
         file_path = str(r)+"{file}".format(path="", file=upload.filename)

@@ -1,13 +1,13 @@
 # libraries import
-#from pylab import *
+# from pylab import *
 import numpy as np
 from scipy.optimize import curve_fit
 import traceback
 from functions import *
 from functools import partial
-#from scipy import numpy
-#import matplotlib.pyplot as plt
-#import sys
+# from scipy import numpy
+# import matplotlib.pyplot as plt
+# import sys
 
 
 def regressions(liste_cord, liste=False, dictionnaire={}):
@@ -54,7 +54,8 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         dictionnaire['exp']['c'] = c1
         # calcul et affichage du mean squared error et du r2
         # print "Mean Squared Error exp : ", np.mean((y-funcexp(x, *popt1))**2)
-        ss_res = np.dot((y - funcexp(x, a1, b1, c1)), (y - funcexp(x, a1, b1, c1)))
+        ss_res = np.dot((y - funcexp(x, a1, b1, c1)),
+                        (y - funcexp(x, a1, b1, c1)))
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         # ajout du r2 dans le dictionnaire pour la regression exponentielle
@@ -63,13 +64,12 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     except:
         pass
 
-
     try:
         # Meme principe pour la quadratic function
         funcquadParam = lambda x, b: funcquad2(x, b, min, max)
         popt2, pcov2 = curve_fit(funcquadParam, x, y, [0.1])
         b2 = popt2[0]
-        a2 = b2 * min**2 - min*((1 + b2 * (max**2 - min**2)) / (max - min))
+        a2 = b2 * min**2 - min * ((1 + b2 * (max**2 - min**2)) / (max - min))
         c2 = (1 + b2 * (max**2 - min**2)) / (max - min)
         dictionnaire['quad'] = {}
         dictionnaire['quad']['a'] = a2
@@ -77,18 +77,20 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         dictionnaire['quad']['c'] = c2
         # print "Mean Squared Error quad : ", np.mean((y-funcquad(x,
         # *popt2))**2)
-        ss_res = np.dot((y - funcquad(x, a2, b2, c2)), (y - funcquad(x, a2, b2, c2)))
+        ss_res = np.dot((y - funcquad(x, a2, b2, c2)),
+                        (y - funcquad(x, a2, b2, c2)))
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         dictionnaire['quad']['r2'] = 1 - ss_res / ss_tot
         myList.append(dictionnaire)
-    except Exception,e: print str(e)
+    except Exception, e:
+        print str(e)
 
     try:
         # Meme principe pour la puissance function
         funcpuisParam = lambda x, b: funcpuis2(x, b, min, max)
         popt3, pcov3 = curve_fit(funcpuisParam, x, y, [0.1])
-        b3=popt3[0]
+        b3 = popt3[0]
         a3 = (1 - b3) / (max**(1 - b3) - min**(1 - b3))
         c3 = -(min**(1 - b3) - 1) / (max**(1 - b3) - min**(1 - b3))
         dictionnaire['pow'] = {}
@@ -97,7 +99,8 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         dictionnaire['pow']['c'] = c3
         # print "Mean Squared Error puis : ", np.mean((y-funcpuis(x,
         # *popt3))**2)
-        ss_res = np.dot((y - funcpuis(x, a3, b3, c3)), (y - funcpuis(x, a3, b3, c3)))
+        ss_res = np.dot((y - funcpuis(x, a3, b3, c3)),
+                        (y - funcpuis(x, a3, b3, c3)))
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         dictionnaire['pow']['r2'] = 1 - ss_res / ss_tot
@@ -108,9 +111,9 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     try:
         # Meme principe pour la logarithmic function
         funclogParam = lambda x, b, c: funclog2(x, b, c, min, max)
-        popt4, pcov4 = curve_fit(funclogParam, x, y, [0.1,0.1])
-        b4=popt4[0]
-        c4=popt4[1]
+        popt4, pcov4 = curve_fit(funclogParam, x, y, [0.1, 0.1])
+        b4 = popt4[0]
+        c4 = popt4[1]
         a4 = 1. / (np.log(b4 * max + c4) - np.log(b4 * min + c4))
         d4 = 1. / (1 - np.log(b4 * max + c4) / np.log(b4 * min + c4))
         dictionnaire['log'] = {}
@@ -119,7 +122,8 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         dictionnaire['log']['c'] = c4
         dictionnaire['log']['d'] = d4
         # print "Mean Squared Error log : ", np.mean((y-funclog(x, *popt4))**2)
-        ss_res = np.dot((y - funclog(x, a4, b4, c4, d4)), (y - funclog(x, a4, b4, c4, d4)))
+        ss_res = np.dot((y - funclog(x, a4, b4, c4, d4)),
+                        (y - funclog(x, a4, b4, c4, d4)))
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         dictionnaire['log']['r2'] = 1 - ss_res / ss_tot
@@ -128,69 +132,86 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         pass
 
     try:
-		# Meme principe pour la linear function
-		a5 = 1. / (max - min)
-		b5 = -min / (max - min)
-		dictionnaire['lin'] = {}
-		dictionnaire['lin']['a'] = a5
-		dictionnaire['lin']['b'] = b5
-		# print "Mean Squared Error lin: ", np.mean((y-funclin(x, *popt5))**2)
-		ss_res = np.dot((y - funclin(x, a5, b5)), (y - funclin(x, a5, b5)))
-		ymean = np.mean(y)
-		ss_tot = np.dot((y - ymean), (y - ymean))
-		dictionnaire['lin']['r2'] = 1 - ss_res / ss_tot
-		myList.append(dictionnaire)
+        # Meme principe pour la linear function
+        a5 = 1. / (max - min)
+        b5 = -min / (max - min)
+        dictionnaire['lin'] = {}
+        dictionnaire['lin']['a'] = a5
+        dictionnaire['lin']['b'] = b5
+        # print "Mean Squared Error lin: ", np.mean((y-funclin(x, *popt5))**2)
+        ss_res = np.dot((y - funclin(x, a5, b5)), (y - funclin(x, a5, b5)))
+        ymean = np.mean(y)
+        ss_tot = np.dot((y - ymean), (y - ymean))
+        dictionnaire['lin']['r2'] = 1 - ss_res / ss_tot
+        myList.append(dictionnaire)
     except:
         pass
 
     if liste:
         return (myList)
     else:
-        return(dictionnaire)
+        return dictionnaire
 
 
 def multipoints(liste_cord):
-    liste_dictionnaires=[]
+    liste_dictionnaires = []
     dictionnaire = {}
     if len(liste_cord) == 3:
         dictionnaire['points'] = [1]
-        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
+        dictionnaire['coord'] = liste_cord
+        liste_dictionnaires.append(regressions(
+            liste_cord, dictionnaire=dictionnaire))
     elif len(liste_cord) == 4:
-        dictionnaire['points'] = [1,2]
-        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1, 2]
+        dictionnaire['coord'] = liste_cord
+        liste_dictionnaires.append(regressions(
+            liste_cord, dictionnaire=dictionnaire))
         dictionnaire['points'] = [1]
-        liste=[liste_cord[0]]+liste_cord[2:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        liste = [liste_cord[0]] + liste_cord[2:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
         dictionnaire['points'] = [2]
-        liste=liste_cord[1:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        liste = liste_cord[1:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
     elif len(liste_cord) == 5:
-        dictionnaire['points'] = [1,2,3]
-        liste_dictionnaires.append(regressions(liste_cord,dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1,2]
-        liste=liste_cord[:1]+liste_cord[3:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1,3]
-        liste=[liste_cord[0]]+liste_cord[2:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
-        dictionnaire['points'] = [2,3]
-        liste=liste_cord[1:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1, 2, 3]
+        dictionnaire['coord'] = liste_cord
+        liste_dictionnaires.append(regressions(
+            liste_cord, dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1, 2]
+        liste = liste_cord[:1] + liste_cord[3:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
+        dictionnaire['points'] = [1, 3]
+        liste = [liste_cord[0]] + liste_cord[2:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
+        dictionnaire['points'] = [2, 3]
+        liste = liste_cord[1:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
         dictionnaire['points'] = [1]
-        liste=[liste_cord[0]]+liste_cord[3:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        liste = [liste_cord[0]] + liste_cord[3:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
         dictionnaire['points'] = [2]
-        liste=[liste_cord[1]]+liste_cord[3:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
+        liste = [liste_cord[1]] + liste_cord[3:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
         dictionnaire['points'] = [3]
-        liste=liste_cord[2:]
-        liste_dictionnaires.append(regressions(liste,dictionnaire=dictionnaire))
-    return liste_dictionnaires
-
-
-
-
-
+        liste = liste_cord[2:]
+        dictionnaire['coord'] = liste
+        liste_dictionnaires.append(regressions(
+            liste, dictionnaire=dictionnaire))
+    return {"data": liste_dictionnaires}
 
 
 # La partie ci-dessous permet d'afficher sur python les points ainsi que
