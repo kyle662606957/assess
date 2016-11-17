@@ -154,63 +154,55 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
 
 
 def multipoints(liste_cord):
-    liste_dictionnaires = []
-    dictionnaire = {}
     if len(liste_cord) == 3:
-        dictionnaire['points'] = [1]
-        dictionnaire['coord'] = liste_cord
-        liste_dictionnaires.append(regressions(
-            liste_cord, dictionnaire=dictionnaire))
+        liste_dictionnaires = [{}]
+        liste_dictionnaires[0]['points'] = [1]
+        liste_dictionnaires[0]['coord'] = liste_cord
+        liste_dictionnaires[0] = regressions(
+            liste_dictionnaires[0]['coord'], dictionnaire=liste_dictionnaires[0])
     elif len(liste_cord) == 4:
-        dictionnaire['points'] = [1, 2]
-        dictionnaire['coord'] = liste_cord
-        liste_dictionnaires.append(regressions(
-            liste_cord, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1]
-        liste = [liste_cord[0]] + liste_cord[2:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [2]
-        liste = liste_cord[1:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
+        liste_dictionnaires = [{}, {}, {}]
+        liste_dictionnaires[0]['points'] = [1, 2]
+        liste_dictionnaires[0]['coord'] = liste_cord
+        liste_dictionnaires[0] = regressions(
+            liste_dictionnaires[0]['coord'], dictionnaire=liste_dictionnaires[0])
+        liste_dictionnaires[1]['points'] = [1]
+        liste_dictionnaires[1]['coord'] = [liste_cord[0]] + liste_cord[2:]
+        liste_dictionnaires[1] = regressions(
+            liste_dictionnaires[1]['coord'], dictionnaire=liste_dictionnaires[1])
+        liste_dictionnaires[2]['points'] = [2]
+        liste_dictionnaires[2]['coord'] = liste_cord[1:]
+        liste_dictionnaires[2] = regressions(
+            liste_dictionnaires[2]['coord'], dictionnaire=liste_dictionnaires[2])
     elif len(liste_cord) == 5:
-        dictionnaire['points'] = [1, 2, 3]
-        dictionnaire['coord'] = liste_cord
-        liste_dictionnaires.append(regressions(
-            liste_cord, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1, 2]
-        liste = liste_cord[:1] + liste_cord[3:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1, 3]
-        liste = [liste_cord[0]] + liste_cord[2:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [2, 3]
-        liste = liste_cord[1:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [1]
-        liste = [liste_cord[0]] + liste_cord[3:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [2]
-        liste = [liste_cord[1]] + liste_cord[3:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
-        dictionnaire['points'] = [3]
-        liste = liste_cord[2:]
-        dictionnaire['coord'] = liste
-        liste_dictionnaires.append(regressions(
-            liste, dictionnaire=dictionnaire))
+        liste_dictionnaires = [{}, {}, {}, {}, {}, {}, {}]
+        liste_dictionnaires[0]['points'] = [1, 2, 3]
+        liste_dictionnaires[0] = regressions(
+            liste_dictionnaires[0]['coord'], dictionnaire=liste_dictionnaires[0])
+        liste_dictionnaires[1]['points'] = [1, 2]
+        liste_dictionnaires[1]['coord'] = liste_cord[:1] + liste_cord[3:]
+        liste_dictionnaires[1] = regressions(
+            liste_dictionnaires[1]['coord'], dictionnaire=liste_dictionnaires[1])
+        liste_dictionnaires[2]['points'] = [1, 3]
+        liste_dictionnaires[2]['coord'] = [liste_cord[0]] + liste_cord[2:]
+        liste_dictionnaires[2] = regressions(
+            liste_dictionnaires[2]['coord'], dictionnaire=liste_dictionnaires[2])
+        liste_dictionnaires[3]['points'] = [2, 3]
+        liste_dictionnaires[3]['coord'] = liste_cord[1:]
+        liste_dictionnaires[3] = regressions(
+            liste_dictionnaires[3]['coord'], dictionnaire=liste_dictionnaires[3])
+        liste_dictionnaires[4]['points'] = [1]
+        liste_dictionnaires[4]['coord'] = [liste_cord[0]] + liste_cord[3:]
+        liste_dictionnaires[4] = regressions(
+            liste_dictionnaires[4]['coord'], dictionnaire=liste_dictionnaires[4])
+        liste_dictionnaires[5]['points'] = [2]
+        liste_dictionnaires[5]['coord'] = [liste_cord[1]] + liste_cord[3:]
+        liste_dictionnaires[5] = regressions(
+            liste_dictionnaires[5]['coord'], dictionnaire=liste_dictionnaires[5])
+        liste_dictionnaires[6]['points'] = [3]
+        liste_dictionnaires[6]['coord'] = liste_cord[2:]
+        liste_dictionnaires[6] = regressions(
+            liste_dictionnaires[6]['coord'], dictionnaire=liste_dictionnaires[6])
     return {"data": liste_dictionnaires}
 
 

@@ -483,7 +483,7 @@ $(function() {
         }
 
 		$.post('ajax', JSON.stringify(json_2_send), function(data) {
-
+			
 			$.post('ajax', JSON.stringify({"type":"svg", "data": data['data'][0], "min": val_min, "max": val_max, "liste_cord": data['data'][0]['coord'], "width":8}), function(data2) {
 				$('#charts').append('<div id="main_graph">'+ data2+'</div>');
 
