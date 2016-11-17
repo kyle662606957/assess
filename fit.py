@@ -177,10 +177,11 @@ def multipoints(liste_cord):
     elif len(liste_cord) == 5:
         liste_dictionnaires = [{}, {}, {}, {}, {}, {}, {}]
         liste_dictionnaires[0]['points'] = [1, 2, 3]
+        liste_dictionnaires[0]['coord'] = liste_cord
         liste_dictionnaires[0] = regressions(
             liste_dictionnaires[0]['coord'], dictionnaire=liste_dictionnaires[0])
         liste_dictionnaires[1]['points'] = [1, 2]
-        liste_dictionnaires[1]['coord'] = liste_cord[:1] + liste_cord[3:]
+        liste_dictionnaires[1]['coord'] = liste_cord[:2] + liste_cord[3:]
         liste_dictionnaires[1] = regressions(
             liste_dictionnaires[1]['coord'], dictionnaire=liste_dictionnaires[1])
         liste_dictionnaires[2]['points'] = [1, 3]
