@@ -40,14 +40,14 @@ $(function() {
 
 	// We fill the table
 	for (var i=0; i < asses_session.attributes.length; i++){
-		if(!asses_session.attributes[0].checked)//if note activated
+		if(!asses_session.attributes[i].checked)//if note activated
 			continue;//we pass to the next one
-		var text = '<tr><td>' + asses_session.attributes[0].name + '</td><td>'+ asses_session.attributes[0].method + '</td><td>'+ asses_session.attributes[0].questionnaire.number +'</td>';
+		var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>'+ asses_session.attributes[i].method + '</td><td>'+ asses_session.attributes[i].questionnaire.number +'</td>';
 
-			text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[0].name  + '">Assess</button></td>';
+			text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name  + '">Assess</button></td>';
 
-		if (asses_session.attributes[0].questionnaire.number > 0) {
-			text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[0].name  + '">Utility function</button></td>';
+		if (asses_session.attributes[i].questionnaire.number > 0) {
+			text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name  + '">Utility function</button></td>';
 		}
 		else{
 			text += '<td>No assessment yet</td>';
@@ -360,8 +360,8 @@ $(function() {
 					}
 					else {
 						for (var i =0;  i  < points.length; i++){
-							if (points[0][0] == gain) {
-								return points[0][1];
+							if (points[i][0] == gain) {
+								return points[i][1];
 							}
 						}
 					}
@@ -462,7 +462,7 @@ $(function() {
 			points.push([val_max, 0]);
 			points.push([val_min, 1]);
 		}
-		json_2_send = {"type":"calc_util"};
+		var json_2_send = {"type":"calc_util_multi"};
 		json_2_send["points"] = points;
 
 

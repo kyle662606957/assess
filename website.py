@@ -101,8 +101,9 @@ def ajax():
         else:
             return query['method']
     elif query['type'] == "calc_util":
+        return fit.regressions(query['points'])
+    elif query['type'] == "calc_util_multi":
         return fit.multipoints(query['points'])
-
     elif query['type'] == "k_calculus":
         print("on va calculer k_calculus sur le fichier kcalc")
         if query['number'] == 2:

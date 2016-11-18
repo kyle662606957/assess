@@ -13,7 +13,7 @@ function number_attributes_checked()
 		if(asses_session.attributes[i].checked)
 			counter++;
 	}
-	
+
 	return counter;
 }
 
@@ -23,29 +23,29 @@ function update_method_button(type)
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 	for(var i=0; i<asses_session.k_calculus.length; i++)
 	{
-		
+
 		if(asses_session.k_calculus[i].method==type)
-		{ 
-			//we change also the look of the button of the current page 
+		{
+			//we change also the look of the button of the current page
 			//we pass from gray to blue (default to primary)
 			$("#button_"+type).removeClass('btn-default');
-			$("#button_"+type).addClass('btn-primary'); 
- 
+			$("#button_"+type).addClass('btn-primary');
+
 			asses_session.k_calculus[i].active=true;
 		}
 		else
-		{ 
+		{
 			//we pass from blue to gray
 			$("#button_"+asses_session.k_calculus[i].method).removeClass('btn-primary');
-			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-default'); 
+			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-default');
 			asses_session.k_calculus[i].active=false;
 		}
-	} 
-	 
-	//we update the assess_session storage 
+	}
+
+	//we update the assess_session storage
 	localStorage.setItem("asses_session", JSON.stringify(asses_session));
-	
-	 
+
+
 }
 
 
@@ -105,7 +105,7 @@ $(function() {
 
 	});
 
-///  ACTION FROM BUTTON MULTIPLICATIVE 
+///  ACTION FROM BUTTON MULTIPLICATIVE
 	$("#button_multiplicative").click(function () {
 		//update the active methode for k_kalculus
 		update_method_button("multiplicative");
@@ -130,7 +130,7 @@ function create_multiplicative_k()
 			counter++;
 		}
 	}
-	//we update the assess_session storage 
+	//we update the assess_session storage
 	localStorage.setItem("asses_session", JSON.stringify(asses_session));
 }
 
@@ -169,7 +169,7 @@ function generer_list(list_inf, n, lvl)
 {
 	if(lvl>=n)
 		return [];
-		
+
 	var nouvelle_list = [];
 	for(var i=0; i<list_inf.length; i++)
 	{
@@ -178,10 +178,10 @@ function generer_list(list_inf, n, lvl)
 		{
 			nouvelle_list.push(list_inf[i].concat(list_1[l]));
 		}
-		//nouvelle_list.push(new Array(list_inf[i][list_inf[i].length-1],)); 
+		//nouvelle_list.push(new Array(list_inf[i][list_inf[i].length-1],));
 	}
-	
-	return list_inf.concat(generer_list(nouvelle_list, n, lvl+1)); 
+
+	return list_inf.concat(generer_list(nouvelle_list, n, lvl+1));
 }
 
 
@@ -197,10 +197,10 @@ function create_multilinear_k()
 		if(asses_session.attributes[i].checked)
 			checkedAttributeList.push(i);
 	}
-	
+
 	var maListeCombinaison=generer_list(generer_list_lvl_0(checkedAttributeList.length),checkedAttributeList.length, 0);
-	
-	
+
+
 	for (var i=0; i < maListeCombinaison.length; i++){
 		var id_attribute=[];
 		var attribute=[];
@@ -211,8 +211,8 @@ function create_multilinear_k()
 		}
 		asses_session.k_calculus[1].k.push({"ID":maListeCombinaison[i].join(), "ID_attribute":id_attribute, "attribute":attribute, "value":null});
 	}
-	
-	//we update the assess_session storage 
+
+	//we update the assess_session storage
 	localStorage.setItem("asses_session", JSON.stringify(asses_session));
 }
 
@@ -225,8 +225,8 @@ function update_k_list(number)
 	//we delete the entire table
 	$('#table_k_attributes').html("");
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-	var ma_list=asses_session.k_calculus[number].k; 
-	
+	var ma_list=asses_session.k_calculus[number].k;
+
 	for(var i=0; i<ma_list.length; i++)
 	{
 		var text = '<tr id="line'+i+'"><td>K<sub>' + String(ma_list[i].ID).replace(/,/g, '') + '</sub></td>';
@@ -241,16 +241,16 @@ function update_k_list(number)
 				}
 			else
 				text += '<td>'+ ma_list[i].value +'</td>';
-				
+
 			text+='<td><img id="delete_K'+i+'" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
-					
-			
+
+
 			$('#table_k_attributes').append(text);
-			
+
 			if(ma_list[i].value==null)
 			{
 			(function(_i){
-					$('#k_answer_'+_i).click(function(){ 
+					$('#k_answer_'+_i).click(function(){
 						$('#k_answer_'+_i).hide();
 						if(number==0)//multiplicative
 						k_answer(_i, number);
@@ -264,9 +264,9 @@ function update_k_list(number)
 							}
 						}
 					});
-			})(i); 
+			})(i);
 			}
-			
+
 			(function(_i){
 					$('#delete_K'+_i).click(function(){
 						if(confirm("All dependencies beetween k will be removed!") == false){return};
@@ -302,7 +302,7 @@ function update_k_list(number)
 						update_k_list(number);
 						});
 					})(i);
-				
+
 	}
 	//then we show the message if the number of ki calculated is sufficient
 	ki_calculated();
@@ -354,10 +354,10 @@ function update_active_button_multilinear()
 function k_multilinear_answer(i)
 {
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-		
+
 			// we store the name of the attribute
 		var method = 'PE';
-		var mon_k = asses_session.k_calculus[1].k[i]; 
+		var mon_k = asses_session.k_calculus[1].k[i];
 		var mode = "normal";
 
 		// we delete the slect div
@@ -375,7 +375,7 @@ function k_multilinear_answer(i)
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////// PE METHOD //////////////////////////////////////////////////////////////// 
+		///////////////////////////////////////////////////////////////// PE METHOD ////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (method == 'PE') {
@@ -384,13 +384,13 @@ function k_multilinear_answer(i)
 				var probability = random_proba(0.25, 0.75);
 				var min_interval = 0;
 				var max_interval = 1;
-				
+
 				// VARIABLES
 				var gain_certain = "";
 				var gain_haut = "";
 				var gain_bas = "";
-				
-				
+
+
 				var k=0;
 				//first we delete the array of k for multiplicative
 				for (var l=0; l < asses_session.attributes.length; l++){
@@ -411,10 +411,10 @@ function k_multilinear_answer(i)
 					else
 						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-					
+
 				}
-				
-				
+
+
 
 				// INTERFACE
 				//on cache le bouton
@@ -435,10 +435,10 @@ function k_multilinear_answer(i)
 				arbre_gauche.questions_val_mean = gain_certain;
 				arbre_gauche.display();
 				arbre_gauche.update();
-				
+
 				$("#k_value_"+i).append('<br/><br/><br/><br/><button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
-				
+
 				$("#k_value_"+i).show("fast");
 
 				function treat_answer(data){
@@ -556,11 +556,11 @@ function k_answer(i, type)
 {
 
 	 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-		
+
 			// we store the name of the attribute
 		var method = 'PE';
 		var mon_k = asses_session.k_calculus[type].k[i];
-		
+
 		var mode = "normal";
 
 		// we delete the slect div
@@ -578,7 +578,7 @@ function k_answer(i, type)
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////// PE METHOD //////////////////////////////////////////////////////////////// 
+		///////////////////////////////////////////////////////////////// PE METHOD ////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		if (method == 'PE') {
@@ -587,17 +587,17 @@ function k_answer(i, type)
 				var probability = random_proba(0.25, 0.75);
 				var min_interval = 0;
 				var max_interval = 1;
-				
+
 				// VARIABLES
 				if(mode=="normal")
 				{var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;}
-				else 
+				else
 				var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;	
-			
+				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+
 				for (var l = 0; l < i; l++){
 					var pre_k = asses_session.k_calculus[type].k[l];
 					gain_certain += ' <br/> ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
@@ -633,10 +633,10 @@ function k_answer(i, type)
 				arbre_gauche.questions_val_mean = gain_certain;
 				arbre_gauche.display();
 				arbre_gauche.update();
-				
+
 				$("#k_value_"+i).append('<br/><br/><br/><br/><button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
-				
+
 				$("#k_value_"+i).show("fast");
 
 				function treat_answer(data){
@@ -917,6 +917,7 @@ function list()
 					}), function (data2) {
 
 						$('#charts_' + _i).append('<div>' + data2 + '</div>');
+						console.log(data);
 						for (var key in data) {
 
 							var functions = "";
