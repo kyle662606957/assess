@@ -10,7 +10,6 @@ from functools import partial
 # import sys
 
 
-
 def regressions(liste_cord, liste=False, dictionnaire={}):
 
     # creation des fonctions utilisees pour les differentes
@@ -27,7 +26,7 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     # creation des valeurs en abscisses et en ordonnee avec les listes lx et ly
     x = np.array(lx)
     y = np.array(ly)
-    x_test = np.linspace(x[-1],x[-2])
+    x_test = np.linspace(x[-1], x[-2])
 
     if y[-1] == 1:
         min = float(x[-2])
@@ -35,7 +34,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     else:
         min = float(x[-1])
         max = float(x[-2])
-
 
     # creation of the fitted curves
 
@@ -53,15 +51,16 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         # test de la fonction d'utilite qui doit etre comprise entre 0 et 1
         test = True
         for i in x_test:
-            if funcexp(i,a1,b1,c1) < -0.02 or funcexp(i,a1,b1,c1) > 1.02:
-                test=False
+            if funcexp(i, a1, b1, c1) < -0.02 or funcexp(i, a1, b1, c1) > 1.02:
+                test = False
         if test:
             dictionnaire['exp'] = {}
             dictionnaire['exp']['a'] = a1
             dictionnaire['exp']['b'] = b1
             dictionnaire['exp']['c'] = c1
             # calcul et affichage du mean squared error et du r2
-            # print "Mean Squared Error exp : ", np.mean((y-funcexp(x, *popt1))**2)
+            # print "Mean Squared Error exp : ", np.mean((y-funcexp(x,
+            # *popt1))**2)
             ss_res = np.dot((y - funcexp(x, a1, b1, c1)),
                             (y - funcexp(x, a1, b1, c1)))
             ymean = np.mean(y)
@@ -81,8 +80,8 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         c2 = (1 + b2 * (max**2 - min**2)) / (max - min)
         test = True
         for i in x_test:
-            if funcquad(i,a2,b2,c2) < -0.02 or funcquad(i,a2,b2,c2) > 1.02:
-                test=False
+            if funcquad(i, a2, b2, c2) < -0.02 or funcquad(i, a2, b2, c2) > 1.02:
+                test = False
         if test:
             dictionnaire['quad'] = {}
             dictionnaire['quad']['a'] = a2
@@ -108,8 +107,8 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         c3 = -(min**(1 - b3) - 1) / (max**(1 - b3) - min**(1 - b3))
         test = True
         for i in x_test:
-            if funcpuis(i,a3,b3,c3) < -0.02 or funcpuis(i,a3,b3,c3) > 1.02:
-                test=False
+            if funcpuis(i, a3, b3, c3) < -0.02 or funcpuis(i, a3, b3, c3) > 1.02:
+                test = False
         if test:
             dictionnaire['pow'] = {}
             dictionnaire['pow']['a'] = a3
@@ -136,15 +135,16 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         d4 = 1. / (1 - np.log(b4 * max + c4) / np.log(b4 * min + c4))
         test = True
         for i in x_test:
-            if funclog(i,a4,b4,c4,d4) < -0.02 or funclog(i,a4,b4,c4,d4) > 1.02:
-                test=False
+            if funclog(i, a4, b4, c4, d4) < -0.02 or funclog(i, a4, b4, c4, d4) > 1.02:
+                test = False
         if test:
             dictionnaire['log'] = {}
             dictionnaire['log']['a'] = a4
             dictionnaire['log']['b'] = b4
             dictionnaire['log']['c'] = c4
             dictionnaire['log']['d'] = d4
-            # print "Mean Squared Error log : ", np.mean((y-funclog(x, *popt4))**2)
+            # print "Mean Squared Error log : ", np.mean((y-funclog(x,
+            # *popt4))**2)
             ss_res = np.dot((y - funclog(x, a4, b4, c4, d4)),
                             (y - funclog(x, a4, b4, c4, d4)))
             ymean = np.mean(y)
