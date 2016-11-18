@@ -19,6 +19,8 @@
             <div id="charts">
             	<h2>Select the regression function you want to use</h2>
             </div>
+						<div id="main_graph"></div>
+						<div id="functions"></div>
 
 %include('header_end.tpl')
 %include('js.tpl')
@@ -32,6 +34,8 @@
 $(function() {
 	$('li.questions').addClass("active");
 	$('#charts').hide();
+	$('#main_graph').hide();
+	$('#functions').hide();
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 
 	// We fill the table
@@ -472,7 +476,7 @@ $(function() {
 
               div_function.append(text);
               div_function.append(copy_button);
-              $('#charts').append(div_function);
+              $('#functions').append(div_function);
 
               var client = new ZeroClipboard(copy_button);
               client.on( "aftercopy", function( event ) {
@@ -519,14 +523,36 @@ $(function() {
 			function addGraph(i, data, min, max)
 			{
 				$.post('ajax', JSON.stringify({"type":"svg", "data": data[i], "min": min, "max": max, "liste_cord": data[i]['coord'], "width":8}), function(data2) {
-					$('#charts').append('<div id="main_graph" class="row">'+ data2+'</div>');
+					$('#main_graph').append(data2);
 				});
 			}
 
+			function availableRegressions(data)
+			{
+				var text='';
+				for (var key in data) {
+					if (typeof(data[key]['r2']) !== 'undefined') {
+						text = text+key+': '+reduce(data[key]['r2'])+', ';
+					}
+
+				}
+				return text;
+			}
+
+
 		$.post('ajax', JSON.stringify(json_2_send), function(data) {
 			$('#charts').show();
-			addGraph(0,data['data'], val_min, val_max);
-			addFunctions(0, data['data']);
+			$('#charts').append('<table id="curves_choice" class="table"><thead><tr><th></th><th>Points used</th><th>Available regressions: r2</th></tr></thead></table>');
+			for (var i=0; i<data['data'].length; i++) {
+				regressions_text = availableRegressions(data['data'][i]);
+				$('#curves_choice').append('<tr><td><input type="radio" class="radio_choice" name="select" value='+i+'></td><td>'+data['data'][i]['points']+'</td><td>'+regressions_text+'</td></tr>');
+			}
+			$('.radio_choice').on('click', function() {
+				$('#main_graph').show().empty();
+				$('#functions').show().empty();
+				addGraph(Number(this.value),data['data'],val_min, val_max);
+				addFunctions(Number(this.value),data['data']);
+			});
 		});
 
 	});
