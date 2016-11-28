@@ -11,38 +11,38 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 
 
 def generate_fichier(data):
-
+    
     # On crée un "classeur"
 
     r = random.randint(1,1000)
     classeur = xlsxwriter.Workbook('fichier'+str(r)+'.xlsx')
     # On ajoute une feuille au classeur
-
-
-
+    
+    
+    
     for monAttribut in data['attributes']:
-
+        
         feuille = classeur.add_worksheet(monAttribut['name'])
-
-
+     
+        
         format01 = classeur.add_format()
         format01.set_num_format('0.00')
-
+        
         formatCoeff = classeur.add_format()
         formatCoeff.set_num_format('0.000000')
-
+        
         formatTitre = classeur.add_format()
         formatTitre.set_bg_color('#C0C0C0')
         formatTitre.set_bold()
-
+        
         formatNom = classeur.add_format()
         formatNom.set_font_color('#D95152')
         formatNom.set_align('center')
         formatNom.set_bold()
         #ici on va mettre toutes les infos sur l'attribut
-
-
-
+        
+        
+        
         #feuille.merge_range('A1:B1','Attribut')
         feuille.write(0,0, 'Attribut', formatTitre);
         feuille.write(0,1, '', formatTitre);
@@ -53,7 +53,7 @@ def generate_fichier(data):
         feuille.write(5, 0, 'Method',formatNom)
         feuille.write(6, 0, 'Mode',formatNom)
         feuille.write(7, 0, 'Active',formatNom)
-
+        
         feuille.write(1, 1, monAttribut['name'])
         feuille.write(2, 1, monAttribut['unit'])
         feuille.write(3, 1, monAttribut['val_min'])
@@ -67,7 +67,7 @@ def generate_fichier(data):
         feuille.write(11, 1, " ")
         feuille.write(12, 1, " ")
         feuille.write(13, 1, " ")
-
+        
         #ensuite on va mettre les points obtenus:
         #feuille.merge_range('C1:D1','Points')
         feuille.write(0,2, 'Points', formatTitre);
@@ -76,12 +76,12 @@ def generate_fichier(data):
         feuille.write(1, 3, "X")
         #on va maintenant les remplir
         lignePoint=0
-
+        
         for monPoint in monAttribut['questionnaire']['points']:
            feuille.write(lignePoint+2, 2, monPoint[0])
            feuille.write(lignePoint+2, 3, monPoint[1])
            lignePoint=lignePoint+1
-
+        
         #Ensuite on s'occupe de la fonction d'utilité
         #feuille.merge_range('E1:F1','Utility Function')
         # on fait une regression à l'aide des points que l'on a dans le questionnaire et on envoit tout ça dans la fonction regressions du fichier fit.py
@@ -96,7 +96,7 @@ def generate_fichier(data):
                 points.append([monAttribut['val_min'], 1]);
 
             #go for fit regression using our points
-            utilities=fit.regressions(points,True);
+            utilities=fit.regressions_under_list_form(points);
         else:
             #no need of fit regression because we don't have point
             utilities=[]
@@ -104,7 +104,7 @@ def generate_fichier(data):
 
 
         for utility in utilities:
-
+        
             feuille.write(ligne,4, 'Utility Function', formatTitre);
             feuille.write(ligne,5, '', formatTitre);
             feuille.write(ligne+1, 4, "type",formatNom)
@@ -114,9 +114,9 @@ def generate_fichier(data):
             feuille.write(ligne+5, 4, "d",formatNom)
             feuille.write(ligne+6, 4, "r2",formatNom)
             feuille.write(ligne+7, 4, "DPL",formatNom)
-
-
-
+            
+        
+            
             #feuille.write(ligne, 5, utility)
             #Dans le cas ou la fonciton d'utilité est de type exp
             #on cherche quel est notre type de fonction d'utilite
@@ -143,7 +143,7 @@ def generate_fichier(data):
                 feuille.write(ligne+5, 5, utility['d'], formatCoeff)
             except:
                 pass
-
+                    
             feuille.set_column(5, 5, 20);
 
             feuille.write(ligne+0,6, 'Calculated points', formatTitre);
@@ -174,9 +174,9 @@ def generate_fichier(data):
                               'name':       utility['type'],
                               'categories': '='+monAttribut['name']+'!$G$'+str(ligne+2)+':$G$'+str(ligne+12),
                               'values':     '='+monAttribut['name']+'!$H$'+str(ligne+2)+':$H$'+str(ligne+12),
-
+     
                               })
-
+     
             # Add a chart title and some axis labels.
             chart5.set_title ({'name': 'Utility Function'})
 
@@ -189,26 +189,26 @@ def generate_fichier(data):
 
             # Insert the chart into the worksheet (with an offset).
             feuille.insert_chart('I'+str(1+ligne), chart5, {'x_offset': 25, 'y_offset': 10})
-
+            
             ligne+=15;
 
     for mesK in data['k_calculus']:
         feuille = classeur.add_worksheet("Multi attribute "+mesK['method'])
+    
 
-
-
+        
         formatTitre = classeur.add_format()
         formatTitre.set_bg_color('#C0C0C0')
         formatTitre.set_align('center')
         formatTitre.set_bold()
-
+        
         formatNom = classeur.add_format()
         formatNom.set_font_color('#D95152')
         formatNom.set_align('center')
         formatNom.set_font_size(12)
         formatNom.set_bold()
         #ici on va mettre toutes les infos sur l'attribut
-
+        
         feuille.write(0,0, 'K', formatTitre);
         feuille.set_column(0, 0, 10);
         feuille.write(0,1, 'Value', formatTitre);
@@ -218,9 +218,9 @@ def generate_fichier(data):
         feuille.set_column(3, 3, 10);
         feuille.write(0,4, 'utility type', formatTitre);
         feuille.set_column(4, 4, 15);
-
-
-
+        
+        
+        
         ligne=1
         for monK in mesK['k']:
             feuille.write(ligne, 0, monK['ID'], formatNom)
@@ -228,7 +228,7 @@ def generate_fichier(data):
             feuille.write(ligne, 2, json.dumps(monK['attribute']))
             feuille.write(ligne, 3, json.dumps(monK['ID_attribute']))
             ligne=ligne+1
-
+    
 
         if mesK['method']=="multiplicative":
             feuille.write(ligne, 0, "K", formatNom)
@@ -243,21 +243,21 @@ def generate_fichier(data):
             feuille.write(ligne,1, mesK['GU']['U']);
 
             ligne=0
-
+            
             utilities=mesK['GU']['utilities']
             numberUtilities=len(utilities)
             k=mesK['GU']['k']
-
-
+            
+            
 
             numero=1
             for myUtility in utilities:
-
+                
                 feuille.write(numero, 4, myUtility['type'])
-
+                
                 feuille.write(ligne,4+numero, "x"+str(numero), formatTitre)
                 feuille.write(ligne+1,4+numero, 1)
-
+                
                 feuille.write(ligne,4+numero+numberUtilities, "u"+str(numero)+"(x"+str(numero)+")", formatTitre)
                 if myUtility['type']=='exp':
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funcexp_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
@@ -269,18 +269,18 @@ def generate_fichier(data):
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funclog_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c']), str(myUtility['d'])))
                 elif myUtility['type']=='lin':
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funclin_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b'])))
-
+                
                 numero=numero+1
 
 
             feuille.write(ligne,4+numero+numberUtilities, "U", formatTitre)
-
+            
             def K(i):
                 return xl_rowcol_to_cell(i,1, row_abs=True, col_abs=True)
             def U(i):
                 return xl_rowcol_to_cell(ligne+1,4+i+numberUtilities)
-
-
+            
+            
             if mesK['method']=="multiplicative":
                 if numberUtilities==2:
                     GU=utilite2_excel(K(1), K(2), K(3), U(1), U(2))
@@ -308,7 +308,7 @@ def generate_fichier(data):
                         GU+="*"+U(int(dk))
                     GU+="+"
                     nombre=nombre+1
-
+                    
                 GU=GU[:-1]
                 feuille.write_formula(ligne+1,4+numero+numberUtilities, GU)
 
@@ -321,38 +321,38 @@ def generate_fichier(data):
 
 #generate juste the file with utility function we checked
 def generate_fichier_with_specification(data):
-
+    
     r = random.randint(1,1000)
     classeur = xlsxwriter.Workbook('fichier'+str(r)+'.xlsx')
     # On ajoute une feuille au classeur
-
-
-
+    
+    
+    
     for monAttribut in data['attributes']:
         #we first check if the attribute have a list o defined utility function
 
-
+        
         feuille = classeur.add_worksheet(monAttribut['name'])
-
-
+     
+        
         format01 = classeur.add_format()
         format01.set_num_format('0.00')
-
+        
         formatCoeff = classeur.add_format()
         formatCoeff.set_num_format('0.000000')
-
+        
         formatTitre = classeur.add_format()
         formatTitre.set_bg_color('#C0C0C0')
         formatTitre.set_bold()
-
+        
         formatNom = classeur.add_format()
         formatNom.set_font_color('#D95152')
         formatNom.set_align('center')
         formatNom.set_bold()
         #ici on va mettre toutes les infos sur l'attribut
-
-
-
+        
+        
+        
         #feuille.merge_range('A1:B1','Attribut')
         feuille.write(0,0, 'Attribut', formatTitre);
         feuille.write(0,1, '', formatTitre);
@@ -363,7 +363,7 @@ def generate_fichier_with_specification(data):
         feuille.write(5, 0, 'Method',formatNom)
         feuille.write(6, 0, 'Mode',formatNom)
         feuille.write(7, 0, 'Active',formatNom)
-
+        
         feuille.write(1, 1, monAttribut['name'])
         feuille.write(2, 1, monAttribut['unit'])
         feuille.write(3, 1, monAttribut['val_min'])
@@ -377,8 +377,8 @@ def generate_fichier_with_specification(data):
         feuille.write(11, 1, " ")
         feuille.write(12, 1, " ")
         feuille.write(13, 1, " ")
-
-
+        
+        
         #ensuite on va mettre les points obtenus:
         #feuille.merge_range('C1:D1','Points')
         feuille.write(0,2, 'Points', formatTitre);
@@ -387,21 +387,21 @@ def generate_fichier_with_specification(data):
         feuille.write(1, 3, "X")
         #on va maintenant les remplir
         lignePoint=0
-
+        
         for monPoint in monAttribut['questionnaire']['points']:
            feuille.write(lignePoint+2, 2, monPoint[0])
            feuille.write(lignePoint+2, 3, monPoint[1])
            lignePoint=lignePoint+1
-
+        
         #Ensuite on s'occupe de la fonction d'utilité
         #feuille.merge_range('E1:F1','Utility Function')
         # on fait une regression à l'aide des points que l'on a dans le questionnaire et on envoit tout ça dans la fonction regressions du fichier fit.py
         utilities=monAttribut['utilities']
-
+        
         ligne=0;
 
         for utility in utilities:
-
+        
             feuille.write(ligne,4, 'Utility Function', formatTitre);
             feuille.write(ligne,5, '', formatTitre);
             feuille.write(ligne+1, 4, "type",formatNom)
@@ -411,9 +411,9 @@ def generate_fichier_with_specification(data):
             feuille.write(ligne+5, 4, "d",formatNom)
             feuille.write(ligne+6, 4, "r2",formatNom)
             feuille.write(ligne+7, 4, "DPL",formatNom)
-
-
-
+            
+        
+            
             #feuille.write(ligne, 5, utility)
             #Dans le cas ou la fonciton d'utilité est de type exp
             #on cherche quel est notre type de fonction d'utilite
@@ -440,7 +440,7 @@ def generate_fichier_with_specification(data):
                 feuille.write(ligne+5, 5, utility['d'], formatCoeff)
             except:
                 pass
-
+                    
             feuille.set_column(5, 5, 20);
 
             feuille.write(ligne+0,6, 'Calculated points', formatTitre);
@@ -470,9 +470,9 @@ def generate_fichier_with_specification(data):
                               'name':       utility['type'],
                               'categories': '='+monAttribut['name']+'!$G$'+str(ligne+2)+':$G$'+str(ligne+12),
                               'values':     '='+monAttribut['name']+'!$H$'+str(ligne+2)+':$H$'+str(ligne+12),
-
+     
                               })
-
+     
             # Add a chart title and some axis labels.
             chart5.set_title ({'name': 'Utility Function'})
 
@@ -485,26 +485,26 @@ def generate_fichier_with_specification(data):
 
             # Insert the chart into the worksheet (with an offset).
             feuille.insert_chart('I'+str(1+ligne), chart5, {'x_offset': 25, 'y_offset': 10})
-
+            
             ligne+=15;
 
 
     for mesK in data['k_calculus']:
         feuille = classeur.add_worksheet("Multi attribute "+mesK['method'])
+    
 
-
-
+        
         formatTitre = classeur.add_format()
         formatTitre.set_bg_color('#C0C0C0')
         formatTitre.set_bold()
-
+        
         formatNom = classeur.add_format()
         formatNom.set_font_color('#D95152')
         formatNom.set_align('center')
         formatNom.set_font_size(12)
         formatNom.set_bold()
         #ici on va mettre toutes les infos sur l'attribut
-
+        
         feuille.write(0,0, 'K', formatTitre);
         feuille.set_column(0, 0, 15);
         feuille.write(0,1, 'Value', formatTitre);
@@ -536,19 +536,19 @@ def generate_fichier_with_specification(data):
             feuille.write(ligne,1, mesK['GU']['U']);
 
             ligne=0
-
+            
             utilities=mesK['GU']['utilities']
             numberUtilities=len(utilities)
             k=mesK['GU']['k']
 
             numero=1
             for myUtility in utilities:
-
+                
                 feuille.write(numero, 4, myUtility['type'])
-
+                
                 feuille.write(ligne,4+numero, "x"+str(numero), formatTitre)
                 feuille.write(ligne+1,4+numero, 1)
-
+                
                 feuille.write(ligne,4+numero+numberUtilities, "u"+str(numero)+"(x"+str(numero)+")", formatTitre)
                 if myUtility['type']=='exp':
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funcexp_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
@@ -560,18 +560,18 @@ def generate_fichier_with_specification(data):
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funclog_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c']), str(myUtility['d'])))
                 elif myUtility['type']=='lin':
                     feuille.write_formula(ligne+1, 4+numero+numberUtilities, funclin_excel(xl_rowcol_to_cell(ligne+1,4+numero), str(myUtility['a']), str(myUtility['b'])))
-
+                
                 numero=numero+1
 
 
             feuille.write(ligne,4+numero+numberUtilities, "U", formatTitre)
-
+            
             def K(i):
                 return xl_rowcol_to_cell(i,1, row_abs=True, col_abs=True)
             def U(i):
                 return xl_rowcol_to_cell(ligne+1,4+i+numberUtilities)
-
-
+            
+            
             if mesK['method']=="multiplicative":
                 if numberUtilities==2:
                     GU=utilite2_excel(K(1), K(2), K(3), U(1), U(2))
@@ -599,7 +599,7 @@ def generate_fichier_with_specification(data):
                         GU+="*"+U(int(dk))
                     GU+="+"
                     nombre=nombre+1
-
+                    
                 GU=GU[:-1]
                 feuille.write_formula(ligne+1,4+numero+numberUtilities, GU)
 
@@ -620,7 +620,7 @@ def funcexp(x, a, b, c):			# fonction for the exponential regression
 
 def funcexp_excel(x, a, b, c):			# fonction for the exponential regression
     return "="+a+"*EXP(-"+b+"*"+x+")+"+c;
-
+        
 def funcquad(x, a, b, c):			# fonction for the quadratic regression
     return c*x-b*x**2+a
 
@@ -733,3 +733,4 @@ def utilite6_excel(k1,k2,k3,k4,k5,k6,k,u1,u2,u3,u4,u5,u6):
     U=U.replace("u5", u5)
     U=U.replace("u6", u6)
     return (U)
+
