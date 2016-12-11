@@ -354,11 +354,15 @@ function update_active_button_multilinear()
 function k_multilinear_answer(i)
 {
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-
-			// we store the name of the attribute
-		var method = 'PE';
-		var mon_k = asses_session.k_calculus[1].k[i];
-		var mode = "normal";
+	var method = 'PE';
+	var mon_k = asses_session.k_calculus[type].k[i];
+	var name = mon_k.attribute;
+	for (var j = 0; j < asses_session.attributes.length; j++) {
+		if (asses_session.attributes[j].name == name) {
+			var mon_attribut = asses_session.attributes[j];
+		}
+	}
+	var mode = mon_attribut.mode;
 
 		// we delete the slect div
 		$('#k_calculus_info').hide();
@@ -395,23 +399,28 @@ function k_multilinear_answer(i)
 				//first we delete the array of k for multiplicative
 				for (var l=0; l < asses_session.attributes.length; l++){
 					if(!asses_session.attributes[l].checked)//if not checked we don't put it
+					{
 						continue;
+					}
 					if(l==mon_k.ID_attribute[k])//if the attribut is in our list
 					{
 						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						k++;
 					}
 					else
+					{
 						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					}
 					if(mode=="normal")
 					{
-					gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-					gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 					}
 					else
+					{
 						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-
+					}
 				}
 
 
@@ -425,11 +434,15 @@ function k_multilinear_answer(i)
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
 				if(mode=="normal")
-				{arbre_gauche.questions_val_max = gain_haut;
-				arbre_gauche.questions_val_min = gain_bas;}
+				{
+					arbre_gauche.questions_val_max = gain_haut;
+					arbre_gauche.questions_val_min = gain_bas;
+				}
 				else
+				{
 					arbre_gauche.questions_val_max = gain_bas;
 					arbre_gauche.questions_val_min = gain_haut;
+				}
 				//arbre_gauche.questions_val_max = gain_haut;
 				//arbre_gauche.questions_val_min = gain_bas;
 				arbre_gauche.questions_val_mean = gain_certain;
@@ -556,12 +569,15 @@ function k_answer(i, type)
 {
 
 	 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-
-			// we store the name of the attribute
 		var method = 'PE';
 		var mon_k = asses_session.k_calculus[type].k[i];
-
-		var mode = "normal";
+		var name = mon_k.attribute;
+		for (var j = 0; j < asses_session.attributes.length; j++) {
+			if (asses_session.attributes[j].name == name) {
+				var mon_attribut = asses_session.attributes[j];
+			}
+		}
+		var mode = mon_attribut.mode;
 
 		// we delete the slect div
 		$('#k_calculus_info').hide();
@@ -590,28 +606,32 @@ function k_answer(i, type)
 
 				// VARIABLES
 				if(mode=="normal")
-				{var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;}
+				{
+					var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				}
 				else
-				var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-				var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				{
+					var gain_certain = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_haut = asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_bas = asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+				}
 
-				for (var l = 0; l < i; l++){
+				for (var l = 0; l < i; l++)
+				{
 					var pre_k = asses_session.k_calculus[type].k[l];
 					gain_certain += ' <br/> ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
 					gain_haut += ' <br/> ' + asses_session.attributes[pre_k.ID_attribute].val_max + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
 					gain_bas += ' <br/> ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
-
 				}
 
-				for (var l = i + 1 ; l < asses_session.k_calculus[type].k.length; l++){
+				for (var l = i + 1 ; l < asses_session.k_calculus[type].k.length; l++)
+				{
 					var post_k = asses_session.k_calculus[type].k[l];
 					gain_certain += ' <br/> ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
 					gain_haut += ' <br/> ' + asses_session.attributes[post_k.ID_attribute].val_max + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
 					gain_bas += ' <br/> ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
-
 				}
 
 				// INTERFACE

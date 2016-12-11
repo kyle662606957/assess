@@ -275,13 +275,13 @@ ul.alert-dropdown {
 	width:100%;
 	float:left;
 	margin-bottom:50px;
-	margin-top:20px; 
-	
+	margin-top:20px;
+
 }
 
 .img_tree {
 	float:left;
-	
+
 }
 
 
@@ -298,44 +298,44 @@ ul.alert-dropdown {
 
 .questions_right {
 	margin-top:-30px;
-	float:left; 
+	float:left;
 	width:20%;
 	height:220px;
 }
 
-.questions_proba_haut { 
+.questions_proba_haut {
 	float:left;
 	width:100%;
-	margin-left:-100px; 
+	margin-left:-100px;
 }
 
 .questions_val_max {
-	float:left; 
+	float:left;
 	width:100%;
 	height:190px;
 }
 
 
-.questions_proba_bas { 
+.questions_proba_bas {
 	float:left;
 	width:100%;
-	margin-left:-100px; 
+	margin-left:-100px;
 }
 
-.questions_val_min { 
+.questions_val_min {
 	float:left;
-	width:100%; 
+	width:100%;
 }
 
 
 .functions_graph {
     display: inline-block;
     margin: 15px;
-    width:250px;
+    width:320px;
 }
 
-.functions_text_form { 
-    width:250px;
+.functions_text_form {
+    width:320px;
 }
 
 .lottery_a {
