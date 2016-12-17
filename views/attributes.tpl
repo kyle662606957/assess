@@ -80,7 +80,7 @@
 
 
         if (!asses_session){
-            asses_session = {"attributes": [], "k_calculus": [{"method":"multiplicative", "active":"false", "k":[], "GK":null, "GU":null},{"method":"multilinear","active":"false", "k":[], "GK":null, "GU":null}]};
+            asses_session = {"attributes": [], "k_calculus": [{"method":"multiplicative", "active":"false", "k":[], "GK":null, "GU":null},{"method":"multilinear","active":"false", "k":[], "GK":null, "GU":null}], "settings": {"decimals_equations":3, "decimals_dpl":8, "proba_ce":0.3, "proba_le":0.3, "language":"english", "lotteries":"trees"}};
             localStorage.setItem("asses_session", JSON.stringify(asses_session));
         }
 

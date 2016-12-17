@@ -19,7 +19,7 @@
 
     <!-- Custom Fonts -->
     <link href="{{ get_url('static', path='font-awesome-4.1.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-    
+
     <script type="text/javascript" async
       src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
@@ -67,6 +67,9 @@
                     </li>
                     <li class="export">
                         <a href="{{ get_url('/export') }}"><i class="fa fa-fw fa-file"></i>Export assessment</a>
+                    </li>
+                    <li class="settings">
+                        <a href="{{ get_url('/settings') }}"><i class="fa fa-fw fa-cogs"></i>Settings</a>
                     </li>
                 </ul>
             </div>

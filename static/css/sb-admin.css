@@ -341,3 +341,10 @@ ul.alert-dropdown {
 .lottery_a {
     margin-left: 450px;
 }
+
+
+/* Used to reduce the size of input boxes in settings tab */
+.form-control-inline {
+    min-width: 0;
+    width: auto;
+}
