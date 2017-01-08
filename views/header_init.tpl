@@ -71,6 +71,9 @@
                     <li class="settings">
                         <a href="{{ get_url('/settings') }}"><i class="fa fa-fw fa-cogs"></i>Settings</a>
                     </li>
+                    <li class="credits">
+                        <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

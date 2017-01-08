@@ -233,6 +233,10 @@ ul.alert-dropdown {
     display: inline-block;
 }
 
+#edit_attribute {
+    display: inline-block;
+}
+
 #choice {
     text-align: center;
 }

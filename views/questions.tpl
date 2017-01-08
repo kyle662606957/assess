@@ -9,6 +9,7 @@
 				<th>Number of assessed points</th>
 				<th>Assess another point</th>
 				<th>Calculate utility function</th>
+				<th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
 			</tr>
 		</thead>
 		<tbody id="table_attributes">
@@ -55,11 +56,29 @@
 			}
 
 			if (asses_session.attributes[i].questionnaire.number > 0) {
-				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td>';
+				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td>';
 			} else {
 				text += '<td>No assessment yet</td>';
 			}
+
 			$('#table_attributes').append(text);
+
+			(function(_i) {
+					$('#deleteK' + _i).click(function() {
+							if (confirm("Are you sure ?") == false) {
+									return
+							};
+							asses_session.attributes[_i].questionnaire = {
+									'number': 0,
+									'points': [],
+									'utility': {}
+							};
+							// backup local
+							localStorage.setItem("asses_session", JSON.stringify(asses_session));
+							//refresh the page
+							window.location.reload();
+					});
+			})(i);
 		}
 
 
