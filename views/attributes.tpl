@@ -46,10 +46,10 @@
     <div class="form-group">
         <label for="att_method">Method:</label>
         <select class="form-control" id="att_method">
-          <option>Probability Equivalence</option>
-          <option>Lottery Equivalence</option>
-          <option>Certainty Equivalence - Constant Probability</option>
-		      <option>Certainty Equivalence - Variable Probability</option>
+          <option value="PE">Probability Equivalence</option>
+          <option value="LE">Lottery Equivalence</option>
+          <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
+		      <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
         </select>
     </div>
     <div class="checkbox">
@@ -77,6 +77,8 @@
         $('li.manage').addClass("active");
 
         var asses_session = JSON.parse(localStorage.getItem("asses_session"));
+        var edit_mode = false;
+        var edited_attribute=0;
 
         if (!asses_session) {
             asses_session = {
@@ -104,14 +106,6 @@
                 }
             };
             localStorage.setItem("asses_session", JSON.stringify(asses_session));
-        }
-
-        function edit_attribute(i) {
-          var attribute_edit = asses_session.attributes[i];
-          $('#att_name').val(attribute_edit.name);
-          $('#att_unit').val(attribute_edit.unit);
-          $('#att_value_min').val(attribute_edit.val_min);
-          $('#att_value_max').val(attribute_edit.val_max);
         }
 
         function isAttribute(name) {
@@ -170,6 +164,25 @@
                             window.location.reload();
                         });
                     })(i);
+
+                    (function(_i) {
+                        $('#edit_' + _i).click(function() {
+                          edit_mode=true;
+                          edited_attribute=_i;
+                          var attribute_edit = asses_session.attributes[_i];
+                          $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
+                          $('#att_name').val(attribute_edit.name);
+                          $('#att_unit').val(attribute_edit.unit);
+                          $('#att_value_min').val(attribute_edit.val_min);
+                          $('#att_value_max').val(attribute_edit.val_max);
+                          $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
+                          if (attribute_edit.mode=="normal") {
+                            $('#att_mode').prop('checked', false);
+                          } else {
+                            $('#att_mode').prop('checked', true);
+                          }
+                        });
+                    })(i);
                 }
 
             }
@@ -204,7 +217,7 @@
             if (!(name || unit || val_min || val_max) || isNaN(val_min) || isNaN(val_max)) {
                 alert('Please fill correctly all the fields');
             }
-            else if (isAttribute(name)) {
+            else if (isAttribute(name) && (edit_mode == false)) {
               alert ("An attribute with the same name already exists");
             }
             else if (val_min > val_max) {
@@ -212,6 +225,7 @@
             }
 
             else {
+              if (edit_mode=false) {
                 asses_session.attributes.push({
                     "name": name,
                     'unit': unit,
@@ -227,6 +241,25 @@
                         'utility': {}
                     }
                 });
+              } else {
+                asses_session.attributes[edited_attribute]={
+                  "name": name,
+                  'unit': unit,
+                  'val_min': val_min,
+                  'val_max': val_max,
+                  'method': method,
+                  'mode': mode,
+                  'completed': 'False',
+                  'checked': true,
+                  'questionnaire': {
+                      'number': 0,
+                      'points': [],
+                      'utility': {}
+                  }
+                };
+                edit_mode=false;
+                $('#add_attribute h2').text("Add a new attribute");
+              }
                 sync_table();
                 localStorage.setItem("asses_session", JSON.stringify(asses_session));
             }

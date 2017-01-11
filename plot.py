@@ -66,3 +66,16 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
     plt.close()
 
     return imgdata.getvalue()
+
+def pie_chart(name1, name2, proba1, proba2):
+
+    imgdata = io.BytesIO()
+
+    labels = name1,name2
+    sizes = [proba1, proba2]
+    plt.pie(sizes, labels=labels)
+
+    plt.savefig(imgdata, format='svg')
+    plt.close()
+
+    return imgdata.getvalue()

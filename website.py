@@ -8,7 +8,7 @@ import codecs
 import methods
 import plot
 import kcalc
-# import kcal44#import kcalc55
+import latex_render
 import os
 import export_xlsx
 import import_xlsx
@@ -150,11 +150,21 @@ def ajax():
         width = query['width']
         return plot.generate_svg_plot(dictionary, min, max, liste_cord, width)
 
+    elif query['type'] == "pie":
+        name1 = query['name1']
+        name2 = query['name2']
+        proba1 = query['proba1']
+        proba2 = query['proba2']
+        return plot.pie_chart(name1, name2, proba1, proba2)
+
     elif query['type'] == "export_xlsx":
         return export_xlsx.generate_fichier(query['data'])
 
     elif query['type'] == "export_xlsx_option":
         return export_xlsx.generate_fichier_with_specification(query['data'])
+
+    elif query['type'] == "latex_render":
+        return latex_render.render(query['formula'], query['name'])
 
 
 # export a file (download)
@@ -199,6 +209,9 @@ def do_upload():
 def static(path):
     return static_file(path, root='static')
 
+@app.route('/equations/:path#.+#', name='equations')
+def equations(path):
+    return static_file(path, root='equations')
 
 # for authentification
 def check_passwd(passwd):

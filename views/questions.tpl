@@ -41,7 +41,9 @@
 		$('#charts').hide();
 		$('#main_graph').hide();
 		$('#functions').hide();
+
 		var asses_session = JSON.parse(localStorage.getItem("asses_session"));
+		var settings=asses_session.settings;
 
 		// We fill the table
 		for (var i = 0; i < asses_session.attributes.length; i++) {
@@ -247,7 +249,7 @@
 					arbre_gauche.update();
 
 					// SETUP ARBRE DROIT
-					arbre_droite.questions_proba_haut = 0.5;
+					arbre_droite.questions_proba_haut = settings.proba_le;
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
@@ -352,7 +354,7 @@
 					var arbre_gauche = new Arbre('gauche', '#trees');
 
 					// SETUP ARBRE GAUCHE
-					arbre_gauche.questions_proba_haut = 0.5;
+					arbre_gauche.questions_proba_haut = settings.proba_ce;
 					arbre_gauche.questions_val_max = max_interval + ' ' + unit;
 					arbre_gauche.questions_val_min = min_interval + ' ' + unit;
 					arbre_gauche.questions_val_mean = gain + ' ' + unit;
@@ -622,55 +624,79 @@
 				if (nombre >= 0 && signe==true) {
 					if (dpl==false) {
 						if (nombre > 999) {
-							return ("+" + nombre.toExponential(2)).replace("e+", "**10^");
+							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e+", "\\times10^{")+"}";
 						}
 						else if (nombre < 0.01) {
-							return ("+" + nombre.toExponential(2)).replace("e-", "**10^-")
+							return ("+" + nombre.toExponential(settings.decimals_equations)).replace("e-", "\\times10^{-")+"}";
 						}
 						else {
-							return "+" + nombre.toPrecision(3);
+							return "+" + nombre.toPrecision(settings.decimals_equations);
 						}
 					}
 					else {
-						return "+" + nombre.toPrecision(8);
+						return "+" + nombre.toPrecision(settings.decimals_dpl);
 					}
 				} else {
 					if (dpl==false) {
 						if (Math.abs(nombre) > 999) {
-							return String(nombre.toExponential(2)).replace("e+","**10^");
+							return String(nombre.toExponential(settings.decimals_equations)).replace("e+","\\times10^{")+"}";
 						}
 						else if (Math.abs(nombre) < 0.01) {
-							return String(nombre.toExponential(2)).replace("e-", "**10^-")
+							return String(nombre.toExponential(settings.decimals_equations)).replace("e-", "\\times10^{-")+"}";
 						}
 						else {
-							return nombre.toPrecision(3);
+							return nombre.toPrecision(settings.decimals_equations);
 						}
 					}
 					else {
-						return nombre.toPrecision(8);
+						return nombre.toPrecision(settings.decimals_dpl);
 					}
 				}
 			};
 
-			function addTextForm(div_function, copie, asciimath_equation) {
-				// var text = $('<div class="functions_text_form"><pre>' + copie + '</pre></div>');
-				var copy_button_dpl = $('<button class="btn functions_text_form" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
+			function latex_render(formula, name, div_function) {
+				if (settings.language=="french") {
+					formula=formula.replace(/\./gi,",");
+				}
+				$.post('ajax', JSON.stringify({
+					"type": "latex_render",
+					"formula": formula,
+					"name": name
+				}));
+			};
 
-				// div_function.append(text);
-				div_function.append(asciimath_equation);
-				div_function.append("<br /><br />")
+			function addTextForm(div_function, copie, render, key, excel) {
+
+				if (settings.language=="french") {
+					excel=excel.replace(/\./gi,",");
+				}
+
+				var copy_button_dpl = $('<button class="btn functions_text_form" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
+				var copy_button_excel = $('<button class="btn functions_text_form" data-clipboard-text="' + excel + '" title="Click to copy me.">Copy to clipboard (Excel format)</button>');
+
+				latex_render(render, key+'.png', div_function);
+				div_function.append("<img src='/equations/"+key+".png' alt="+key+">");
+				div_function.append("<br /><br />");
 				div_function.append(copy_button_dpl);
+				div_function.append("<br /><br />");
+				div_function.append(copy_button_excel);
 				$('#functions').append(div_function);
 
 				var client = new ZeroClipboard(copy_button_dpl);
 				client.on("aftercopy", function(event) {
 					copy_button_dpl.text("Done !");
 					setTimeout(function() {
-						copy_button_dpl.text("Copy to clipboard (DPL format)");
+						copy_button_dpl.text("Copy to clipboard (Excel format)");
 					}, 2000);
 				});
 
-				MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+				client = new ZeroClipboard(copy_button_excel);
+				client.on("aftercopy", function(event) {
+					copy_button_excel.text("Done !");
+					setTimeout(function() {
+						copy_button_excel.text("Copy to clipboard (Excel format)");
+					}, 2000);
+				});
 			}
 
 			function addFunctions(i, data) {
@@ -679,28 +705,33 @@
 					if (key == 'exp') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#401539">Exponential</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['a']) + "*exp(" + reduce_signe(-data[i][key]['b']) + "x)" + reduce_signe(data[i][key]['c']);
-						var asciimath_equation = '`' + reduce_signe(data[i][key]['a'],false, false) + 'exp(' + reduce_signe(-data[i][key]['b'],false) + 'x)' + reduce_signe(data[i][key]['c'],false) + "`";
-						addTextForm(div_function, copie, asciimath_equation);
+						var render = reduce_signe(data[i][key]['a'],false, false) + 'e^{' + reduce_signe(-data[i][key]['b'],false) + 'x}' + reduce_signe(data[i][key]['c'],false);
+						var excel = reduce_signe(data[i][key]['a']) + "*EXP(" + reduce_signe(-data[i][key]['b']) + "*x)" + reduce_signe(data[i][key]['c']);
+						addTextForm(div_function, copie, render, key, excel);
 					} else if (key == 'log') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9585A">Logarithmic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['a']) + "*log(" + reduce_signe(data[i][key]['b']) + "x" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
-						var asciimath_equation = "`" + reduce_signe(data[i][key]['a'], false, false) + "log(" + reduce_signe(data[i][key]['b'], false) + "x" + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false) + "`";
-						addTextForm(div_function, copie, asciimath_equation);
+						var render = reduce_signe(data[i][key]['a'], false, false) + "\\log(" + reduce_signe(data[i][key]['b'], false, false) + "x" + reduce_signe(data[i][key]['c'],false) + ")" + reduce_signe(data[i][key]['d'],false);
+						var excel = reduce_signe(data[i][key]['a']) + "*LN(" + reduce_signe(data[i][key]['b']) + "x" + reduce_signe(data[i][key]['c']) + ")" + reduce_signe(data[i][key]['d']);
+						addTextForm(div_function, copie, render, key, excel);
 					} else if (key == 'pow') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#6DA63C">Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['a']) + "*(pow(x," + (1 - data[i][key]['b']) + ")-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
-						var asciimath_equation = "`" + reduce_signe(data[i][key]['a'], false, false) + "(x^" + reduce_signe(1 - data[i][key]['b'], false) + "-1)/(" + reduce_signe(1 - data[i][key]['b'], false) + ")" + reduce_signe(data[i][key]['c'], false) + "`";
-						addTextForm(div_function, copie, asciimath_equation);
+						var render = reduce_signe(data[i][key]['a'], false, false) + "\\frac{x^{" + reduce_signe(1 - data[i][key]['b'], false) + "}-1}{" + reduce_signe(1 - data[i][key]['b'], false) + "}" + reduce_signe(data[i][key]['c'], false);
+						var excel = reduce_signe(data[i][key]['a']) + "*(x^" + (1 - data[i][key]['b']) + "-1)/(" + reduce_signe(1 - data[i][key]['b']) + ")" + reduce_signe(data[i][key]['c']);
+						addTextForm(div_function, copie, render, key, excel);
 					} else if (key == 'quad') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#458C8C">Quadratic</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['c']) + "*x" + reduce_signe(-data[i][key]['b']) + "*pow(x,2)" + reduce_signe(data[i][key]['a']);
-						var asciimath_equation = "`" + reduce_signe(data[i][key]['c'], false, false) + "x" + reduce_signe(-data[i][key]['b'], false) + "x^2" + reduce_signe(data[i][key]['a'], false) + "`";
-						addTextForm(div_function, copie, asciimath_equation);
+						var render = reduce_signe(data[i][key]['c'], false, false) + "x" + reduce_signe(-data[i][key]['b'], false) + "x^{2}" + reduce_signe(data[i][key]['a'], false);
+						var excel = reduce_signe(data[i][key]['c']) + "*x" + reduce_signe(-data[i][key]['b']) + "*x^2" + reduce_signe(data[i][key]['a']);
+						addTextForm(div_function, copie, render, key, excel);
 					} else if (key == 'lin') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#D9B504">Linear</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['a']) + "*x" + reduce_signe(data[i][key]['b']);
-						var asciimath_equation = "`" + reduce_signe(data[i][key]['a'], false, false) + "x" + reduce_signe(data[i][key]['b'], false) + "`";
-						addTextForm(div_function, copie, asciimath_equation);
+						var render = reduce_signe(data[i][key]['a'], false, false) + "x" + reduce_signe(data[i][key]['b'], false);
+						var excel = reduce_signe(data[i][key]['a']) + "*x" + reduce_signe(data[i][key]['b']);
+						addTextForm(div_function, copie, render, key, excel);
 					}
 				}
 			}
