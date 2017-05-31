@@ -225,7 +225,7 @@
             }
 
             else {
-              if (edit_mode=false) {
+              if (edit_mode==false) {
                 asses_session.attributes.push({
                     "name": name,
                     'unit': unit,
