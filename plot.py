@@ -67,13 +67,16 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
 
     return imgdata.getvalue()
 
-def pie_chart(name1, name2, proba1, proba2):
+def pie_chart(names, probas):
 
     imgdata = io.BytesIO()
 
-    labels = name1,name2
-    sizes = [proba1, proba2]
-    plt.pie(sizes, labels=labels)
+    colors=['lightcoral', 'lightskyblue']
+
+    plt.pie(probas, labels=names, colors=colors, startangle=90, autopct='%1.0f%%')
+    plt.axis('equal')
+    fig = plt.gcf()
+    fig.set_size_inches(5, 5)
 
     plt.savefig(imgdata, format='svg')
     plt.close()

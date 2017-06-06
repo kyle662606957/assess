@@ -272,7 +272,7 @@ ul.alert-dropdown {
 }
 
 .proba_tree {
-	width:100%;
+	width:50%;
 	float:left;
 	margin-bottom:50px;
 	margin-top:20px;
@@ -283,8 +283,6 @@ ul.alert-dropdown {
 	float:left;
 
 }
-
-
 
 
 .questions_val_mean {
@@ -339,7 +337,8 @@ ul.alert-dropdown {
 }
 
 .lottery_a {
-    margin-left: 450px;
+    margin-left: 10%;
+    margin-right: 45%
 }
 
 

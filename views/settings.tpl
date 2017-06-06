@@ -26,6 +26,11 @@
         <label class="form-check-inline"><input type="radio" class="form-check-input" name="language" id="english" value="english"> English</label>
         <label class="form-check-inline"><input type="radio" class="form-check-input" name="language" id="french" value="french"> French</label>
     </div>
+    <div class="form-group">
+        <p><strong>Select the type of display for assessements (default: trees)</strong></p>
+        <label class="form-check-inline"><input type="radio" class="form-check-input" name="display" id="trees" value="trees"> Trees</label>
+        <label class="form-check-inline"><input type="radio" class="form-check-input" name="display" id="pie_charts" value="pie_charts"> Pie charts</label>
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
@@ -66,6 +71,7 @@
                     "proba_ce": 0.3,
                     "proba_le": 0.3,
                     "language": "english",
+                    "display": "trees"
                 }
             };
             localStorage.setItem("asses_session", JSON.stringify(asses_session));
@@ -78,6 +84,8 @@
         $("#proba_ce").val(settings.proba_ce);
         $("#proba_le").val(settings.proba_le);
         $("#" + settings.language).prop("checked", true);
+        $("#" + settings.display).prop("checked", true);
+
 
         $("#settings").submit(function(e) {
             e.preventDefault();
@@ -87,6 +95,8 @@
             settings.proba_le = $("#proba_le").val();
             var language = $("input[type='radio'][name='language']:checked");
             settings.language = language.val();
+            var display = $("input[type='radio'][name='display']:checked");
+            settings.display = display.val();
             localStorage.setItem("asses_session", JSON.stringify(asses_session));
             $("#confirmation").fadeIn();
         });

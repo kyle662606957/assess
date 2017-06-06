@@ -150,12 +150,10 @@ def ajax():
         width = query['width']
         return plot.generate_svg_plot(dictionary, min, max, liste_cord, width)
 
-    elif query['type'] == "pie":
-        name1 = query['name1']
-        name2 = query['name2']
-        proba1 = query['proba1']
-        proba2 = query['proba2']
-        return plot.pie_chart(name1, name2, proba1, proba2)
+    elif query['type'] == "pie_chart":
+        names = query['names']
+        probas = query['probas']
+        return plot.pie_chart(names, probas)
 
     elif query['type'] == "export_xlsx":
         return export_xlsx.generate_fichier(query['data'])

@@ -102,7 +102,7 @@
                     "proba_ce": 0.3,
                     "proba_le": 0.3,
                     "language": "english",
-                    "lotteries": "trees"
+                    "display": "trees"
                 }
             };
             localStorage.setItem("asses_session", JSON.stringify(asses_session));

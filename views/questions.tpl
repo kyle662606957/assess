@@ -238,8 +238,8 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees');
-					var arbre_droite = new Arbre('droite', '#trees');
+					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
+					var arbre_droite = new Arbre('droite', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
 					arbre_gauche.questions_proba_haut = probability;
@@ -351,7 +351,7 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees');
+					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
 					arbre_gauche.questions_proba_haut = settings.proba_ce;
@@ -478,7 +478,7 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees');
+					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
 					arbre_gauche.questions_proba_haut = p;
