@@ -355,6 +355,7 @@ function k_multilinear_answer(i)
 {
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 	var method = 'PE';
+	var settings = asses_session.settings;
 	var mon_k = asses_session.k_calculus[type].k[i];
 	var name = mon_k.attribute;
 	for (var j = 0; j < asses_session.attributes.length; j++) {
@@ -429,7 +430,7 @@ function k_multilinear_answer(i)
 				//on cache le bouton
 				$("#k_value_"+i).hide();
 				$("#k_value_"+i).append("<br/><br/>");
-				var arbre_gauche = new Arbre('gauche', "#k_value_"+i);
+				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display);
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
@@ -570,6 +571,7 @@ function k_answer(i, type)
 
 	 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 		var method = 'PE';
+		var settings = asses_session.settings;
 		var mon_k = asses_session.k_calculus[type].k[i];
 		var name = mon_k.attribute;
 		for (var j = 0; j < asses_session.attributes.length; j++) {
@@ -638,7 +640,7 @@ function k_answer(i, type)
 				//on cache le bouton
 				$("#k_value_"+i).hide();
 				$("#k_value_"+i).append("<br/><br/>");
-				var arbre_gauche = new Arbre('gauche', "#k_value_"+i);
+				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display);
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;

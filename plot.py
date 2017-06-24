@@ -70,13 +70,20 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
 def pie_chart(names, probas):
 
     imgdata = io.BytesIO()
-
     colors=['lightcoral', 'lightskyblue']
 
-    plt.pie(probas, labels=names, colors=colors, startangle=90, autopct='%1.0f%%')
-    plt.axis('equal')
-    fig = plt.gcf()
-    fig.set_size_inches(5, 5)
+    if len(names) == 3:
+        plt.figure(1)
+        plt.subplot(121)
+        plt.pie([1], labels=[names[0]], colors=colors, startangle=90, autopct='%1.0f%%')
+        plt.subplot(122)
+        plt.pie(probas, labels=names[1:], colors=colors, startangle=90, autopct='%1.0f%%')
+        fig = plt.gcf()
+        fig.set_size_inches(8, 4)
+    else:
+        plt.pie(probas, labels=names, colors=colors, startangle=90, autopct='%1.0f%%')
+        fig = plt.gcf()
+        fig.set_size_inches(4, 4)
 
     plt.savefig(imgdata, format='svg')
     plt.close()

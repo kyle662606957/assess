@@ -56,17 +56,35 @@ Arbre.prototype.update = function() {
     $('#tree_' + this.identifiant + ' .questions_proba_bas').empty();
     $('#tree_' + this.identifiant + ' .questions_proba_bas').append((1 - this.questions_proba_haut).toFixed(2));
   } else {
-		var _this = this
-    var ajaxdata = {
-      "type": "pie_chart",
-      "names": [this.questions_val_min, this.questions_val_max],
-      "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
-    };
-    $.post('ajax', JSON.stringify(ajaxdata), function(data) {
-			console.log('#tree_' + _this.identifiant);
-			$('#tree_' + _this.identifiant).empty();
-			$('#tree_' + _this.identifiant).append(data);
-    });
+      this.questions_val_min = this.questions_val_min.replace(/<br\/>/g,"\n");
+      this.questions_val_max = this.questions_val_max.replace(/<br\/>/g,"\n");
+      this.questions_val_mean = this.questions_val_mean.replace(/<br\/>/g,"\n");
+		  var _this = this
+      if (this.questions_val_mean) {
+        var ajaxdata = {
+          "type": "pie_chart",
+          "names": [this.questions_val_mean, this.questions_val_min, this.questions_val_max],
+          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
+        };
+        $.post('ajax', JSON.stringify(ajaxdata), function(data) {
+    			console.log('#tree_' + _this.identifiant);
+    			$('#tree_' + _this.identifiant).empty();
+    			$('#tree_' + _this.identifiant).append(data);
+        });
+      }
+      else {
+        var ajaxdata = {
+          "type": "pie_chart",
+          "names": [this.questions_val_min, this.questions_val_max],
+          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
+        };
+        $.post('ajax', JSON.stringify(ajaxdata), function(data) {
+    			console.log('#tree_' + _this.identifiant);
+    			$('#tree_' + _this.identifiant).empty();
+    			$('#tree_' + _this.identifiant).append(data);
+        });
+      }
+
   }
 
 };

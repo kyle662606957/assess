@@ -272,16 +272,33 @@ ul.alert-dropdown {
 }
 
 .proba_tree {
-	width:50%;
 	float:left;
 	margin-bottom:50px;
 	margin-top:20px;
+}
 
+#tree_pe {
+  width:100%;
+}
+
+#tree_gauche {
+  width:50%;
+}
+
+#tree_droite {
+  width:50%;
+}
+
+#tree_ce {
+  width:100%;
+}
+
+#tree_cepv {
+  width:100%;
 }
 
 .img_tree {
 	float:left;
-
 }
 
 
@@ -337,8 +354,13 @@ ul.alert-dropdown {
 }
 
 .lottery_a {
-    margin-left: 10%;
-    margin-right: 45%
+    margin-left: 15%;
+    margin-right: 10px;
+}
+
+#gain {
+  margin-left: 300px;
+  margin-right: 10px;
 }
 
 

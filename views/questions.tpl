@@ -133,40 +133,33 @@
 
 					// INTERFACE
 
-					$('.container-fluid').append(
-						'<div id=\"choice\">\
-				            	<span id="questions_val_mean"></span>\
-				            	<img src="{{ get_url("static", path="img/tree_choice.png") }}" class="center"></img>\
-				            	<span id="questions_val_min"></span>\
-				            	<span id="questions_val_max"></span>\
-				            	<span id="questions_proba_haut"></span>\
-				            	<span id="questions_proba_bas"></span>\
-				        	</div>'
-					);
-					$('#questions_val_min').append(val_min + ' ' + unit);
-					$('#questions_val_max').append(val_max + ' ' + unit);
+					var arbre_pe = new Arbre('pe', '#trees', settings.display);
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
-						$('#questions_val_mean').append(gain_certain + ' ' + unit);
+						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
-						$('#questions_val_mean').append(gain_certain + ' ' + unit);
+						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
-						$('#questions_val_mean').append(gain_certain + ' ' + unit);
+						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
-					$('#choice').append('</div><button type="button" class="btn btn-default" id="gain">Gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>');
+
+					// SETUP ARBRE GAUCHE
+					arbre_pe.questions_proba_haut = probability;
+					arbre_pe.questions_val_max = val_min + ' ' + unit;
+					arbre_pe.questions_val_min = val_max + ' ' + unit;
+					arbre_pe.display();
+					arbre_pe.update();
+
+					$('#trees').append('</div><button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>');
 
 					// FUNCTIONS
 					function sync_values() {
-						$('#questions_proba_haut').empty();
-						$('#questions_proba_bas').empty();
-						var proba_bas = 1 - probability;
-						$('#questions_proba_bas').append(proba_bas.toFixed(2));
-						$('#questions_proba_haut').append(probability);
-
+						arbre_pe.questions_proba_haut = probability;
+						arbre_pe.update();
 					}
 
 					function treat_answer(data) {
@@ -238,15 +231,15 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
+					var arbre_cepv = new Arbre('gauche', '#trees', settings.display);
 					var arbre_droite = new Arbre('droite', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
-					arbre_gauche.questions_proba_haut = probability;
-					arbre_gauche.questions_val_max = val_max + ' ' + unit;
-					arbre_gauche.questions_val_min = val_min + ' ' + unit;
-					arbre_gauche.display();
-					arbre_gauche.update();
+					arbre_cepv.questions_proba_haut = probability;
+					arbre_cepv.questions_val_max = val_max + ' ' + unit;
+					arbre_cepv.questions_val_min = val_min + ' ' + unit;
+					arbre_cepv.display();
+					arbre_cepv.update();
 
 					// SETUP ARBRE DROIT
 					arbre_droite.questions_proba_haut = settings.proba_le;
@@ -274,12 +267,12 @@
 						probability = parseFloat(data.proba).toFixed(2);
 
 						if (max_interval - min_interval <= 0.05) {
-							arbre_gauche.questions_proba_haut = probability;
-							arbre_gauche.update();
+							arbre_cepv.questions_proba_haut = probability;
+							arbre_cepv.update();
 							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
 						} else {
-							arbre_gauche.questions_proba_haut = probability;
-							arbre_gauche.update();
+							arbre_cepv.questions_proba_haut = probability;
+							arbre_cepv.update();
 						}
 					}
 
@@ -351,18 +344,18 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
+					var arbre_ce = new Arbre('ce', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
-					arbre_gauche.questions_proba_haut = settings.proba_ce;
-					arbre_gauche.questions_val_max = max_interval + ' ' + unit;
-					arbre_gauche.questions_val_min = min_interval + ' ' + unit;
-					arbre_gauche.questions_val_mean = gain + ' ' + unit;
-					arbre_gauche.display();
-					arbre_gauche.update();
+					arbre_ce.questions_proba_haut = settings.proba_ce;
+					arbre_ce.questions_val_max = max_interval + ' ' + unit;
+					arbre_ce.questions_val_min = min_interval + ' ' + unit;
+					arbre_ce.questions_val_mean = gain + ' ' + unit;
+					arbre_ce.display();
+					arbre_ce.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button>')
+					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
 
 					function utility_finder(gain) {
 						var points = asses_session.attributes[indice].questionnaire.points;
@@ -392,15 +385,15 @@
 						max_interval = data.interval[1];
 						gain = data.gain;
 
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_gauche.questions_val_max) - parseFloat(arbre_gauche.questions_val_min) || max_interval - min_interval < 2) {
-							$('.gain').hide();
-							$('.lottery').hide();
-							arbre_gauche.questions_val_mean = gain + ' ' + unit;
-							arbre_gauche.update();
+						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_ce.questions_val_max) - parseFloat(arbre_ce.questions_val_min) || max_interval - min_interval < 2) {
+							$('#gain').hide();
+							$('#lottery').hide();
+							arbre_ce.questions_val_mean = gain + ' ' + unit;
+							arbre_ce.update();
 							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
 						} else {
-							arbre_gauche.questions_val_mean = gain + ' ' + unit;
-							arbre_gauche.update();
+							arbre_ce.questions_val_mean = gain + ' ' + unit;
+							arbre_ce.update();
 						}
 					}
 
@@ -417,10 +410,10 @@
 						// when the user validate
 						$('.final_validation').click(function() {
 							var final_gain = parseInt($('#final_proba').val());
-							var final_utility = arbre_gauche.questions_proba_haut * utility_finder(parseFloat(arbre_gauche.questions_val_max)) + (1 - arbre_gauche.questions_proba_haut) * utility_finder(parseFloat(arbre_gauche.questions_val_min));
-							console.log(arbre_gauche.questions_proba_haut);
-							console.log(utility_finder(parseFloat(arbre_gauche.questions_val_max)));
-							console.log(utility_finder(parseFloat(arbre_gauche.questions_val_min)));
+							var final_utility = arbre_ce.questions_proba_haut * utility_finder(parseFloat(arbre_ce.questions_val_max)) + (1 - arbre_ce.questions_proba_haut) * utility_finder(parseFloat(arbre_ce.questions_val_min));
+							console.log(arbre_ce.questions_proba_haut);
+							console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
+							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
 								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
@@ -436,14 +429,14 @@
 
 
 					// HANDLE USERS ACTIONS
-					$('.lottery').click(function() {
+					$('#lottery').click(function() {
 						$.post('ajax', '{"type":"question", "method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 							console.log(data);
 						});
 					});
 
-					$('.gain').click(function() {
+					$('#gain').click(function() {
 						$.post('ajax', '{"type":"question","method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 							console.log(data);
@@ -478,18 +471,18 @@
 
 					// INTERFACE
 
-					var arbre_gauche = new Arbre('gauche', '#trees', settings.display);
+					var arbre_cepv = new Arbre('cepv', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
-					arbre_gauche.questions_proba_haut = p;
-					arbre_gauche.questions_val_max = max_interval + ' ' + unit;
-					arbre_gauche.questions_val_min = min_interval + ' ' + unit;
-					arbre_gauche.questions_val_mean = gain + ' ' + unit;
-					arbre_gauche.display();
-					arbre_gauche.update();
+					arbre_cepv.questions_proba_haut = p;
+					arbre_cepv.questions_val_max = max_interval + ' ' + unit;
+					arbre_cepv.questions_val_min = min_interval + ' ' + unit;
+					arbre_cepv.questions_val_mean = gain + ' ' + unit;
+					arbre_cepv.display();
+					arbre_cepv.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button>')
+					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
 
 					function utility_finder(gain) {
 						var points = asses_session.attributes[indice].questionnaire.points;
@@ -519,15 +512,15 @@
 						max_interval = data.interval[1];
 						gain = data.gain;
 
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_gauche.questions_val_max) - parseFloat(arbre_gauche.questions_val_min) || max_interval - min_interval < 2) {
-							$('.gain').hide();
-							$('.lottery').hide();
-							arbre_gauche.questions_val_mean = gain + ' ' + unit;
-							arbre_gauche.update();
+						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_cepv.questions_val_max) - parseFloat(arbre_cepv.questions_val_min) || max_interval - min_interval < 2) {
+							$('#gain').hide();
+							$('#lottery').hide();
+							arbre_cepv.questions_val_mean = gain + ' ' + unit;
+							arbre_cepv.update();
 							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
 						} else {
-							arbre_gauche.questions_val_mean = gain + ' ' + unit;
-							arbre_gauche.update();
+							arbre_cepv.questions_val_mean = gain + ' ' + unit;
+							arbre_cepv.update();
 						}
 					}
 
@@ -544,10 +537,10 @@
 						// when the user validate
 						$('.final_validation').click(function() {
 							var final_gain = parseInt($('#final_proba').val());
-							var final_utility = arbre_gauche.questions_proba_haut * utility_finder(parseFloat(arbre_gauche.questions_val_max)) + (1 - arbre_gauche.questions_proba_haut) * utility_finder(parseFloat(arbre_gauche.questions_val_min));
-							console.log(arbre_gauche.questions_proba_haut);
-							console.log(utility_finder(parseFloat(arbre_gauche.questions_val_max)));
-							console.log(utility_finder(parseFloat(arbre_gauche.questions_val_min)));
+							var final_utility = arbre_cepv.questions_proba_haut * utility_finder(parseFloat(arbre_cepv.questions_val_max)) + (1 - arbre_cepv.questions_proba_haut) * utility_finder(parseFloat(arbre_cepv.questions_val_min));
+							console.log(arbre_cepv.questions_proba_haut);
+							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_max)));
+							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
 								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
@@ -563,14 +556,14 @@
 
 
 					// HANDLE USERS ACTIONS
-					$('.lottery').click(function() {
+					$('#lottery').click(function() {
 						$.post('ajax', '{"type":"question", "method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 							console.log(data);
 						});
 					});
 
-					$('.gain').click(function() {
+					$('#gain').click(function() {
 						$.post('ajax', '{"type":"question","method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 							console.log(data);
