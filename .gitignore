@@ -29,8 +29,18 @@ methods.pyc
 
 plot.pyc
 
+functions.pyc
+
+latex_render.pyc
+
+draw_tree.pyc
+
+equations/*.png
+
 .idea/jsLibraryMappings.xml
 
 .idea/templateLanguages.xml
 
 *.xlsx
+
+Thumbs.db

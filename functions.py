@@ -21,6 +21,10 @@ def funclin(x, a, b):				# function for the linear regression
     return a * x + b
 
 
+def funcexpopower(x, a, b, c):             # function for the expo-power regression
+    return a + np.exp(-b * x**c)
+
+
 # Fonctions parametrees pour avoir U(xmin)=0 et U(xmax)=1
 def funcexp2(x, b, min, max):
     return (1. / (np.exp(-b * max) - np.exp(-b * min))) * np.exp(-b * x) + (1. / (1 - np.exp(b * (min - max))))
@@ -36,3 +40,7 @@ def funcpuis2(x, b, min, max):
 
 def funclog2(x, b, c, min, max):
     return (1. / (np.log(b * max + c) - np.log(b * min + c))) * np.log(b * x + c) + 1. / (1 - np.log(b * max + c) / np.log(b * min + c))
+
+
+def funcexpopower2(x, a, min, max):
+    return (a + np.exp(np.log(-a) * (x / min)**(np.log(np.log(1 - a) / np.log(-a)) / np.log(max / min))))

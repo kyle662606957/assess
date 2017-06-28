@@ -125,7 +125,6 @@ def ajax():
     elif query['type'] == "calc_util_multi":
         return fit.multipoints(query['points'])
     elif query['type'] == "k_calculus":
-        print("on va calculer k_calculus sur le fichier kcalc")
         if query['number'] == 2:
             return kcalc.calculk2(query['k']['k1'], query['k']['k2'])
         elif query['number'] == 3:
@@ -162,7 +161,7 @@ def ajax():
         return export_xlsx.generate_fichier_with_specification(query['data'])
 
     elif query['type'] == "latex_render":
-        return latex_render.render(query['formula'], query['name'])
+        return latex_render.render(query['formula'])
 
 
 # export a file (download)

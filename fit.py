@@ -170,6 +170,32 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
     except:
         pass
 
+    try:
+        # Meme principe pour la expo-power function
+        funcexpopowerParam = lambda x, a: funcexpopower2(x, a, min, max)
+        popt6, pcov6 = curve_fit(funcexpopowerParam, x, y, [-30], bounds=(-np.inf,0))
+        a6 = popt6[0]
+        c6 = (np.log(np.log(1-a6)/np.log(-a6)))/(np.log(max/min))
+        b6 = -np.log(-a6)/(min**c6)
+        test = True
+        for i in x_test:
+            if funcexpopower(i, a6, b6, c6) < -0.02 or funcexpopower(i, a6, b6, c6) > 1.02:
+                test = False
+        if test:
+            dictionnaire['expo-power'] = {}
+            dictionnaire['expo-power']['a'] = a6
+            dictionnaire['expo-power']['b'] = b6
+            dictionnaire['expo-power']['c'] = c6
+            ss_res = np.dot((y - funcexpopower(x, a6, b6, c6)),
+                            (y - funcexpopower(x, a6, b6, c6)))
+            ymean = np.mean(y)
+            ss_tot = np.dot((y - ymean), (y - ymean))
+            dictionnaire['expo-power']['r2'] = 1 - ss_res / ss_tot
+            myList.append(dictionnaire)
+            print('test3')
+    except:
+        pass
+
     if liste:
         return (myList)
     else:

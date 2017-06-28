@@ -62,6 +62,14 @@ def generate_svg_plot(dictionary, min, max, liste_cord, width):
             b = dictionary[func]['b']
             plt.plot(x, funclin(x, a, b), '#D9B504', label="Lin Fitted Curve")
 
+        elif func =='expo-power':
+            a = dictionary[func]['a']
+            b = dictionary[func]['b']
+            c = dictionary[func]['c']
+            plt.plot(x, funcexpopower(x, a, b, c),
+                     '#26C4EC', label="Expo-Power Fitted Curve")
+
+
     plt.savefig(imgdata, format='svg')
     plt.close()
 

@@ -647,17 +647,6 @@
 				}
 			};
 
-			function latex_render(formula, name, div_function) {
-				if (settings.language=="french") {
-					formula=formula.replace(/\./gi,",");
-				}
-				$.post('ajax', JSON.stringify({
-					"type": "latex_render",
-					"formula": formula,
-					"name": name
-				}));
-			};
-
 			function addTextForm(div_function, copie, render, key, excel) {
 
 				if (settings.language=="french") {
@@ -667,12 +656,23 @@
 				var copy_button_dpl = $('<button class="btn functions_text_form" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
 				var copy_button_excel = $('<button class="btn functions_text_form" data-clipboard-text="' + excel + '" title="Click to copy me.">Copy to clipboard (Excel format)</button>');
 
-				latex_render(render, key+'.png', div_function);
-				div_function.append("<img src='/equations/"+key+".png' alt="+key+">");
-				div_function.append("<br /><br />");
-				div_function.append(copy_button_dpl);
-				div_function.append("<br /><br />");
-				div_function.append(copy_button_excel);
+				if (settings.language=="french") {
+					render=render.replace(/\./gi,",");
+				}
+
+				var ajax_render = {
+					"type": "latex_render",
+					"formula": render
+				};
+
+				$.post('ajax', JSON.stringify(ajax_render), function (data) {
+					div_function.append("<img src='data:image/png;base64,"+ data +"' alt='"+key+"' />");
+					div_function.append("<br /><br />");
+					div_function.append(copy_button_dpl);
+					div_function.append("<br /><br />");
+					div_function.append(copy_button_excel);
+				});
+
 				$('#functions').append(div_function);
 
 				var client = new ZeroClipboard(copy_button_dpl);
@@ -724,6 +724,12 @@
 						var copie = reduce_signe(data[i][key]['a']) + "*x" + reduce_signe(data[i][key]['b']);
 						var render = reduce_signe(data[i][key]['a'], false, false) + "x" + reduce_signe(data[i][key]['b'], false);
 						var excel = reduce_signe(data[i][key]['a']) + "*x" + reduce_signe(data[i][key]['b']);
+						addTextForm(div_function, copie, render, key, excel);
+					} else if (key=='expo-power') {
+						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#26C4EC">Expo-Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
+						var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow(x," + reduce_signe(data[i][key]['c']) + "))" ;
+						var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(-(" + reduce_signe(data[i][key]['b'], false, false) + ")*x^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
+						var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*x^" + reduce_signe(data[i][key]['c']) + ")" ;
 						addTextForm(div_function, copie, render, key, excel);
 					}
 				}

@@ -939,7 +939,6 @@ function list()
 					}), function (data2) {
 
 						$('#charts_' + _i).append('<div>' + data2 + '</div>');
-						console.log(data);
 						for (var key in data) {
 
 							var functions = "";
@@ -973,6 +972,12 @@ function list()
 								$('#functions_' + _i).append(functions);
 								data[key]['type']='lin';
 								(function(_data){$('#checkbox_'+_i+'_lin').click(function(){update_utility(_i, "lin", _data)});})(data[key]);
+							}
+							else if (key == 'expo-power'){
+								functions='<label style="color:#26C4EC"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_expo-power"> Expo-Power (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='expo-power';
+								(function(_data){$('#checkbox_'+_i+'_expo-power').click(function(){update_utility(_i, "expo-power", _data)});})(data[key]);
 							}
 
 						}
