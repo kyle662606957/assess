@@ -3,29 +3,15 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var Arbre = function(id, target, display_settings) {
-  this.questions_val_min;
-  this.questions_val_max;
-  this.questions_val_mean;
-  this.questions_proba_haut;
+  this.questions_val_min="";
+  this.questions_val_max="";
+  this.questions_val_mean="";
+  this.questions_proba_haut="";
   this.div_target = target;
   this.identifiant = id;
   this.displayed = false;
 	this.type = display_settings;
-  if (this.type == "trees") {
-    this.html =
-      '<div class="proba_tree" id=\"tree_' + this.identifiant + '\">\
-					<span class="questions_val_mean"></span>\
-	        <img src="' + tree_image + '" class="center img_tree"></img>\
-					<div class="questions_right">\
-						<span class="questions_proba_haut"></span>\
-						<span class="questions_val_max"></span>\
-						<span class="questions_proba_bas"></span>\
-						<span class="questions_val_min"></span>\
-					</div>\
-	        	</div>';
-  } else {
-    this.html = '<div class="proba_tree" id=\"tree_' + this.identifiant + '\"></div>';
-  }
+  this.html = '<div class="proba_tree" id=\"tree_' + this.identifiant + '\"></div>';
 };
 
 Arbre.prototype.display = function() {
@@ -45,29 +31,34 @@ Arbre.prototype.remove = function() {
 
 Arbre.prototype.update = function() {
   if (this.type == "trees") {
-    $('#tree_' + this.identifiant + ' .questions_val_min').empty();
-    $('#tree_' + this.identifiant + ' .questions_val_min').append(this.questions_val_min);
-    $('#tree_' + this.identifiant + ' .questions_val_max').empty();
-    $('#tree_' + this.identifiant + ' .questions_val_max').append(this.questions_val_max);
-    $('#tree_' + this.identifiant + ' .questions_val_mean').empty();
-    $('#tree_' + this.identifiant + ' .questions_val_mean').append(this.questions_val_mean);
-    $('#tree_' + this.identifiant + ' .questions_proba_haut').empty();
-    $('#tree_' + this.identifiant + ' .questions_proba_haut').append(this.questions_proba_haut);
-    $('#tree_' + this.identifiant + ' .questions_proba_bas').empty();
-    $('#tree_' + this.identifiant + ' .questions_proba_bas').append((1 - this.questions_proba_haut).toFixed(2));
+    this.questions_val_min = this.questions_val_min.replace(/<br\/>/g,"\n");
+    this.questions_val_max = this.questions_val_max.replace(/<br\/>/g,"\n");
+    this.questions_val_mean = this.questions_val_mean.replace(/<br\/>/g,"\n");
+    var _this = this
+    var ajaxdata = {
+      "type": "tree",
+      "gain": this.questions_val_mean,
+      "upper_label":this.questions_val_max,
+      "bottom_label":this.questions_val_min,
+      "upper_proba":this.questions_proba_haut,
+      "bottom_proba":(1 - this.questions_proba_haut).toFixed(2)
+    };
+    $.post('ajax', JSON.stringify(ajaxdata), function(data) {
+      $('#tree_' + _this.identifiant).empty();
+      $('#tree_' + _this.identifiant).append("<img src='data:image/png;base64,"+ data +"' alt='tree' />");
+    });
   } else {
       this.questions_val_min = this.questions_val_min.replace(/<br\/>/g,"\n");
       this.questions_val_max = this.questions_val_max.replace(/<br\/>/g,"\n");
       this.questions_val_mean = this.questions_val_mean.replace(/<br\/>/g,"\n");
 		  var _this = this
-      if (this.questions_val_mean) {
+      if (this.questions_val_mean != "") {
         var ajaxdata = {
           "type": "pie_chart",
           "names": [this.questions_val_mean, this.questions_val_min, this.questions_val_max],
           "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
         };
         $.post('ajax', JSON.stringify(ajaxdata), function(data) {
-    			console.log('#tree_' + _this.identifiant);
     			$('#tree_' + _this.identifiant).empty();
     			$('#tree_' + _this.identifiant).append(data);
         });
@@ -79,7 +70,6 @@ Arbre.prototype.update = function() {
           "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
         };
         $.post('ajax', JSON.stringify(ajaxdata), function(data) {
-    			console.log('#tree_' + _this.identifiant);
     			$('#tree_' + _this.identifiant).empty();
     			$('#tree_' + _this.identifiant).append(data);
         });

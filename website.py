@@ -9,6 +9,7 @@ import methods
 import plot
 import kcalc
 import latex_render
+import draw_tree
 import os
 import export_xlsx
 import import_xlsx
@@ -120,10 +121,13 @@ def ajax():
             return methods.CE(float(query['min_interval']), float(query['max_interval']), float(query['gain']), int(query['choice']), str(query['mode']))
         else:
             return query['method']
+
     elif query['type'] == "calc_util":
         return fit.regressions(query['points'])
+
     elif query['type'] == "calc_util_multi":
         return fit.multipoints(query['points'])
+
     elif query['type'] == "k_calculus":
         if query['number'] == 2:
             return kcalc.calculk2(query['k']['k1'], query['k']['k2'])
@@ -162,6 +166,9 @@ def ajax():
 
     elif query['type'] == "latex_render":
         return latex_render.render(query['formula'])
+
+    elif query['type'] == "tree":
+        return draw_tree.draw(query['gain'], query['upper_label'], query['bottom_label'], query['upper_proba'], query['bottom_proba'])
 
 
 # export a file (download)
@@ -232,7 +239,7 @@ with open("passwd.txt") as f:
 # for local or heroku app
 try:
     if argv[1] == "local":  # for local application, add local param: "$python website.py local"
-        run(app, host='193.48.193.79', port=9853, debug=True)
+        run(app, host='localhost', port=9853, debug=True)
     else:
         app.run(host='0.0.0.0', port=argv[1])
 except:

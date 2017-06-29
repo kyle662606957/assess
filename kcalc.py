@@ -6,7 +6,6 @@ from scipy.optimize import fsolve
 
 
 def calculUtilityMultiplicative(myK, myU):
-    print("utility Multiplicative")
     if len(myK) - 1 == 2:
         return {'U': utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 3:
@@ -23,7 +22,6 @@ def calculUtilityMultiplicative(myK, myU):
 
 
 def calculUtilityMultilinear(myK, myU):
-    print("utility Multilinear")
     U = ""
     for monK in myK:
         U += str(monK['value'])
@@ -333,3 +331,5 @@ def convert_to_text(data, x):
         return "(" + str(round(data['c'], 8)) + "*" + x + signe(round(-data['b'], 8)) + "*pow(" + x + ",2)" + signe(round(data['a'], 8)) + ")"
     elif data['type'] == "lin":
         return "(" + str(round(data['a'], 8)) + "*" + x + "+" + signe(round(data['b'], 8)) + ")"
+    elif data['type'] == "expo-power":
+        return "(" + str(round(data['a'], 8)) + "+exp(" + str(round(-data['b'], 8)) + "*pow(" + x + "," + str(round(data['c'], 8)) + "))"

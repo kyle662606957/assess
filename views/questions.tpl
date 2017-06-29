@@ -149,8 +149,8 @@
 
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
-					arbre_pe.questions_val_max = val_min + ' ' + unit;
-					arbre_pe.questions_val_min = val_max + ' ' + unit;
+					arbre_pe.questions_val_max = val_max + ' ' + unit;
+					arbre_pe.questions_val_min = val_min + ' ' + unit;
 					arbre_pe.display();
 					arbre_pe.update();
 
@@ -728,7 +728,7 @@
 					} else if (key=='expo-power') {
 						var div_function = $('<div id="' + key + '" class="functions_graph" style="overflow-x: auto;"><h3 style="color:#26C4EC">Expo-Power</h3><br />Coefficient of determination: ' + Math.round(data[i][key]['r2'] * 100) / 100 + '<br /><br/></div>');
 						var copie = reduce_signe(data[i][key]['a']) + "+exp(-(" + reduce_signe(data[i][key]['b']) + ")*pow(x," + reduce_signe(data[i][key]['c']) + "))" ;
-						var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(-(" + reduce_signe(data[i][key]['b'], false, false) + ")*x^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
+						var render = reduce_signe(data[i][key]['a'], false, false) + "+exp(" + reduce_signe(-data[i][key]['b'], false, false) + "*x^{" + reduce_signe(data[i][key]['c'], false, false) + "})" ;
 						var excel = reduce_signe(data[i][key]['a']) + "+EXP(-(" + reduce_signe(data[i][key]['b']) + ")*x^" + reduce_signe(data[i][key]['c']) + ")" ;
 						addTextForm(div_function, copie, render, key, excel);
 					}
