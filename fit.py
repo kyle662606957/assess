@@ -174,7 +174,7 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         # Meme principe pour la expo-power function
         funcexpopowerParam = lambda x, a: funcexpopower2(x, a, min, max)
         popt6, pcov6 = curve_fit(
-            funcexpopowerParam, x, y, [-30], bounds=(-np.inf, 0))
+            funcexpopowerParam, x, y, [-30])
         a6 = popt6[0]
         c6 = (np.log(np.log(1 - a6) / np.log(-a6))) / (np.log(max / min))
         b6 = -np.log(-a6) / (min**c6)
