@@ -231,15 +231,15 @@
 
 					// INTERFACE
 
-					var arbre_cepv = new Arbre('gauche', '#trees', settings.display);
+					var arbre_le = new Arbre('gauche', '#trees', settings.display);
 					var arbre_droite = new Arbre('droite', '#trees', settings.display);
 
 					// SETUP ARBRE GAUCHE
-					arbre_cepv.questions_proba_haut = probability;
-					arbre_cepv.questions_val_max = val_max + ' ' + unit;
-					arbre_cepv.questions_val_min = val_min + ' ' + unit;
-					arbre_cepv.display();
-					arbre_cepv.update();
+					arbre_le.questions_proba_haut = probability;
+					arbre_le.questions_val_max = val_max + ' ' + unit;
+					arbre_le.questions_val_min = val_min + ' ' + unit;
+					arbre_le.display();
+					arbre_le.update();
 
 					// SETUP ARBRE DROIT
 					arbre_droite.questions_proba_haut = settings.proba_le;
@@ -267,12 +267,12 @@
 						probability = parseFloat(data.proba).toFixed(2);
 
 						if (max_interval - min_interval <= 0.05) {
-							arbre_cepv.questions_proba_haut = probability;
-							arbre_cepv.update();
+							arbre_le.questions_proba_haut = probability;
+							arbre_le.update();
 							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
 						} else {
-							arbre_cepv.questions_proba_haut = probability;
-							arbre_cepv.update();
+							arbre_le.questions_proba_haut = probability;
+							arbre_le.update();
 						}
 					}
 

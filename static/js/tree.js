@@ -3,10 +3,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var Arbre = function(id, target, display_settings) {
-  this.questions_val_min="";
-  this.questions_val_max="";
-  this.questions_val_mean="";
-  this.questions_proba_haut="";
+  this.questions_val_min=" ";
+  this.questions_val_max=" ";
+  this.questions_val_mean=" ";
+  this.questions_proba_haut=" ";
   this.div_target = target;
   this.identifiant = id;
   this.displayed = false;
