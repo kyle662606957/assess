@@ -10,7 +10,7 @@ from functools import partial
 # import sys
 
 
-def regressions(liste_cord, liste=False, dictionnaire={}):
+def regressions(liste_cord, dictionnaire={}):
 
     # creation des fonctions utilisees pour les differentes
     # creation d'un dictionnaire pour stocker les donnees essentielles
@@ -67,7 +67,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
             ss_tot = np.dot((y - ymean), (y - ymean))
             # ajout du r2 dans le dictionnaire pour la regression exponentielle
             dictionnaire['exp']['r2'] = 1 - ss_res / ss_tot
-            myList.append(dictionnaire)
     except:
         pass
 
@@ -94,7 +93,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
             ymean = np.mean(y)
             ss_tot = np.dot((y - ymean), (y - ymean))
             dictionnaire['quad']['r2'] = 1 - ss_res / ss_tot
-            myList.append(dictionnaire)
     except:
         pass
 
@@ -121,7 +119,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
             ymean = np.mean(y)
             ss_tot = np.dot((y - ymean), (y - ymean))
             dictionnaire['pow']['r2'] = 1 - ss_res / ss_tot
-            myList.append(dictionnaire)
     except:
         pass
 
@@ -150,7 +147,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
             ymean = np.mean(y)
             ss_tot = np.dot((y - ymean), (y - ymean))
             dictionnaire['log']['r2'] = 1 - ss_res / ss_tot
-            myList.append(dictionnaire)
     except:
         pass
 
@@ -166,7 +162,6 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
         ymean = np.mean(y)
         ss_tot = np.dot((y - ymean), (y - ymean))
         dictionnaire['lin']['r2'] = 1 - ss_res / ss_tot
-        myList.append(dictionnaire)
     except:
         pass
 
@@ -192,14 +187,9 @@ def regressions(liste_cord, liste=False, dictionnaire={}):
             ymean = np.mean(y)
             ss_tot = np.dot((y - ymean), (y - ymean))
             dictionnaire['expo-power']['r2'] = 1 - ss_res / ss_tot
-            myList.append(dictionnaire)
     except:
         pass
-
-    if liste:
-        return (myList)
-    else:
-        return dictionnaire
+    return dictionnaire
 
 
 def multipoints(liste_cord):
@@ -256,27 +246,4 @@ def multipoints(liste_cord):
     return {"data": liste_dictionnaires}
 
 
-# La partie ci-dessous permet d'afficher sur python les points ainsi que
-# les differentes regressions directement sur python avec leur legende
-# respective
-
-
-# #creation of the points and abscisse
-# plt.plot(x, y, 'ko', label="Original Data")
-# x=linspace(min(l1),max(l1),100)
-
-# #creation of the exponential fitted curve
-# plot(x,funcexp(x,*popt1), 'r-', label="Exp Fitted Curve")
-# #creation of the quadratic fitted curve
-# plot(x, funcquad(x,*popt2), 'b-', label="Quad Fitted Curve")
-# #creation of the puissance fitted curve
-# plot(x, funcpuis(x,*popt3), 'k-', label="Puis Fitted Curve")
-# # #creation of the logarithmic fitted curve
-# plot(x, funclog(x,*popt4), 'y-', label="Log Fitted Curve")
-# #creation of the linear fitted curve
-# plot(x, funclin(x,*popt5), 'm-', label="Lin Fitted Curve")
-
-# display legend
-# plt.legend()
-# show on python
-# show()
+print regressions([[70,0.7],[80,0.8],[90,0.9],[50,0.0],[100,1.0]],False)

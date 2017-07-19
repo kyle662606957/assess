@@ -44,3 +44,28 @@ def funclog2(x, b, c, min, max):
 
 def funcexpopower2(x, a, min, max):
     return (a + np.exp(np.log(-a) * (x / min)**(np.log(np.log(1 - a) / np.log(-a)) / np.log(max / min))))
+
+
+# Fonctions utilisees pour l'export Excel
+def funcexp_excel(x, a, b, c):
+    return "="+a+"*EXP(-"+b+"*"+x+")+"+c
+
+
+def funcquad_excel(x, a, b, c):
+    return "="+c+"*"+x+"-"+b+"*"+x+"^2+"+a
+
+
+def funcpuis_excel(x, a, b, c):
+    return "="+a+"*("+x+"^(1-"+b+")-1)/(1-"+b+")+"+c
+
+
+def funclog_excel(x, a, b, c, d):
+    return "="+a+"*LOG("+b+"*"+x+"+"+c+")+"+d
+
+
+def funclin_excel(x, a, b):
+    return "="+a+"*"+x+"+"+b
+
+
+def funcexpopower_excel(x, a, b, c):
+    return "="+a+"+EXP(-"+b+"*"+x+"^"+c+")"
