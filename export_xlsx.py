@@ -122,17 +122,19 @@ def generate_fichier(data):
             elif utility == 'expo-power':
                 feuille.write(ligne + 1, 5, "expo-power")
 
+            parameters=utilities[utility]
+
             # On rempli les coefficients
             try:
                 # On remplit d'abord le dernier car pour les coefficients d ça
                 # s'arretera
-                feuille.write(ligne + 6, 5, utility['r2'], formatCoeff)
+                feuille.write(ligne + 6, 5, parameters['r2'], formatCoeff)
                 feuille.write(
-                    ligne + 7, 5, convert_to_text(utility, "x"), formatCoeff)
-                feuille.write(ligne + 2, 5, utility['a'], formatCoeff)
-                feuille.write(ligne + 3, 5, utility['b'], formatCoeff)
-                feuille.write(ligne + 4, 5, utility['c'], formatCoeff)
-                feuille.write(ligne + 5, 5, utility['d'], formatCoeff)
+                    ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
+                feuille.write(ligne + 2, 5, parameters['a'], formatCoeff)
+                feuille.write(ligne + 3, 5, parameters['b'], formatCoeff)
+                feuille.write(ligne + 4, 5, parameters['c'], formatCoeff)
+                feuille.write(ligne + 5, 5, parameters['d'], formatCoeff)
             except:
                 pass
 
@@ -144,7 +146,7 @@ def generate_fichier(data):
             amplitude = (monAttribut['val_max'] -
                          monAttribut['val_min']) / 10.0
             for i in range(0, 11):
-                feuille.write(ligne + 1 + i, 6, i * amplitude)
+                feuille.write(ligne + 1 + i, 6, monAttribut['val_min'] + i * amplitude)
                 if utility == 'exp':
                     feuille.write_formula(ligne + 1 + i, 7, funcexp_excel("G" + str(
                         ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
@@ -445,7 +447,7 @@ def generate_fichier_with_specification(data):
                 # s'arretera
                 feuille.write(ligne + 6, 5, utility['r2'], formatCoeff)
                 feuille.write(
-                    ligne + 7, 5, convert_to_text(utility, "x"), formatCoeff)
+                    ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
                 feuille.write(ligne + 2, 5, utility['a'], formatCoeff)
                 feuille.write(ligne + 3, 5, utility['b'], formatCoeff)
                 feuille.write(ligne + 4, 5, utility['c'], formatCoeff)
@@ -659,18 +661,18 @@ def signe(nombre):
         return str(nombre)
 
 
-def convert_to_text(data, x):
-    if data['type'] == "exp":
+def convert_to_text(function_type, data, x):
+    if function_type == "exp":
         return "(" + str(round(data['a'], 8)) + "*exp(" + signe(-round(data['b'], 8)) + "*" + x + ")" + signe(round(data['c'], 8)) + ")"
-    elif data['type'] == "log":
+    elif function_type == "log":
         return "(" + str(round(data['a'], 8)) + "*log(" + str(round(data['b'], 8)) + "*" + x + signe(round(data['c'], 8)) + ")" + signe(round(data['d'], 8)) + ")"
-    elif data['type'] == "pow":
+    elif function_type == "pow":
         return "(" + str(round(data['a'], 8)) + "*(pow(" + x + "," + str(round(1 - data['b'], 8)) + ")-1)/(" + str(round(1 - data['b'], 8)) + ")" + signe(round(data['c'], 8)) + ")"
-    elif data['type'] == "quad":
+    elif function_type == "quad":
         return "(" + str(round(data['c'], 8)) + "*" + x + signe(round(-data['b'], 8)) + "*pow(" + x + ",2)" + signe(round(data['a'], 8)) + ")"
-    elif data['type'] == "lin":
+    elif function_type == "lin":
         return "(" + str(round(data['a'], 8)) + "*" + x + "+" + signe(round(data['b'], 8)) + ")"
-    elif data['type'] == "expo-power":
+    elif function_type == "expo-power":
         return "(" + str(round(data['a'], 8)) + "+exp(" + str(round(-data['b'], 8)) + "*pow(" + x + "," + str(round(data['c'], 8)) + "))"
 
 
