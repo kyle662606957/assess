@@ -9,7 +9,7 @@ def scale(image, text_x_gain, text_y_gain, text_x_upper_label, text_y_upper_labe
     offsety = offset_y(text_y_upper_label, text_y_bottom_label)
     back = Image.new(
         "RGBA", (width + offsetx, height + offsety), (255, 255, 255, 0))
-    back.paste(image, (text_x_gain + 10, int(text_y_upper_label) / 2 + 10))
+    back.paste(image, (text_x_gain + 50, int(text_y_upper_label) / 2 + 10))
     return back
 
 
@@ -35,7 +35,7 @@ def text_height(text):
 
 
 def offset_x(text_x_gain, text_x_upper_label, text_x_bottom_label):
-    offset = text_x_gain + 20
+    offset = text_x_gain + 100
     if text_x_upper_label > text_x_bottom_label:
         offset += text_x_upper_label
     else:
@@ -99,11 +99,11 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
         x=5
         y+=text_y_gain
-        draw.text((x, y), "\nwith certainty", font=font, fill=(0,0,0,255))
-    x = width + offsetx - text_x_upper_label - 10
+        draw.text((x, y), " \nwith certainty", font=font, fill=(0,0,0,255))
+    x = width + offsetx - text_x_upper_label - 50
     y = 10
     draw.text((x, y), upper_label.decode("utf-8"), font=font, fill=(0,0,0,255))
-    x = width + offsetx - text_x_bottom_label - 10
+    x = width + offsetx - text_x_bottom_label - 50
     y = height + offsety - text_y_bottom_label - 10
     draw.text((x, y), bottom_label.decode("utf-8"), font=font, fill=(0,0,0,255))
     tree.save(imgdata, format="png")
