@@ -1,4 +1,7 @@
 %include('header_init.tpl', heading='Settings')
+<div class="alert alert-success" role="alert" id="settings_modified" >
+      The settings have been succesfully modified
+</div>
 
 <form id="settings">
     <div class="form-group">
@@ -36,16 +39,13 @@
 
 <br />
 
-<div id="confirmation" class="alert alert-success">
-    Settings successfully updated.
-</div>
 
 %include('header_end.tpl')
 %include('js.tpl')
 
 <script>
     $(function() {
-        $("#confirmation").hide();
+        $("#settings_modified").hide();
 
         var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 
@@ -98,7 +98,7 @@
             var display = $("input[type='radio'][name='display']:checked");
             settings.display = display.val();
             localStorage.setItem("asses_session", JSON.stringify(asses_session));
-            $("#confirmation").fadeIn();
+            $("#settings_modified").fadeIn();
         });
     });
 </script>

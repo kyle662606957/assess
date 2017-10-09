@@ -9,7 +9,7 @@
 				<th>Number of assessed points</th>
 				<th>Assess another point</th>
 				<th>Calculate utility function</th>
-				<th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
+				<th>Reset assessements</th>
 			</tr>
 		</thead>
 		<tbody id="table_attributes">
@@ -58,7 +58,7 @@
 			}
 
 			if (asses_session.attributes[i].questionnaire.number > 0) {
-				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td>';
+				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
 				text += '<td>No assessment yet</td>';
 			}
@@ -133,7 +133,7 @@
 
 					// INTERFACE
 
-					var arbre_pe = new Arbre('pe', '#trees', settings.display);
+					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
@@ -154,7 +154,7 @@
 					arbre_pe.display();
 					arbre_pe.update();
 
-					$('#trees').append('</div><button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>');
+					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>');
 
 					// FUNCTIONS
 					function sync_values() {
@@ -177,9 +177,9 @@
 
 					function ask_final_value(val) {
 						// we delete the choice div
-						$('.btn').hide();
+						$('.choice').hide();
 						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done, please now enter the value of the probability: <br /> ' + min_interval +
+							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done. Please enter the probability that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
 							'\
 						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
 							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
@@ -231,8 +231,8 @@
 
 					// INTERFACE
 
-					var arbre_le = new Arbre('gauche', '#trees', settings.display);
-					var arbre_droite = new Arbre('droite', '#trees', settings.display);
+					var arbre_le = new Arbre('gauche', '#trees', settings.display, "LE_left");
+					var arbre_droite = new Arbre('droite', '#trees', settings.display, "LE_right");
 
 					// SETUP ARBRE GAUCHE
 					arbre_le.questions_proba_haut = probability;
@@ -258,7 +258,7 @@
 					arbre_droite.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default lottery_a">Lottery A</button><button type="button" class="btn btn-default lottery_b">Lottery B</button>')
+					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default lottery_a">A</button><button type="button" class="btn btn-default lottery_b">B</button></div>')
 
 
 					function treat_answer(data) {
@@ -277,10 +277,9 @@
 					}
 
 					function ask_final_value(val) {
-						$('.lottery_a').hide();
-						$('.lottery_b').hide();
+						$('.choice').hide();
 						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done, please now enter the value of the probability: <br /> ' + min_interval +
+							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done. Please enter the probability that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
 							'\
 						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
 							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
@@ -344,7 +343,7 @@
 
 					// INTERFACE
 
-					var arbre_ce = new Arbre('ce', '#trees', settings.display);
+					var arbre_ce = new Arbre('ce', '#trees', settings.display, "CE");
 
 					// SETUP ARBRE GAUCHE
 					arbre_ce.questions_proba_haut = settings.proba_ce;
@@ -355,7 +354,7 @@
 					arbre_ce.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
+					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>')
 
 					function utility_finder(gain) {
 						var points = asses_session.attributes[indice].questionnaire.points;
@@ -386,8 +385,7 @@
 						gain = data.gain;
 
 						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_ce.questions_val_max) - parseFloat(arbre_ce.questions_val_min) || max_interval - min_interval < 2) {
-							$('#gain').hide();
-							$('#lottery').hide();
+							$('.choice').hide();
 							arbre_ce.questions_val_mean = gain + ' ' + unit;
 							arbre_ce.update();
 							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
@@ -401,7 +399,7 @@
 						$('.lottery_a').hide();
 						$('.lottery_b').hide();
 						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done, please now enter the value of the gain: <br /> ' + min_interval +
+							'<div id= "final_value" style="text-align: center;"><br /><br /><p><p>We are almost done. Please enter the value that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
 							'\
 						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
 							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
@@ -471,7 +469,7 @@
 
 					// INTERFACE
 
-					var arbre_cepv = new Arbre('cepv', '#trees', settings.display);
+					var arbre_cepv = new Arbre('cepv', '#trees', settings.display, "CE_PV");
 
 					// SETUP ARBRE GAUCHE
 					arbre_cepv.questions_proba_haut = p;
@@ -679,11 +677,11 @@
 				client.on("aftercopy", function(event) {
 					copy_button_dpl.text("Done !");
 					setTimeout(function() {
-						copy_button_dpl.text("Copy to clipboard (Excel format)");
+						copy_button_dpl.text("Copy to clipboard (DPL format)");
 					}, 2000);
 				});
 
-				client = new ZeroClipboard(copy_button_excel);
+				var client = new ZeroClipboard(copy_button_excel);
 				client.on("aftercopy", function(event) {
 					copy_button_excel.text("Done !");
 					setTimeout(function() {

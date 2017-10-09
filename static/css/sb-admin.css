@@ -353,15 +353,18 @@ ul.alert-dropdown {
     width:320px;
 }
 
-.lottery_a {
-    margin-left: 15%;
-    margin-right: 10px;
-}
-
 #gain {
-  margin-left: 300px;
   margin-right: 10px;
 }
+
+.gain {
+  margin-right: 10px;
+}
+
+.lottery_a {
+  margin-right: 10px;
+}
+
 
 
 /* Used to reduce the size of input boxes in settings tab */

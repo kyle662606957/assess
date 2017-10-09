@@ -2,7 +2,7 @@
 ///				OBJET ARBRE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Arbre = function(id, target, display_settings) {
+var Arbre = function(id, target, display_settings, assess_type) {
   this.questions_val_min=" ";
   this.questions_val_max=" ";
   this.questions_val_mean=" ";
@@ -11,7 +11,8 @@ var Arbre = function(id, target, display_settings) {
   this.identifiant = id;
   this.displayed = false;
 	this.type = display_settings;
-  this.html = '<div class="proba_tree" id=\"tree_' + this.identifiant + '\"></div>';
+  this.html = '<div class="proba_tree" style="text-align: center;" id=\"tree_' + this.identifiant + '\"></div>';
+  this.assess_type = assess_type;
 };
 
 Arbre.prototype.display = function() {
@@ -41,7 +42,8 @@ Arbre.prototype.update = function() {
       "upper_label":this.questions_val_max,
       "bottom_label":this.questions_val_min,
       "upper_proba":this.questions_proba_haut,
-      "bottom_proba":(1 - this.questions_proba_haut).toFixed(2)
+      "bottom_proba":(1 - this.questions_proba_haut).toFixed(2),
+      "assess_type":this.assess_type
     };
     $.post('ajax', JSON.stringify(ajaxdata), function(data) {
       $('#tree_' + _this.identifiant).empty();
@@ -56,7 +58,7 @@ Arbre.prototype.update = function() {
         var ajaxdata = {
           "type": "pie_chart",
           "names": [this.questions_val_mean, this.questions_val_min, this.questions_val_max],
-          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
+          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)],
         };
         $.post('ajax', JSON.stringify(ajaxdata), function(data) {
     			$('#tree_' + _this.identifiant).empty();
@@ -67,7 +69,7 @@ Arbre.prototype.update = function() {
         var ajaxdata = {
           "type": "pie_chart",
           "names": [this.questions_val_min, this.questions_val_max],
-          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)]
+          "probas": [this.questions_proba_haut, (1 - this.questions_proba_haut).toFixed(2)],
         };
         $.post('ajax', JSON.stringify(ajaxdata), function(data) {
     			$('#tree_' + _this.identifiant).empty();

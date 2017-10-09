@@ -53,6 +53,13 @@ function update_method_button(type)
 
 ///  ACTION FROM BUTTON UPDATE
 $(function() {
+	$("#not_enough_attributes").hide();
+
+	var counter = number_attributes_checked();
+	if (counter < 2) {
+		$("#page-content").hide();
+		$("#not_enough_attributes").show();
+	};
 
 	$("#update").click(function () {
 		//we delete the general utility function
@@ -430,7 +437,7 @@ function k_multilinear_answer(i)
 				//on cache le bouton
 				$("#k_value_"+i).hide();
 				$("#k_value_"+i).append("<br/><br/>");
-				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display);
+				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display, "PE");
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
@@ -450,7 +457,7 @@ function k_multilinear_answer(i)
 				arbre_gauche.display();
 				arbre_gauche.update();
 
-				$("#k_value_"+i).append('<br/><br/><br/><br/><button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button><br/><br/><div ></div>');
+				$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">A</button><button type="button" class="btn btn-default lottery">B</button></div><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
 
 				$("#k_value_"+i).show("fast");
@@ -473,9 +480,9 @@ function k_multilinear_answer(i)
 
 				function ask_final_value(val){
 					// we delete the choice div
-					$('.gain').hide();$('.lottery').hide();
+					$('.choice').hide();
 					$("#k_value_"+i).append(
-						'<br/><br/><br/><br/><div id= "final_value" style="text-align: center;margin-top:90px;"><br /><br /><p>We are almost done, please now enter the value of the probability: <br /> '+ min_interval +'\
+						'<br/><br/><br/><br/><div id= "final_value" style="text-align: center;margin-top:90px;"><br /><br /><p>We are almost done. Please enter the value that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> '+ min_interval +'\
 						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="'+val+'" style="width: 100px; display: inline-block"> <= '+ max_interval +'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
 					);
 
@@ -640,7 +647,7 @@ function k_answer(i, type)
 				//on cache le bouton
 				$("#k_value_"+i).hide();
 				$("#k_value_"+i).append("<br/><br/>");
-				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display);
+				var arbre_gauche = new Arbre('pe', "#k_value_"+i, settings.display, "PE");
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
@@ -656,7 +663,7 @@ function k_answer(i, type)
 				arbre_gauche.display();
 				arbre_gauche.update();
 
-				$("#k_value_"+i).append('<br/><br/><br/><br/><button type="button" class="btn btn-default gain">Gain with certainty</button><button type="button" class="btn btn-default lottery">Lottery</button><br/><br/><div ></div>');
+				$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">A</button><button type="button" class="btn btn-default lottery">B</button></div><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
 
 				$("#k_value_"+i).show("fast");
@@ -679,9 +686,9 @@ function k_answer(i, type)
 
 				function ask_final_value(val){
 					// we delete the choice div
-					$('.gain').hide();$('.lottery').hide();
+					$('.choice').hide();
 					$("#k_value_"+i).append(
-						'<br/><br/><br/><br/><div id= "final_value" style="text-align: center;margin-top:90px;"><br /><br /><p>We are almost done, please now enter the value of the probability: <br /> '+ min_interval +'\
+						'<br/><br/><br/><br/><div id= "final_value" style="text-align: center;margin-top:90px;"><br /><br /><p>We are almost done. Please enter the value that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> '+ min_interval +'\
 						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="'+val+'" style="width: 100px; display: inline-block"> <= '+ max_interval +'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
 					);
 
@@ -1017,7 +1024,39 @@ function update_utility(i, type, data)
 
 }
 
+function addTextForm(div, copie, excel) {
 
+	// if (settings.language=="french") {
+	// 	excel=excel.replace(/\./gi,",");
+	// }
+
+	var copy_button_dpl = $('<button class="btn functions_text_form" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
+	var copy_button_excel = $('<button class="btn functions_text_form" data-clipboard-text="' + excel + '" title="Click to copy me.">Copy to clipboard (Excel format)</button>');
+
+	div.html('')
+	div.append("<div><pre>"+copie+"</pre></div>")
+	div.append(copy_button_dpl);
+	div.append("<br /><br /><br /><br />");
+	div.append("<div><pre>"+excel+"</pre></div>")
+	div.append(copy_button_excel);
+
+
+	var client = new ZeroClipboard(copy_button_dpl);
+	client.on("aftercopy", function(event) {
+		copy_button_dpl.text("Done !");
+		setTimeout(function() {
+			copy_button_dpl.text("Copy to clipboard (DPL format)");
+		}, 2000);
+	});
+
+	var client = new ZeroClipboard(copy_button_excel);
+	client.on("aftercopy", function(event) {
+		copy_button_excel.text("Done !");
+		setTimeout(function() {
+			copy_button_excel.text("Copy to clipboard (Excel format)");
+		}, 2000);
+	});
+}
 
 $(function(){
 
@@ -1051,7 +1090,7 @@ $(function(){
 
 			$.post('ajax', JSON.stringify(requete), function (data) {
 
-				$("#utility_function").html('<div ><pre>'+data.U+'</pre></div>')
+				addTextForm($('#utility_function'), data.U, data.Uexcel);
 				//alert(JSON.stringify(data));
 				asses_session.k_calculus[get_Active_Method()].GU=data;
 				localStorage.setItem("asses_session", JSON.stringify(asses_session));
@@ -1091,11 +1130,6 @@ $(function(){
 
 	});
 });
-
-
-
-
-
 
 
 
@@ -1148,7 +1182,7 @@ function GK_calculated() {
 
 
 				//we show the value of the global utility function
-		$("#utility_function").html('<div ><pre>' + asses_session.k_calculus[get_Active_Method()].GU.U + '</pre></div>')
+		$("#utility_function").html('<div><pre>'+asses_session.k_calculus[get_Active_Method()].GU.U+'</pre></div>')
 	}
 	else
 	{

@@ -31,7 +31,7 @@
     <li>Mohammed Zouini</li>
 </ul>
 
-<h2>Responsibles:</h2>
+<h2>Supervising faculty:</h2>
 <ul>
     <li>Philippe Delquié (George Washington University)</li>
     <li>Marc Lassagne (ENSAM) - <script type="text/javascript" language="javascript">

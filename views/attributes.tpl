@@ -47,9 +47,9 @@
         <label for="att_method">Method:</label>
         <select class="form-control" id="att_method">
           <option value="PE">Probability Equivalence</option>
-          <option value="LE">Lottery Equivalence</option>
           <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
 		      <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
+          <option value="LE">Lottery Equivalence</option>
         </select>
     </div>
     <div class="checkbox">
@@ -143,7 +143,7 @@
 
 
                     text_table += '<td>' + attribute.name + '</td><td>' + attribute.unit + '</td><td>[' + attribute.val_min + ',' + attribute.val_max + ']</td><td>' + attribute.method + '</td><td>' + attribute.mode + '</td>';
-                    text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-secondary btn-sm">Edit</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
+                    text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
 
                     $('#table_attributes').append(text_table);
 
@@ -242,21 +242,23 @@
                     }
                 });
               } else {
-                asses_session.attributes[edited_attribute]={
-                  "name": name,
-                  'unit': unit,
-                  'val_min': val_min,
-                  'val_max': val_max,
-                  'method': method,
-                  'mode': mode,
-                  'completed': 'False',
-                  'checked': true,
-                  'questionnaire': {
-                      'number': 0,
-                      'points': [],
-                      'utility': {}
-                  }
-                };
+                if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
+                  asses_session.attributes[edited_attribute]={
+                    "name": name,
+                    'unit': unit,
+                    'val_min': val_min,
+                    'val_max': val_max,
+                    'method': method,
+                    'mode': mode,
+                    'completed': 'False',
+                    'checked': true,
+                    'questionnaire': {
+                        'number': 0,
+                        'points': [],
+                        'utility': {}
+                    }
+                  };
+                }
                 edit_mode=false;
                 $('#add_attribute h2').text("Add a new attribute");
               }

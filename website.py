@@ -168,7 +168,7 @@ def ajax():
         return latex_render.render(query['formula'])
 
     elif query['type'] == "tree":
-        return draw_tree.draw(query['gain'], query['upper_label'], query['bottom_label'], query['upper_proba'], query['bottom_proba'])
+        return draw_tree.draw(query['gain'], query['upper_label'], query['bottom_label'], query['upper_proba'], query['bottom_proba'], query['assess_type'])
 
 
 # export a file (download)

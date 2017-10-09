@@ -84,8 +84,10 @@ def pie_chart(names, probas):
         plt.figure(1)
         plt.subplot(121)
         plt.pie([1], labels=[names[0]], colors=colors, startangle=90, autopct='%1.0f%%')
+        plt.title("A")
         plt.subplot(122)
         plt.pie(probas, labels=names[1:], colors=colors, startangle=90, autopct='%1.0f%%')
+        plt.title("B")
         fig = plt.gcf()
         fig.set_size_inches(8, 4)
     else:

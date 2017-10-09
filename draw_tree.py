@@ -14,7 +14,7 @@ def scale(image, text_x_gain, text_y_gain, text_x_upper_label, text_y_upper_labe
 
 
 def max_text_width(text):
-    font = ImageFont.truetype("static/fonts/HelveticaNeue.ttf", 16, encoding="utf-8")
+    font = ImageFont.truetype("static/fonts/helvetica-neue-bold.ttf", 16, encoding="utf-8")
     max_width = 0
     lines = text.split("\n")
     for i in range(len(lines)):
@@ -25,7 +25,7 @@ def max_text_width(text):
 
 
 def text_height(text):
-    font = ImageFont.truetype("static/fonts/HelveticaNeue.ttf", 16, encoding="utf-8")
+    font = ImageFont.truetype("static/fonts/helvetica-neue-bold.ttf", 16, encoding="utf-8")
     height = 0
     lines = text.split("\n")
     for i in range(len(lines)):
@@ -48,7 +48,7 @@ def offset_y(text_y_upper_label, text_y_bottom_label):
     return offset
 
 
-def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba):
+def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type):
     gain = str(gain.encode('utf-8'))
     upper_label = str(upper_label.encode('utf-8'))
     bottom_label = str(bottom_label.encode('utf-8'))
@@ -56,7 +56,7 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba):
     bottom_proba = str(bottom_proba)
     imgdata = io.BytesIO()
     tree = Image.open('static/img/tree_choice.png').convert('RGBA')
-    font = ImageFont.truetype("static/fonts/HelveticaNeue.ttf", 16, encoding="utf-8")
+    font = ImageFont.truetype("static/fonts/helvetica-neue-bold.ttf", 16, encoding="utf-8")
     text_x_gain = max_text_width(gain)
     text_y_gain = text_height(gain)
     text_x_upper_label = max_text_width(upper_label)
@@ -69,9 +69,19 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba):
     text_y_bottom_proba = font.getsize(bottom_proba)[1]
     width, height = tree.size
     draw = ImageDraw.Draw(tree)
+    if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
+        draw.text((22, 95), "A", font=font, fill=(0,0,0,255))
+        draw.text((200, 95), "B", font=font, fill=(0,0,0,255))
+    elif (assess_type == "LE_left"):
+        draw.text((22, 95), "A", font=font, fill=(0,0,0,255))
+    elif (assess_type == "LE_right"):
+        draw.text((22, 95), "B", font=font, fill=(0,0,0,255))
     x = 190
     y = 15
-    draw.text((x, y), upper_proba, font=font, fill=(0,0,0,255))
+    if (assess_type == "PE" or assess_type == "LE_left"):
+        draw.text((x, y), upper_proba, font=font, fill=(255,0,0,255))
+    else:
+        draw.text((x, y), upper_proba, font=font, fill=(0,0,0,255))
     x = 190
     y = height - text_y_bottom_proba - 15
     draw.text((x, y), bottom_proba, font=font, fill=(0,0,0,255))
@@ -82,7 +92,14 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba):
     offsety = offset_y(text_y_upper_label, text_y_bottom_label)
     x = 5
     y = int((height + offsety - text_y_gain) / 2)
-    draw.text((x, y), gain.decode("utf-8"), font=font, fill=(0,0,0,255))
+    if (assess_type == "CE" or assess_type == "CE_PV"):
+        draw.text((x, y), gain.decode("utf-8"), font=font, fill=(255,0,0,255))
+    else:
+        draw.text((x, y), gain.decode("utf-8"), font=font, fill=(0,0,0,255))
+    if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
+        x=5
+        y+=text_y_gain
+        draw.text((x, y), "\nwith certainty", font=font, fill=(0,0,0,255))
     x = width + offsetx - text_x_upper_label - 10
     y = 10
     draw.text((x, y), upper_label.decode("utf-8"), font=font, fill=(0,0,0,255))
