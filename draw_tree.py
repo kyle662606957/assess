@@ -99,7 +99,7 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
         x=5
         y+=text_y_gain
-        draw.text((x, y), "with certainty", font=font, fill=(0,0,0,255))
+        draw.text((x, y), " \nwith certainty", font=font, fill=(0,0,0,255))
     x = width + offsetx - text_x_upper_label - 10
     y = 10
     draw.text((x, y), upper_label.decode("utf-8"), font=font, fill=(0,0,0,255))
