@@ -112,7 +112,7 @@
 
 <!-- Tree object -->
 <script src="{{ get_url('static', path='js/tree.js') }}"></script>
-<script src="{{ get_url('static', path='js/ZeroClipboard/ZeroClipboard.js') }}"></script>
+<script src="{{ get_url('static', path='js/clipboard.min.js') }}"></script>
 <script src="{{ get_url('static', path='js/k_calculus.js') }}"></script>
 
 <script>

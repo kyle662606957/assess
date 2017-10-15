@@ -651,8 +651,9 @@
 					excel=excel.replace(/\./gi,",");
 				}
 
-				var copy_button_dpl = $('<button class="btn functions_text_form" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
-				var copy_button_excel = $('<button class="btn functions_text_form" data-clipboard-text="' + excel + '" title="Click to copy me.">Copy to clipboard (Excel format)</button>');
+				var copy_button_dpl = $('<button class="btn functions_text_form" id="btn_dpl_' + key + '" data-clipboard-text="' + copie + '" title="Click to copy me.">Copy to clipboard (DPL format)</button>');
+				var copy_button_excel = $('<button class="btn functions_text_form" id="btn_excel_' + key + '" data-clipboard-text="' + excel + '" title="Click to copy me.">Copy to clipboard (Excel format)</button>');
+				var copy_button_latex = $('<button class="btn functions_text_form" id="btn_latex_' + key + '" data-clipboard-text="' + render + '" title="Click to copy me.">Copy to clipboard (LaTeX format)</button>');
 
 				if (settings.language=="french") {
 					render=render.replace(/\./gi,",");
@@ -669,23 +670,33 @@
 					div_function.append(copy_button_dpl);
 					div_function.append("<br /><br />");
 					div_function.append(copy_button_excel);
+					div_function.append("<br /><br />");
+					div_function.append(copy_button_latex);
 				});
 
 				$('#functions').append(div_function);
 
-				var client = new ZeroClipboard(copy_button_dpl);
-				client.on("aftercopy", function(event) {
+				var client = new Clipboard("#btn_dpl_" + key);
+				client.on("success", function(event) {
 					copy_button_dpl.text("Done !");
 					setTimeout(function() {
 						copy_button_dpl.text("Copy to clipboard (DPL format)");
 					}, 2000);
 				});
 
-				var client = new ZeroClipboard(copy_button_excel);
-				client.on("aftercopy", function(event) {
+				var client = new Clipboard("#btn_excel_" + key);
+				client.on("success", function(event) {
 					copy_button_excel.text("Done !");
 					setTimeout(function() {
 						copy_button_excel.text("Copy to clipboard (Excel format)");
+					}, 2000);
+				});
+
+				var client = new Clipboard("#btn_latex_" + key);
+				client.on("success", function(event) {
+					copy_button_latex.text("Done !");
+					setTimeout(function() {
+						copy_button_latex.text("Copy to clipboard LaTeX format)");
 					}, 2000);
 				});
 			}
@@ -776,7 +787,7 @@
 	});
 </script>
 <!-- Library to copy into clipboard -->
-<script src="{{ get_url('static', path='js/ZeroClipboard/ZeroClipboard.js') }}"></script>
+<script src="{{ get_url('static', path='js/clipboard.min.js') }}"></script>
 </body>
 
 </html>

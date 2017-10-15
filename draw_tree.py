@@ -57,6 +57,7 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     imgdata = io.BytesIO()
     tree = Image.open('static/img/tree_choice.png').convert('RGBA')
     font = ImageFont.truetype("static/fonts/helvetica-neue-bold.ttf", 16, encoding="utf-8")
+    font2 = ImageFont.truetype("static/fonts/helvetica-neue-bold.ttf", 24, encoding="utf-8")
     text_x_gain = max_text_width(gain)
     text_y_gain = text_height(gain)
     text_x_upper_label = max_text_width(upper_label)
@@ -70,12 +71,11 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     width, height = tree.size
     draw = ImageDraw.Draw(tree)
     if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
-        draw.text((22, 95), "A", font=font, fill=(0,0,0,255))
-        draw.text((200, 95), "B", font=font, fill=(0,0,0,255))
+        draw.text((200, 90), "B", font=font2, fill=(0,0,0,255))
     elif (assess_type == "LE_left"):
-        draw.text((22, 95), "A", font=font, fill=(0,0,0,255))
+        draw.text((200, 90), "A", font=font2, fill=(0,0,0,255))
     elif (assess_type == "LE_right"):
-        draw.text((22, 95), "B", font=font, fill=(0,0,0,255))
+        draw.text((200, 90), "B", font=font2, fill=(0,0,0,255))
     x = 190
     y = 15
     if (assess_type == "PE" or assess_type == "LE_left"):
@@ -90,6 +90,8 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     draw = ImageDraw.Draw(tree)
     offsetx = offset_x(text_x_gain, text_x_upper_label, text_x_bottom_label)
     offsety = offset_y(text_y_upper_label, text_y_bottom_label)
+    if (assess_type == "PE" or assess_type == "CE" or assess_type == "CE_PV"):
+        draw.text((22, 0), "A", font=font2, fill=(0,0,0,255))
     x = 5
     y = int((height + offsety - text_y_gain) / 2)
     if (assess_type == "CE" or assess_type == "CE_PV"):

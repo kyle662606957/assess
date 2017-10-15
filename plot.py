@@ -83,15 +83,15 @@ def pie_chart(names, probas):
     if len(names) == 3:
         plt.figure(1)
         plt.subplot(121)
-        plt.pie([1], labels=[names[0]], colors=colors, startangle=90, autopct='%1.0f%%')
-        plt.title("A")
+        plt.pie([1], labels=[names[0]], colors=colors, startangle=90, autopct='%1.0f%%', textprops={"weight":"bold"})
+        plt.title("A", fontdict={"fontweight":"bold"})
         plt.subplot(122)
-        plt.pie(probas, labels=names[1:], colors=colors, startangle=90, autopct='%1.0f%%')
-        plt.title("B")
+        plt.pie(probas, labels=names[1:], colors=colors, startangle=90, autopct='%1.0f%%', textprops={"weight":"bold"})
+        plt.title("B", fontdict={"fontweight":"bold"})
         fig = plt.gcf()
         fig.set_size_inches(8, 4)
     else:
-        plt.pie(probas, labels=names, colors=colors, startangle=90, autopct='%1.0f%%')
+        plt.pie(probas, labels=names, colors=colors, startangle=90, autopct='%1.0f%%', textprops={"weight":"bold"})
         fig = plt.gcf()
         fig.set_size_inches(4, 4)
 

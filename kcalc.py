@@ -7,15 +7,15 @@ from scipy.optimize import fsolve
 
 def calculUtilityMultiplicative(myK, myU):
     if len(myK) - 1 == 2:
-        return {'Uexcel':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2")), 'U': utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2")),'Uexcel':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2")), 'U': utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 3:
-        return {'Uexcel':utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3")),'U': utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2"), convert_to_text_latex(myU[2], "x3")),'Uexcel':utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3")),'U': utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 4:
-        return {'Uexcel':utilite4(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4")), 'U': utilite4(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite4(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2"), convert_to_text_latex(myU[2], "x3"), convert_to_text_latex(myU[3], "x4")),'Uexcel':utilite4(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4")), 'U': utilite4(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 5:
-        return {'Uexcel':utilite5(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4"), convert_to_text_excel(myU[4], "x5")), 'U': utilite5(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4"), convert_to_text(myU[4], "x5")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite5(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2"), convert_to_text_latex(myU[2], "x3"), convert_to_text_latex(myU[3], "x4"), convert_to_text_latex(myU[4], "x5")),'Uexcel':utilite5(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4"), convert_to_text_excel(myU[4], "x5")), 'U': utilite5(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4"), convert_to_text(myU[4], "x5")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 6:
-        return {'Uexcel':utilite6(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], myK[6]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4"), convert_to_text_excel(myU[4], "x5"), convert_to_text_excel(myU[5], "x6")), 'U': utilite6(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], myK[6]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4"), convert_to_text(myU[4], "x5"), convert_to_text(myU[5], "x6")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite6(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], myK[6]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2"), convert_to_text_latex(myU[2], "x3"), convert_to_text_latex(myU[3], "x4"), convert_to_text_latex(myU[4], "x5"), convert_to_text_latex(myU[5], "x6")),'Uexcel':utilite6(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], myK[6]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3"), convert_to_text_excel(myU[3], "x4"), convert_to_text_excel(myU[4], "x5"), convert_to_text_excel(myU[5], "x6")), 'U': utilite6(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], myK[4]['value'], myK[5]['value'], myK[6]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3"), convert_to_text(myU[3], "x4"), convert_to_text(myU[4], "x5"), convert_to_text(myU[5], "x6")), 'k': myK, 'utilities': myU}
     U = 1
     return "Error : nothing was done"
 
@@ -329,7 +329,7 @@ def convert_to_text(data, x):
     elif data['type'] == "quad":
         return "(" + str(round(data['c'], 8)) + "*" + x + signe(round(-data['b'], 8)) + "*pow(" + x + ",2)" + signe(round(data['a'], 8)) + ")"
     elif data['type'] == "lin":
-        return "(" + str(round(data['a'], 8)) + "*" + x + "+" + signe(round(data['b'], 8)) + ")"
+        return "(" + str(round(data['a'], 8)) + "*" + x + signe(round(data['b'], 8)) + ")"
     elif data['type'] == "expo-power":
         return "(" + str(round(data['a'], 8)) + "+exp(" + str(round(-data['b'], 8)) + "*pow(" + x + "," + str(round(data['c'], 8)) + "))"
 
@@ -343,6 +343,20 @@ def convert_to_text_excel(data, x):
     elif data['type'] == "quad":
         return "(" + str(round(data['c'], 8)) + "*" + x + signe(round(-data['b'], 8)) + "*" + x + "^2" + signe(round(data['a'], 8)) + ")"
     elif data['type'] == "lin":
-        return "(" + str(round(data['a'], 8)) + "*" + x + "+" + signe(round(data['b'], 8)) + ")"
+        return "(" + str(round(data['a'], 8)) + "*" + x + signe(round(data['b'], 8)) + ")"
     elif data['type'] == "expo-power":
         return "(" + str(round(data['a'], 8)) + "+EXP(" + str(round(-data['b'], 8)) + "*" + x + "^" + str(round(data['c'], 8)) + ")"
+
+def convert_to_text_latex(data, x):
+    if data['type'] == "exp":
+        return "(" + str(round(data['a'], 2)) + "*e^{" + signe(-round(data['b'], 2)) + x + "}" + signe(round(data['c'], 2)) + ")"
+    elif data['type'] == "log":
+        return "(" + str(round(data['a'], 2)) + "\\log(" + str(round(data['b'], 2)) + x + signe(round(data['c'], 2)) + ")" + signe(round(data['d'], 2)) + ")"
+    elif data['type'] == "pow":
+        return "(" + str(round(data['a'], 2)) + "\\frac{" + x + "^{" + str(round(1 - data['b'], 2)) + "}-1}{" + str(round(1 - data['b'], 2)) + "}" + signe(round(data['c'], 2)) + ")"
+    elif data['type'] == "quad":
+        return "(" + str(round(data['c'], 2)) + x + signe(round(-data['b'], 2)) + x + "^{2}" + signe(round(data['a'], 2)) + ")"
+    elif data['type'] == "lin":
+        return "(" + str(round(data['a'], 2)) + x + signe(round(data['b'], 2)) + ")"
+    elif data['type'] == "expo-power":
+        return "(" + str(round(data['a'], 2)) + "+exp(" + str(round(-data['b'], 2)) + "*" + x + "^{" + str(round(data['c'], 2)) + "})"
