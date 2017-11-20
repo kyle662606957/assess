@@ -7,6 +7,7 @@
     <li>Melek Ben Kedher</li>
     <li>François Bracchi</li>
     <li>Romain Casabianca</li>
+    <li>Thibaut Charraire</li>
     <li>Charles Chastel</li>
     <li>Alexandre Cochennec</li>
     <li>Mohamed Anis Chagar</li>
@@ -22,6 +23,7 @@
     <li>Nicolas Mardrus</li>
     <li>Baptiste Mathae</li>
     <li>Ramana Mozhichelvan</li>
+    <li>Matthias Nezondet</li>
     <li>Antoine Normand</li>
     <li>Léopold Sayous</li>
     <li>Victor Sève</li>
