@@ -345,7 +345,7 @@ ul.alert-dropdown {
 
 .functions_graph {
     display: inline-block;
-    margin: 15px;
+    margin: 15px 5px 15px 15px;
     width:320px;
 }
 
