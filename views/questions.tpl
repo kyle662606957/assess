@@ -170,6 +170,7 @@
 						min_interval = data.interval[0];
 						max_interval = data.interval[1];
 						probability = parseFloat(data.proba).toFixed(2);
+						probability = (data.mode=="normal" ? probability : 1-probability);
 
 						if (max_interval-min_interval <= 0.05) {
 							sync_values();
