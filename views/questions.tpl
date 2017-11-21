@@ -170,7 +170,6 @@
 						min_interval = data.interval[(mode == "normal" ? 0 : 1)];
 						max_interval = data.interval[(mode == "normal" ? 1 : 0)];
 						probability = parseFloat(data.proba).toFixed(2);
-						probability = (data.mode=="normal" ? probability : 1-probability);
 
 						if (max_interval-min_interval <= 0.05) {
 							sync_values();
@@ -211,13 +210,13 @@
 
 					// HANDLE USERS ACTIONS
 					$('#gain').click(function() {
-						$.post('ajax', '{"type":"question", "method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0", "mode": "' + String(mode) + '"}', function(data) {
+						$.post('ajax', '{"type":"question", "method": "PE", "proba": ' + String((mode == "normal" ? probability : 1-probability)) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0", "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 						});
 					});
 
 					$('#lottery').click(function() {
-						$.post('ajax', '{"type":"question","method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
+						$.post('ajax', '{"type":"question","method": "PE", "proba": ' + String((mode == "normal" ? probability : 1-probability)) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 						});
 					});
