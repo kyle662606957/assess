@@ -133,25 +133,26 @@
 
 					// INTERFACE
 
-					if (mode == "normal") {
-						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "normal");}
-					else if (mode == "reversed") {
-						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "reverse");}
+					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", (mode == "normal" ? "normal" : "reversed"));
+
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
+						//For the 1st questionnaire, the certain gain is the average between val_min and val_max
+						var gain_certain = (parseFloat(val_max)+parseFloat(val_min))/2;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
+						//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
+						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * (mode == "normal" ? 1/4 : 3/4);
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
+						//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
+						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * (mode == "normal" ? 3/4 : 4/4);
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
 
 					// SETUP ARBRE GAUCHE
-					arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability );
+					arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
 					arbre_pe.questions_val_max = val_max + ' ' + unit;
 					arbre_pe.questions_val_min = val_min + ' ' + unit;
 					arbre_pe.display();
@@ -161,7 +162,7 @@
 
 					// FUNCTIONS
 					function sync_values() {
-						arbre_pe.questions_proba_haut = probability;
+						arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
 						arbre_pe.update();
 					}
 
