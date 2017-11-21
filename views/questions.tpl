@@ -135,7 +135,7 @@
 
 					if (mode == "normal") {
 						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "normal");}
-					else if (mode == "reverse") {
+					else if (mode == "reversed") {
 						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "reverse");}
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
