@@ -111,7 +111,7 @@ def ajax():
         return template('authentification', get_url=app.get_url)
     reader = codecs.getreader("utf-8")
     query = json.load(reader(request.body))
-    print(query)
+    print query
 
     if query['type'] == "question":
         if query['method'] == 'PE':
@@ -169,7 +169,7 @@ def ajax():
         return latex_render.render(query['formula'])
 
     elif query['type'] == "tree":
-        return draw_tree.draw(query['gain'], query['upper_label'], query['bottom_label'], query['upper_proba'], query['bottom_proba'], query['assess_type'])
+        return draw_tree.draw(query['gain'], query['upper_label'], query['bottom_label'], query['upper_proba'], query['bottom_proba'], query['assess_type'], query['assess_mode'])
 
 
 # export a file (download)
