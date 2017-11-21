@@ -106,10 +106,10 @@
 			}
 
 			var mode = asses_session.attributes[indice].mode,
-				val_min = asses_session.attributes[indice].val_min,
-				val_max = asses_session.attributes[indice].val_max,
-				method = asses_session.attributes[indice].method,
-				unit = asses_session.attributes[indice].unit;
+			    val_min = asses_session.attributes[indice].val_min,
+			    val_max = asses_session.attributes[indice].val_max,
+			    method = asses_session.attributes[indice].method,
+			    unit = asses_session.attributes[indice].unit;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -128,8 +128,8 @@
 				(function() {
 					// VARIABLES
 					var probability = (mode == "normal" ? 0.75 : 0.25);
-					var min_interval = (mode == "normal" ? 0 : 1);
-					var max_interval = (mode == "normal" ? 1 : 0);
+					var min_interval = 0;
+					var max_interval = 1;
 
 					// INTERFACE
 
