@@ -2,7 +2,7 @@
 ///				OBJET ARBRE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Arbre = function(id, target, display_settings, assess_type) {
+var Arbre = function(id, target, display_settings, assess_type, assess_mode) {
   this.questions_val_min=" ";
   this.questions_val_max=" ";
   this.questions_val_mean=" ";
@@ -13,6 +13,7 @@ var Arbre = function(id, target, display_settings, assess_type) {
 	this.type = display_settings;
   this.html = '<div class="proba_tree" style="text-align: center;" id=\"tree_' + this.identifiant + '\"></div>';
   this.assess_type = assess_type;
+  this.assess_mode = assess_mode;
 };
 
 Arbre.prototype.display = function() {
@@ -43,7 +44,8 @@ Arbre.prototype.update = function() {
       "bottom_label":this.questions_val_min,
       "upper_proba":this.questions_proba_haut,
       "bottom_proba":(1 - this.questions_proba_haut).toFixed(2),
-      "assess_type":this.assess_type
+      "assess_type":this.assess_type,
+      "assess_mode":this.assess_mode
     };
     $.post('ajax', JSON.stringify(ajaxdata), function(data) {
       $('#tree_' + _this.identifiant).empty();
