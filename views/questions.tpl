@@ -105,11 +105,11 @@
 				}
 			}
 
-			var mode = asses_session.attributes[indice].mode;
-			var val_min = asses_session.attributes[indice].val_min;
-			var val_max = asses_session.attributes[indice].val_max;
-			var method = asses_session.attributes[indice].method;
-			var unit = asses_session.attributes[indice].unit;
+			var mode = asses_session.attributes[indice].mode,
+				val_min = asses_session.attributes[indice].val_min,
+				val_max = asses_session.attributes[indice].val_max,
+				method = asses_session.attributes[indice].method,
+				unit = asses_session.attributes[indice].unit;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -134,7 +134,7 @@
 					// INTERFACE
 
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", (mode == "normal" ? "normal" : "reversed"));
-
+						
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
@@ -171,9 +171,9 @@
 						max_interval = data.interval[1];
 						probability = parseFloat(data.proba).toFixed(2);
 
-						if (max_interval - min_interval <= 0.05) {
+						if (max_interval-min_interval <= 0.05) {
 							sync_values();
-							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
+							ask_final_value(Math.round((max_interval+min_interval)*100/2)/100);
 						} else {
 							sync_values();
 						}
