@@ -127,9 +127,9 @@
 			if (method == 'PE') {
 				(function() {
 					// VARIABLES
-					var probability = 0.75;
-					var min_interval = 0;
-					var max_interval = 1;
+					var probability = (mode == "normal" ? 0.75 : 0.25);
+					var min_interval = (mode == "normal" ? 0 : 1);
+					var max_interval = (mode == "normal" ? 1 : 0);
 
 					// INTERFACE
 
@@ -152,7 +152,7 @@
 					}
 
 					// SETUP ARBRE GAUCHE
-					arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
+					arbre_pe.questions_proba_haut = probability;
 					arbre_pe.questions_val_max = val_max + ' ' + unit;
 					arbre_pe.questions_val_min = val_min + ' ' + unit;
 					arbre_pe.display();
@@ -162,13 +162,13 @@
 
 					// FUNCTIONS
 					function sync_values() {
-						arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
+						arbre_pe.questions_proba_haut = probability;
 						arbre_pe.update();
 					}
 
 					function treat_answer(data) {
-						min_interval = data.interval[0];
-						max_interval = data.interval[1];
+						min_interval = data.interval[(mode == "normal" ? 0:1)];
+						max_interval = data.interval[(mode == "normal" ? 1:0)];
 						probability = parseFloat(data.proba).toFixed(2);
 
 						if (max_interval-min_interval <= 0.05) {
