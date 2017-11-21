@@ -133,7 +133,10 @@
 
 					// INTERFACE
 
-					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
+					if (mode == "normal") {
+						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "normal");}
+					else if (mode == "reverse") {
+						var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", "reverse");}
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
