@@ -111,7 +111,6 @@ def ajax():
         return template('authentification', get_url=app.get_url)
     reader = codecs.getreader("utf-8")
     query = json.load(reader(request.body))
-    print query
 
     if query['type'] == "question":
         if query['method'] == 'PE':
