@@ -91,7 +91,7 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     if (assess_mode == "normal"):
         draw.text((x, y), bottom_proba, font=font, fill=(0,0,0,255))
     else:
-        draw.text((x, y), bottom_proba, font=font, fill=(0,255,0,255))
+        draw.text((x, y), bottom_proba, font=font, fill=(0,0,255,255))
     
     tree = scale(tree, text_x_gain, text_y_gain, text_x_upper_label, text_y_upper_label, text_x_bottom_label,
                  text_y_bottom_label, text_x_upper_proba, text_y_upper_proba, text_x_bottom_proba, text_y_bottom_proba)
