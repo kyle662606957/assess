@@ -167,8 +167,8 @@
 					}
 
 					function treat_answer(data) {
-						min_interval = data.interval[(mode == "normal" ? 0:1)];
-						max_interval = data.interval[(mode == "normal" ? 1:0)];
+						min_interval = data.interval[0];
+						max_interval = data.interval[1];
 						probability = parseFloat(data.proba).toFixed(2);
 
 						if (max_interval-min_interval <= 0.05) {
