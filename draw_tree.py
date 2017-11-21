@@ -48,7 +48,7 @@ def offset_y(text_y_upper_label, text_y_bottom_label):
     return offset
 
 
-def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type):
+def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type, assess_mode):
     gain = str(gain.encode('utf-8'))
     upper_label = str(upper_label.encode('utf-8'))
     bottom_label = str(bottom_label.encode('utf-8'))
@@ -79,12 +79,20 @@ def draw(gain, upper_label, bottom_label, upper_proba, bottom_proba, assess_type
     x = 190
     y = 15
     if (assess_type == "PE" or assess_type == "LE_left"):
-        draw.text((x, y), upper_proba, font=font, fill=(255,0,0,255))
+        if (assess_mode == "normal"):
+            draw.text((x, y), upper_proba, font=font, fill=(255,0,0,255))
+        else:
+            draw.text((x, y), upper_proba, font=font, fill=(0,0,0,255))
     else:
         draw.text((x, y), upper_proba, font=font, fill=(0,0,0,255))
     x = 190
     y = height - text_y_bottom_proba - 15
-    draw.text((x, y), bottom_proba, font=font, fill=(0,0,0,255))
+    
+    if (assess_mode == "normal"):
+        draw.text((x, y), bottom_proba, font=font, fill=(0,0,0,255))
+    else:
+        draw.text((x, y), bottom_proba, font=font, fill=(0,0,255,255))
+    
     tree = scale(tree, text_x_gain, text_y_gain, text_x_upper_label, text_y_upper_label, text_x_bottom_label,
                  text_y_bottom_label, text_x_upper_proba, text_y_upper_proba, text_x_bottom_proba, text_y_bottom_proba)
     draw = ImageDraw.Draw(tree)
