@@ -157,11 +157,7 @@
 					arbre_pe.display();
 					arbre_pe.update();
 
-					$('#trees').append('</div><div class=choice style="text-align: center;">
-							    <p>Which option do you prefer?</p>
-							    <button type="button" class="btn btn-default" id="gain">A</button>
-							    <button type="button" class="btn btn-default" id="lottery">B</button>
-							    </div>');
+					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>');
 
 					// FUNCTIONS
 					function sync_values() {
