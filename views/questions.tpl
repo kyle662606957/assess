@@ -165,7 +165,7 @@
 					}
 
 					// SETUP ARBRE GAUCHE
-					arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
+					arbre_pe.questions_proba_haut = probability;
 					arbre_pe.questions_val_max = val_max + ' ' + unit;
 					arbre_pe.questions_val_min = val_min + ' ' + unit;
 					arbre_pe.display();
@@ -176,7 +176,7 @@
 
 					// FUNCTIONS
 					function sync_values() {
-						arbre_pe.questions_proba_haut = (mode == "normal" ? probability : 1-probability);
+						arbre_pe.questions_proba_haut = probability;
 						arbre_pe.update();
 					}
 
