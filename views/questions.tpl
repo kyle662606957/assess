@@ -132,25 +132,23 @@
 					var max_interval = 1;
 
 					// INTERFACE
-
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", mode));
-						
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					var nbr = asses_session.attributes[indice].questionnaire.number;
-					if (nbr == 0 || nbr == 1 || nbr == 0) {
-						if (nbr == 0) {
-							//For the 1st questionnaire, the certain gain is the average between val_min and val_max
-							var gain_certain = (parseFloat(val_max)+parseFloat(val_min))/2;
-						} else if (nbr == 1) {
-							//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
-							var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 1/4 : 3/4);
-						} else if (nbr == 2) {
-							//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
-							var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 3/4 : 4/4);
-						}
+					if (asses_session.attributes[indice].questionnaire.number == 0) {
+						//For the 1st questionnaire, the certain gain is the average between val_min and val_max
+						var gain_certain = (parseFloat(val_max)+parseFloat(val_min))/2;
+						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
+					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
+						//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
+						var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 1/4 : 3/4);
+						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
+					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+						//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
+						var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 3/4 : 4/4);
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
+					
 
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
@@ -172,7 +170,7 @@
 						max_interval = data.interval[1];
 						probability = parseFloat(data.proba).toFixed(2);
 
-						if (Math.abs(max_interval-min_interval) <= 0.05) {
+						if (max_interval-min_interval <= 0.05) {
 							sync_values();
 							ask_final_value(Math.round((max_interval+min_interval)*100/2)/100);
 						} else {
