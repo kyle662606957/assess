@@ -187,7 +187,8 @@
 
 						if (max_interval - min_interval <= 0.05) {
 							sync_values();
-							ask_final_value(Math.round((max_interval + min_interval)*100/2)/100); // Rounded value with two decimals (*100/100)						} else {
+							ask_final_value(Math.round((max_interval + min_interval)*100/2)/100); // Rounded value with two decimals (*100/100)						
+						} else {
 							sync_values();
 						}
 					}
