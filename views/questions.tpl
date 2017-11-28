@@ -133,21 +133,22 @@
 
 					// INTERFACE
 
-					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", (mode == "normal" ? "normal" : "reversed"));
+					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", mode));
 						
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						//For the 1st questionnaire, the certain gain is the average between val_min and val_max
-						var gain_certain = (parseFloat(val_max)+parseFloat(val_min))/2;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * (mode == "normal" ? 1/4 : 3/4);
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * (mode == "normal" ? 3/4 : 4/4);
+					var nbr = asses_session.attributes[indice].questionnaire.number;
+					if (nbr == 0 || nbr == 1 || nbr == 0) {
+						if (nbr == 0) {
+							//For the 1st questionnaire, the certain gain is the average between val_min and val_max
+							var gain_certain = (parseFloat(val_max)+parseFloat(val_min))/2;
+						} else if (nbr == 1) {
+							//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
+							var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 1/4 : 3/4);
+						} else if (nbr == 2) {
+							//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
+							var gain_certain = parseFloat(val_min)+(parseFloat(val_max)-parseFloat(val_min))*(mode == "normal" ? 3/4 : 4/4);
+						}
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
 
@@ -167,11 +168,11 @@
 					}
 
 					function treat_answer(data) {
-						min_interval = data.interval[(mode == "normal" ? 0 : 1)];
-						max_interval = data.interval[(mode == "normal" ? 1 : 0)];
+						min_interval = data.interval[0];
+						max_interval = data.interval[1];
 						probability = parseFloat(data.proba).toFixed(2);
 
-						if (max_interval-min_interval <= 0.05) {
+						if (Math.abs(max_interval-min_interval) <= 0.05) {
 							sync_values();
 							ask_final_value(Math.round((max_interval+min_interval)*100/2)/100);
 						} else {
@@ -210,13 +211,13 @@
 
 					// HANDLE USERS ACTIONS
 					$('#gain').click(function() {
-						$.post('ajax', '{"type":"question", "method": "PE", "proba": ' + String((mode == "normal" ? probability : 1-probability)) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0", "mode": "' + String(mode) + '"}', function(data) {
+						$.post('ajax', '{"type":"question", "method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0", "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 						});
 					});
 
 					$('#lottery').click(function() {
-						$.post('ajax', '{"type":"question","method": "PE", "proba": ' + String((mode == "normal" ? probability : 1-probability)) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
+						$.post('ajax', '{"type":"question","method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
 							treat_answer(data);
 						});
 					});
