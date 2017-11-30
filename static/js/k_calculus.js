@@ -614,18 +614,19 @@ function k_answer(i, type)
 					max_interval = 1;
 
 				// VARIABLES
-				var gain_certain = gain_haut = gain_bas = '';
+				var gain_certain = gain_haut = gain_bas = '',
+					len = asses_session.k_calculus[type].k.length;
 
-				for (var l=0; l < asses_session.k_calculus[type].k.length; l++) {
+				for (var l=0; l < len; l++) {
 					var attrib = asses_session.attributes[asses_session.k_calculus[type].k[l].ID_attribute];
 					if (attrib.name == name) {
-						gain_certain += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_haut += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_bas += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
+						gain_certain += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+						gain_haut += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+						gain_bas += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 					} else {
-						gain_certain += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
-						gain_haut += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_bas += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
+						gain_certain += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+						gain_haut += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+						gain_bas += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 					};	
 				}
 
