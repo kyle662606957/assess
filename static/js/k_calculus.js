@@ -402,7 +402,6 @@ function k_multilinear_answer(i)
 				var gain_haut = "";
 				var gain_bas = "";
 
-
 				var k=0;
 				//first we delete the array of k for multiplicative
 				for (var l=0; l < asses_session.attributes.length; l++){
@@ -410,24 +409,31 @@ function k_multilinear_answer(i)
 					{
 						continue;
 					}
-					if(l==mon_k.ID_attribute[k])//if the attribut is in our list
+					if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
 					{
 						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						k++;
+						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
 					}
-					else
+					if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode!="normal")
 					{
 						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-					}
-					if(mode=="normal")
-					{
 						gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 					}
-					else
+					if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
 					{
+						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						k++;
 						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+					}
+					if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode!="normal")
+					{
+						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 					}
 				}
 
@@ -441,22 +447,15 @@ function k_multilinear_answer(i)
 
 				// SETUP ARBRE GAUCHE
 				arbre_gauche.questions_proba_haut = probability;
-				if(mode=="normal")
-				{
-					arbre_gauche.questions_val_max = gain_haut;
-					arbre_gauche.questions_val_min = gain_bas;
-				}
-				else
-				{
-					arbre_gauche.questions_val_max = gain_bas;
-					arbre_gauche.questions_val_min = gain_haut;
-				}
+				arbre_gauche.questions_val_max = gain_haut;
+				arbre_gauche.questions_val_min = gain_bas;
 				//arbre_gauche.questions_val_max = gain_haut;
 				//arbre_gauche.questions_val_min = gain_bas;
 				arbre_gauche.questions_val_mean = gain_certain;
 				arbre_gauche.display();
 				arbre_gauche.update();
-
+				
+				
 				$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">A</button><button type="button" class="btn btn-default lottery">B</button></div><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
 
