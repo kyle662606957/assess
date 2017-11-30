@@ -409,6 +409,7 @@ function k_multilinear_answer(i, type)
 					{
 						continue;
 					}
+					
 					if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
 					{
 						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
@@ -615,13 +616,13 @@ function k_answer(i, type)
 				// VARIABLES
 				if(mode=="normal")
 				{
-					var gain_certain = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-					var gain_haut = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-					var gain_bas = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_certain = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
+					var gain_haut = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
+					var gain_bas = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
 				} else {
-					var gain_certain = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-					var gain_haut = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-					var gain_bas = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_certain = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
+					var gain_haut = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
+					var gain_bas = '<b>' + String(name).toUpperCase() + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit + '</b>';
 				};
 
 				for (var l = 0; l < i; l++)
