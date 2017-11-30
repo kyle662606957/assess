@@ -358,7 +358,7 @@ function update_active_button_multilinear()
 
 
 
-function k_multilinear_answer(i)
+function k_multilinear_answer(i, type)
 {
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 	var method = 'PE';
