@@ -1,7 +1,5 @@
 %include('header_init.tpl', heading='Assess utility functions')
-
 <h3 id="attribute_name"></h3>
-
 <div id="select">
 	<table class="table">
 		<thead>
@@ -14,19 +12,15 @@
 				<th>Reset assessements</th>
 			</tr>
 		</thead>
-		
-		<tbody id="table_attributes"></tbody>
-		
+		<tbody id="table_attributes">
+		</tbody>
 	</table>
 </div>
-
 <div id="trees">
 </div>
-
 <div id="charts">
 	<h2>Select the regression function you want to use</h2>
 </div>
-
 <div id="main_graph" class="col-lg-5"></div>
 <div id="functions" class="col-lg-7"></div>
 
@@ -40,9 +34,6 @@
 <!-- Tree object -->
 <script src="{{ get_url('static', path='js/tree.js') }}"></script>
 
-<script src="questions.js"></script>
-
-<!-- Library to copy into clipboard -->
 <script>
 	$(function() {
 		$('li.questions').addClass("active");
@@ -60,24 +51,20 @@
 				continue; //we pass to the next one
 			var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>' + asses_session.attributes[i].method + '</td><td>' + asses_session.attributes[i].questionnaire.number + '</td>';
 
-			// Test to display the Assess button or not (if there has already been 3 tests)
 			if (asses_session.attributes[i].questionnaire.number !== 3) {
 				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name + '">Assess</button></td>';
 			} else {
 				text += '<td>Three points max</td>';
 			}
 
-			// Test to display utility function and reset/delete buttons, or not (if not assessment yet)
 			if (asses_session.attributes[i].questionnaire.number > 0) {
 				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
 				text += '<td>No assessment yet</td>';
 			}
 
-			// Displays the text
 			$('#table_attributes').append(text);
 
-			// Delete function
 			(function(_i) {
 					$('#deleteK' + _i).click(function() {
 							if (confirm("Are you sure ?") == false) {
@@ -105,7 +92,7 @@
 			// we store the name of the attribute
 			var name = $(this).attr('id').slice(2);
 
-			// we delete the select div
+			// we delete the slect div
 			$('#select').hide();
 			$('#attribute_name').show().html(name);
 
@@ -124,7 +111,6 @@
 			var method = asses_session.attributes[indice].method;
 			var unit = asses_session.attributes[indice].unit;
 
-			// Function that has a 50/50 probability of returning either proba1 or proba2 (coin toss)
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
 				if (coin == 1) {
@@ -141,26 +127,23 @@
 			if (method == 'PE') {
 				(function() {
 					// VARIABLES
-					var probability = (mode == "normal" ? 0.75 : 0.25);
+					var probability = 0.75;
 					var min_interval = 0;
 					var max_interval = 1;
 
 					// INTERFACE
 
-					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE", (mode == "normal" ? "normal" : "reversed"));
+					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						//For the 1st questionnaire, the certain gain is the average between val_min and val_max
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						//For the 2nd questionnaire, the certain gain is the first quarter between val_min and val_max
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min))*(mode == "normal" ? 1/4 : 3/4);
+						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						//For the 3rd questionnaire, the certain gain is the third quarter between val_min and val_max
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min))*(mode == "normal" ? 3/4 : 4/4);
+						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
 
@@ -171,7 +154,6 @@
 					arbre_pe.display();
 					arbre_pe.update();
 
-					// Texte en bas et choix entre A et B
 					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>');
 
 					// FUNCTIONS
@@ -187,7 +169,7 @@
 
 						if (max_interval - min_interval <= 0.05) {
 							sync_values();
-							ask_final_value(Math.round((max_interval + min_interval)*100/2)/100); // Rounded value with two decimals (*100/100)						
+							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
 						} else {
 							sync_values();
 						}
@@ -803,8 +785,9 @@
 
 		});
 	});
-
 </script>
+<!-- Library to copy into clipboard -->
+<script src="{{ get_url('static', path='js/clipboard.min.js') }}"></script>
 </body>
 
 </html>
