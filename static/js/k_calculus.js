@@ -617,7 +617,7 @@ function k_answer(i, type)
 				{
 					var gain_certain = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 					var gain_haut = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_max + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
-					var gain_bas =String(name) + ': ' +  asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
+					var gain_bas = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 				} else {
 					var gain_certain = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
 					var gain_haut = String(name) + ': ' + asses_session.attributes[mon_k.ID_attribute].val_min + ' ' + asses_session.attributes[mon_k.ID_attribute].unit;
@@ -627,17 +627,29 @@ function k_answer(i, type)
 				for (var l = 0; l < i; l++)
 				{
 					var pre_k = asses_session.k_calculus[type].k[l];
-					gain_certain += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
-					gain_haut += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_max + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
-					gain_bas += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+					if (asses_session.attributes[pre_k.ID_attribute].mode == "normal") {
+						gain_certain += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+						gain_haut += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_max + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+						gain_bas += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+					} else {
+						gain_certain += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_max + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+						gain_haut += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_min + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+						gain_bas += '<br/>' + String(asses_session.attributes[pre_k.ID_attribute].name) + ': ' + asses_session.attributes[pre_k.ID_attribute].val_max + ' ' + asses_session.attributes[pre_k.ID_attribute].unit;
+					};
 				}
 
 				for (var l = i + 1 ; l < asses_session.k_calculus[type].k.length; l++)
 				{
 					var post_k = asses_session.k_calculus[type].k[l];
-					gain_certain += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
-					gain_haut += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_max + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
-					gain_bas += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+					if (asses_session.attributes[post_k.ID_attribute].mode == "normal") {
+						gain_certain += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+						gain_haut += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_max + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+						gain_bas += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+					} else {
+						gain_certain += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_max + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+						gain_haut += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_min + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+						gain_bas += '<br/>' + String(asses_session.attributes[post_k.ID_attribute].name) + ': ' + asses_session.attributes[post_k.ID_attribute].val_max + ' ' + asses_session.attributes[post_k.ID_attribute].unit;
+					};
 				}
 
 				// INTERFACE
