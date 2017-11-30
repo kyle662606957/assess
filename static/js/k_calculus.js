@@ -619,13 +619,13 @@ function k_answer(i, type)
 				for (var l=0; l < asses_session.k_calculus[type].k.length; l++) {
 					var attrib = asses_session.attributes[asses_session.k_calculus[type].k[l].ID_attribute];
 					if (attrib.name == name) {
-						gain_certain += String(attrib.name).toUpperCase() + ' : ' + (mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_haut += String(attrib.name).toUpperCase() + ' : ' + (mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_bas += String(attrib.name).toUpperCase() + ' : ' + (mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
+						gain_certain += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
+						gain_haut += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
+						gain_bas += String(attrib.name).toUpperCase() + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
 					} else {
-						gain_certain += String(attrib.name) + ' : ' + (mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
-						gain_haut += String(attrib.name) + ' : ' + (mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
-						gain_bas += String(attrib.name) + ' : ' + (mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
+						gain_certain += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
+						gain_haut += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_max : attrib.val_min) + ' ' + attrib.unit + ' <br/> ';
+						gain_bas += String(attrib.name) + ' : ' + (attrib.mode=="normal"? attrib.val_min : attrib.val_max) + ' ' + attrib.unit + ' <br/> ';
 					};	
 				}
 
