@@ -608,7 +608,7 @@ function k_answer(i, type)
 		if (method == 'PE') {
 			(function(){
 
-				var probability = random_proba(0.25, 0.75);
+				var probability = random_proba(0.35, 0.55);
 				var min_interval = 0;
 				var max_interval = 1;
 
