@@ -6,6 +6,7 @@ import fit
 import random
 import math
 from functions import *
+import timetable
 
 import xlsxwriter
 from xlsxwriter.utility import xl_rowcol_to_cell
@@ -15,7 +16,9 @@ def generate_fichier(data):
 
     # On crée un "classeur"
 
-    r = random.randint(1, 1000)
+    #r = random.randint(1, 1000)
+	date = timetable.timetable.now()
+	r = date.strftime("%d-%m-%Y-%H-%M")
     classeur = xlsxwriter.Workbook('fichier' + str(r) + '.xlsx')
     # On ajoute une feuille au classeur
 
