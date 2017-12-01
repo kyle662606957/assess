@@ -14,8 +14,8 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 def generate_fichier(data):
 
     # On crée un "classeur"
-	
-	r = random.randint(1, 1000)
+
+    r = random.randint(1, 1000)
     classeur = xlsxwriter.Workbook('fichier' + str(r) + '.xlsx')
     # On ajoute une feuille au classeur
 
@@ -124,12 +124,13 @@ def generate_fichier(data):
 
             parameters=utilities[utility]
 
-            # On remplit les coefficients
+            # On rempli les coefficients
             try:
                 # On remplit d'abord le dernier car pour les coefficients d ça
                 # s'arretera
                 feuille.write(ligne + 6, 5, parameters['r2'], formatCoeff)
-                feuille.write(ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
+                feuille.write(
+                    ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
                 feuille.write(ligne + 2, 5, parameters['a'], formatCoeff)
                 feuille.write(ligne + 3, 5, parameters['b'], formatCoeff)
                 feuille.write(ligne + 4, 5, parameters['c'], formatCoeff)
@@ -142,30 +143,38 @@ def generate_fichier(data):
             feuille.write(ligne + 0, 6, 'Calculated points', formatTitre)
             feuille.write(ligne + 0, 7, '', formatTitre)
             # On va maintenant generer plusieurs points
-            amplitude = (monAttribut['val_max'] - monAttribut['val_min']) / 10.0
+            amplitude = (monAttribut['val_max'] -
+                         monAttribut['val_min']) / 10.0
             for i in range(0, 11):
                 feuille.write(ligne + 1 + i, 6, monAttribut['val_min'] + i * amplitude)
                 if utility == 'exp':
-                    feuille.write_formula(ligne + 1 + i, 7, funcexp_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
+                    feuille.write_formula(ligne + 1 + i, 7, funcexp_excel("G" + str(
+                        ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
                 elif utility == 'quad':
-                    feuille.write_formula(ligne + 1 + i, 7, funcquad_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
+                    feuille.write_formula(ligne + 1 + i, 7, funcquad_excel("G" + str(
+                        ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
                 elif utility == 'pow':
-                    feuille.write_formula(ligne + 1 + i, 7, funcpuis_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
+                    feuille.write_formula(ligne + 1 + i, 7, funcpuis_excel("G" + str(
+                        ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
                 elif utility == 'log':
-                    feuille.write_formula(ligne + 1 + i, 7, funclog_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5), "$F$" + str(ligne + 6)))
+                    feuille.write_formula(ligne + 1 + i, 7, funclog_excel("G" + str(ligne + 2 + i), "$F$" + str(
+                        ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5), "$F$" + str(ligne + 6)))
                 elif utility == 'lin':
-                    feuille.write_formula(ligne + 1 + i, 7, funclin_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4)))
+                    feuille.write_formula(ligne + 1 + i, 7, funclin_excel(
+                        "G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4)))
                 elif utility == 'expo-power':
-                    feuille.write_formula(ligne + 1 + i, 7, funcexpopower_excel("G" + str(ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
+                    feuille.write_formula(ligne + 1 + i, 7, funcexpopower_excel("G" + str(
+                        ligne + 2 + i), "$F$" + str(ligne + 3), "$F$" + str(ligne + 4), "$F$" + str(ligne + 5)))
 
             # Ensuite on fait le Chart ! (le diagramme)
-            chart5 = classeur.add_chart({'type': 'scatter', 'subtype': 'smooth'})
+            chart5 = classeur.add_chart({'type': 'scatter',
+                                         'subtype': 'smooth'})
 
             # Configure the first series.
             chart5.add_series({
                               'name':       utility,
-                              'categories': '=\'' + monAttribut['name'] + '\'' + '!$G$' + str(ligne + 2) + ':$G$' + str(ligne + 12),
-                              'values':     '=\'' + monAttribut['name'] + '\'' + '!$H$' + str(ligne + 2) + ':$H$' + str(ligne + 12),
+                              'categories': '=' + monAttribut['name'] + '!$G$' + str(ligne + 2) + ':$G$' + str(ligne + 12),
+                              'values':     '=' + monAttribut['name'] + '!$H$' + str(ligne + 2) + ':$H$' + str(ligne + 12),
 
                               })
 
@@ -180,7 +189,8 @@ def generate_fichier(data):
             })
 
             # Insert the chart into the worksheet (with an offset).
-            feuille.insert_chart('I' + str(1 + ligne), chart5, {'x_offset': 25, 'y_offset': 10})
+            feuille.insert_chart('I' + str(1 + ligne),
+                                 chart5, {'x_offset': 25, 'y_offset': 10})
 
             ligne += 15
 
@@ -240,22 +250,30 @@ def generate_fichier(data):
 
                 feuille.write(numero, 4, myUtility['type'])
 
-                feuille.write(ligne, 4 + numero, "x" + str(numero), formatTitre)
+                feuille.write(ligne, 4 + numero, "x" +
+                              str(numero), formatTitre)
                 feuille.write(ligne + 1, 4 + numero, 1)
 
-                feuille.write(ligne, 4 + numero + numberUtilities, "u" + str(numero) + "(x" + str(numero) + ")", formatTitre)
+                feuille.write(ligne, 4 + numero + numberUtilities, "u" +
+                              str(numero) + "(x" + str(numero) + ")", formatTitre)
                 if myUtility['type'] == 'exp':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcexp_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcexp_excel(xl_rowcol_to_cell(
+                        ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
                 elif myUtility['type'] == 'quad':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcquad_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcquad_excel(xl_rowcol_to_cell(
+                        ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
                 elif myUtility['type'] == 'pow':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcpuis_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcpuis_excel(xl_rowcol_to_cell(
+                        ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
                 elif myUtility['type'] == 'log':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funclog_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c']), str(myUtility['d'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funclog_excel(xl_rowcol_to_cell(
+                        ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c']), str(myUtility['d'])))
                 elif myUtility['type'] == 'lin':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funclin_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funclin_excel(
+                        xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b'])))
                 elif myUtility['type'] == 'expo-power':
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcexpopower_excel(xl_rowcol_to_cell(ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
+                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, funcexpopower_excel(xl_rowcol_to_cell(
+                        ligne + 1, 4 + numero), str(myUtility['a']), str(myUtility['b']), str(myUtility['c'])))
 
                 numero = numero + 1
 
@@ -271,20 +289,29 @@ def generate_fichier(data):
             if mesK['method'] == "multiplicative":
                 if numberUtilities == 2:
                     GU = utilite2_excel(K(1), K(2), K(3), U(1), U(2))
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                    feuille.write_formula(
+                        ligne + 1, 4 + numero + numberUtilities, GU)
                 if numberUtilities == 3:
                     # in reality K(4) is K
-                    GU = utilite3_excel(K(1), K(2), K(3), K(4), U(1), U(2), U(3))
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                    GU = utilite3_excel(K(1), K(2), K(
+                        3), K(4), U(1), U(2), U(3))
+                    feuille.write_formula(
+                        ligne + 1, 4 + numero + numberUtilities, GU)
                 if numberUtilities == 4:
-                    GU = utilite4_excel(K(1), K(2), K(3), K(4), K(5), U(1), U(2), U(3), U(4))
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                    GU = utilite4_excel(K(1), K(2), K(3), K(
+                        4), K(5), U(1), U(2), U(3), U(4))
+                    feuille.write_formula(
+                        ligne + 1, 4 + numero + numberUtilities, GU)
                 if numberUtilities == 5:
-                    GU = utilite5_excel(K(1), K(2), K(3), K(4), K(5), K(6), U(1), U(2), U(3), U(4), U(5))
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                    GU = utilite5_excel(K(1), K(2), K(3), K(4), K(
+                        5), K(6), U(1), U(2), U(3), U(4), U(5))
+                    feuille.write_formula(
+                        ligne + 1, 4 + numero + numberUtilities, GU)
                 if numberUtilities == 6:
-                    GU = utilite6_excel(K(1), K(2), K(3), K(4), K(5), K(6), K(7), U(1), U(2), U(3), U(4), U(5), U(6))
-                    feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                    GU = utilite6_excel(K(1), K(2), K(3), K(4), K(5), K(
+                        6), K(7), U(1), U(2), U(3), U(4), U(5), U(6))
+                    feuille.write_formula(
+                        ligne + 1, 4 + numero + numberUtilities, GU)
 
             else:
                 nombre = 1
@@ -297,7 +324,8 @@ def generate_fichier(data):
                     nombre = nombre + 1
 
                 GU = GU[:-1]
-                feuille.write_formula(ligne + 1, 4 + numero + numberUtilities, GU)
+                feuille.write_formula(
+                    ligne + 1, 4 + numero + numberUtilities, GU)
 
     # Ecriture du classeur sur le disque
     classeur.close()
@@ -418,7 +446,8 @@ def generate_fichier_with_specification(data):
                 # On remplit d'abord le dernier car pour les coefficients d ça
                 # s'arretera
                 feuille.write(ligne + 6, 5, utility['r2'], formatCoeff)
-                feuille.write(ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
+                feuille.write(
+                    ligne + 7, 5, convert_to_text(utility, parameters, "x"), formatCoeff)
                 feuille.write(ligne + 2, 5, utility['a'], formatCoeff)
                 feuille.write(ligne + 3, 5, utility['b'], formatCoeff)
                 feuille.write(ligne + 4, 5, utility['c'], formatCoeff)
