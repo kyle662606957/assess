@@ -625,11 +625,11 @@ function k_answer(i, type)
 					if (attrib.name == name) {
 						gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 					} else {
-						gain_certain += String(attrib.name) + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+						gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 					};
 					
 					gain_haut += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-					gain_bas += String(attrib.name) + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+					gain_bas += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 						
 				}
 
