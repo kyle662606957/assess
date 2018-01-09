@@ -127,13 +127,13 @@
 			if (method == 'PE') {
 				(function() {
 					// VARIABLES
-					var probability = 0.75;
-					var min_interval = 0;
-					var max_interval = 1;
+					var probability = 0.75,
+						min_interval = 0,
+						max_interval = 1;
 
 					// INTERFACE
-
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
+					
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
 					if (asses_session.attributes[indice].questionnaire.number == 0) {
@@ -149,8 +149,10 @@
 
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
-					arbre_pe.questions_val_max = val_max + ' ' + unit;
-					arbre_pe.questions_val_min = val_min + ' ' + unit;
+					
+					arbre_pe.questions_val_max = (mode=="normal"? val_max : val_min) + ' ' + unit;
+					arbre_pe.questions_val_min = (mode=="normal"? val_min : val_max) + ' ' + unit;
+					
 					arbre_pe.display();
 					arbre_pe.update();
 

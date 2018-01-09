@@ -259,9 +259,10 @@ function update_k_list(number)
 			(function(_i){
 					$('#k_answer_'+_i).click(function(){
 						$('#k_answer_'+_i).hide();
-						if(number==0)//multiplicative
-						k_answer(_i, number);
-						else if(number==1)//multilinear
+						if(number==0) //multiplicative
+							k_answer(_i, number);
+						
+						else if(number==1) //multilinear
 						{
 							if (_i == ma_list.length - 1) {
 								k_multilinear_calculate_last_one(_i);
@@ -357,7 +358,7 @@ function update_active_button_multilinear()
 
 
 
-
+//// Définition de la fonction qui va calculer K en MULTILINEAIRE 
 function k_multilinear_answer(i, type)
 {
 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
@@ -572,8 +573,8 @@ function k_multilinear_calculate_last_one(i)
 	});
 }
 
-
-function k_answer(i, type)
+//// Définition de la fonction qui va calculer K en MULTIPLICATIF 
+function k_answer(i, type) 
 {
 
 	 	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
@@ -615,7 +616,7 @@ function k_answer(i, type)
 
 				// VARIABLES
 				var gain_certain = gain_haut = gain_bas = '',
-					len = asses_session.k_calculus[type].k.length;
+					len = asses_session.k_calculus[type].k.length; // nombre d'attributs avec lesquels on compute le K
 
 				for (var l=0; l < len; l++) {
 					var attrib = asses_session.attributes[asses_session.k_calculus[type].k[l].ID_attribute]
