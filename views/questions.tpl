@@ -94,7 +94,7 @@
 
 			// we delete the slect div
 			$('#select').hide();
-			$('#attribute_name').show().html(name.toUpperCase);
+			$('#attribute_name').show().html(name.toUpperCase());
 
 
 			// which index is it ?
