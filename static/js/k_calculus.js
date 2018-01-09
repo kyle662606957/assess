@@ -394,44 +394,43 @@ function k_multilinear_answer(i, type)
 		if (method == 'PE') {
 			(function(){
 
-				var probability = random_proba(0.25, 0.75);
-				var min_interval = 0;
-				var max_interval = 1;
+				var probability = 0.75, //random_proba(0.25, 0.75);
+					min_interval = 0,
+					max_interval = 1;
 
 				// VARIABLES
-				var gain_certain = "";
-				var gain_haut = "";
-				var gain_bas = "";
+				var gain_certain = gain_haut = gain_bas = "",
+					len = asses_session.attributes.length; // nombre d'attributs avec lesquels on compute le K
 
-				var k=0;
+				var k = 0;
 				//first we delete the array of k for multiplicative
-				for (var l=0; l < asses_session.attributes.length; l++){
-					if(!asses_session.attributes[l].checked)//if not checked we don't put it
-					{
-						continue;
-					}
+				for (var l = 0; l < len; l++){
+					// if(!asses_session.attributes[l].checked)//if not checked we don't put it
+					// {
+						// continue;
+					// }
 					
 					if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
 					{
 						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
-						k++;
 						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						k++;
 					}
-					if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode!="normal")
+					else if(l==mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="reverse")
 					{
 						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 					}
-					if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
+					else if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="normal")//if the attribut is in our list
 					{
 						gain_certain += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
-						k++;
 						gain_haut += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_bas += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
+						k++;
 					}
-					if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode!="normal")
+					else if(l!=mon_k.ID_attribute[k] && asses_session.attributes[l].mode=="reverse")
 					{
 						gain_certain += asses_session.attributes[l].val_max + ' ' + asses_session.attributes[l].unit+' <br/> ';
 						gain_haut += asses_session.attributes[l].val_min + ' ' + asses_session.attributes[l].unit+' <br/> ';
