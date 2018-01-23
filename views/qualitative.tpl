@@ -34,13 +34,18 @@
     </div>
 
     <div class="form-group">
-        <label for="att_value_min">Min value:</label>
-        <input type="text" class="form-control" id="att_value_min" placeholder="Value">
+        <label for="att_value_worst">Min value:</label>
+        <input type="text" class="form-control" id="att_value_worst" placeholder="Value">
+    </div>
+	
+	<div class="form-group">
+        <label for="att_value_med">Medium value:</label>
+        <input type="text" class="form-control" id="att_value_med" placeholder="Value">
     </div>
 	
     <div class="form-group">
-        <label for="att_value_max">Max value:</label>
-        <input type="text" class="form-control" id="att_value_max" placeholder="Value">
+        <label for="att_value_best">Max value:</label>
+        <input type="text" class="form-control" id="att_value_best" placeholder="Value">
     </div>
 	
     <div class="form-group">
@@ -146,10 +151,10 @@
                         text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
 
 
-
+					// A CHANGER APRES AVOIR FINI DE CREER LES VALEURS INTERMEDIAIRES
                     text_table += '<td>' + attribute.name + '</td>' +
-								  '<td><ul><li>' + attribute.val_min + '</li>'+
-								  '<li>' + attribute.val_max + '</li></td>'+
+								  '<td><ul><li>' + attribute.val_worst + '</li>'+
+								  '<li>' + attribute.val_best + '</li></td>'+
 								  '<td>' + attribute.method + '</td>'+
 								  '<td>' + attribute.mode + '</td>';
 								  
@@ -183,9 +188,8 @@
                           var attribute_edit = assess_session_QUALI.attributes[_i];
                           $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
                           $('#att_name').val(attribute_edit.name);
-                          $('#att_unit').val(attribute_edit.unit);
-                          $('#att_value_min').val(attribute_edit.val_min);
-                          $('#att_value_max').val(attribute_edit.val_max);
+                          $('#att_value_worst').val(attribute_edit.val_worst);
+                          $('#att_value_best').val(attribute_edit.val_best);
                           $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
                           if (attribute_edit.mode=="normal") {
                             $('#att_mode').prop('checked', false);
@@ -203,9 +207,7 @@
         var name = $('#att_name').val();
 
         $('#submit').click(function() {
-            var name = $('#att_name').val(),
-				val_min = parseInt($('#att_value_min').val()),
-				val_max = parseInt($('#att_value_max').val());
+            var name = $('#att_name').val();
 
             var method = "PE";
             <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
@@ -218,31 +220,21 @@
                 <!-- method = "CE_Variable_Prob"; -->
             <!-- } -->
 
-            if ($('input[name=mode]').is(':checked')) {
-                var mode = "reversed";
-            } else {
-                var mode = "normal";
-            }
-
-            if (!(name || unit || val_min || val_max) || isNaN(val_min) || isNaN(val_max)) {
+            
+            if (!(name || val_worst || val_best)) {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
               alert ("An attribute with the same name already exists");
-            }
-            else if (val_min > val_max) {
-              alert ("Minimum value must be inferior to maximum value");
             }
 
             else {
               if (edit_mode==false) {
                 assess_session_QUALI.attributes.push({
                     "name": name,
-                    'unit': unit,
-                    'val_min': val_min,
-                    'val_max': val_max,
+                    'val_worst': val_worst,
+                    'val_best': val_best,
                     'method': method,
-                    'mode': mode,
                     'completed': 'False',
                     'checked': true,
                     'questionnaire': {
@@ -255,11 +247,9 @@
                 if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
                   assess_session_QUALI.attributes[edited_attribute]={
                     "name": name,
-                    'unit': unit,
-                    'val_min': val_min,
-                    'val_max': val_max,
+                    'val_worst': val_worst,
+                    'val_best': val_best,
                     'method': method,
-                    'mode': mode,
                     'completed': 'False',
                     'checked': true,
                     'questionnaire': {
@@ -274,6 +264,9 @@
               }
                 sync_table();
                 localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+				$('#att_name').val("");
+				$('#att_value_worst').val("");
+				$('#att_value_best').val("");
             }
 
 
