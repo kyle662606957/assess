@@ -39,10 +39,13 @@
 	
 	<div class="form-group">
         <label for="att_value_med">Medium value:</label>
-        <input type="text" class="form-control" id="att_value_med" placeholder="Value">
-		
-		<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>
-		<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
+		<ol>
+			<li><input type="text" class="form-control" id="att_value_med_1" placeholder="Value Med 1"></li>
+			<li>
+				<input type="button" class="btn btn-default" align="left" id="add_value_med" value="Add an item"/>
+				<input type="button" class="btn btn-default" align="right" id="del_value_med" value="Delete last item"/>
+			</li>
+		</ul>
     </div>
 	
     <div class="form-group">
@@ -73,7 +76,32 @@
 
 %include('js.tpl')
 
+
+
+
 <script>
+
+	$(function() {
+		var lists = document.getElementsByTagName('li'),
+			add_value_med = document.getElementById('add_value_med'),
+			del_value_med = document.getElementById('del_value_med');
+
+		add_value_med.addEventListener('click', function() {
+			var longueur = document.getElementsByTagName('li').length;
+			var new_item = document.createElement('li');
+			new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_1" placeholder="Value Med 1">";
+			
+			lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
+		});
+
+		del_value_med.addEventListener('click', function() {
+			var longueur = document.getElementsByTagName('li').length;
+			lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+		});
+	};
+
+
+
     $(function() {
 
         $('#edit_attribute').hide();
