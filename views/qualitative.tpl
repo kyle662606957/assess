@@ -109,7 +109,7 @@ del_value_med.addEventListener('click', function() {
             if (confirm("Are you sure ?") == false) {
                 return
             };
-            localStorage.clear("assess_session_QUALI");
+            localStorage.removeItem("assess_session_QUALI");
             window.location.reload();
         });
         $('li.manage_quali').addClass("active");
