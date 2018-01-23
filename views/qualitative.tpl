@@ -39,13 +39,13 @@
 	
 	<div class="form-group">
         <label for="att_value_med">Medium value:</label>
-		<ol>
+		<ol id="list_med_values">
 			<li><input type="text" class="form-control" id="att_value_med_1" placeholder="Value Med 1"></li>
 			<li>
-				<input type="button" class="btn btn-default" align="left" id="add_value_med" value="Add an item"/>
-				<input type="button" class="btn btn-default" align="right" id="del_value_med" value="Delete last item"/>
+				<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
+				<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
 			</li>
-		</ul>
+		</ol>
     </div>
 	
     <div class="form-group">
@@ -54,21 +54,15 @@
     </div>
 	
     <div class="form-group">
-        <label for="att_method">Method:</label>
+        <label for="att_method">Method: (for now, it's always forced to PE)</label>
         <select class="form-control" id="att_method">
           <option value="PE">Probability Equivalence</option>
-          <!-- <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
+          <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
 		  <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
-          <option value="LE">Lottery Equivalence</option> -->
+          <option value="LE">Lottery Equivalence</option>
         </select>
     </div>
 	
-    <!-- 
-	<div class="checkbox">
-        <label><input name="mode" type="checkbox" id="att_mode" placeholder="Mode"> The min value is preferred (decreasing utility function)</label>
-    </div>
-	-->
-
     <button type="submit" class="btn btn-default" id="submit">Submit</button>
 
 </div>
@@ -81,21 +75,22 @@
 
 <script>
 
-var lists = document.getElementsByTagName('li'),
+// Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires
+var list_med_values = document.getElementById('list_med_values'),
+	lists = list_med_values.getElementsByTagName('li'),
 	add_value_med = document.getElementById('add_value_med'),
 	del_value_med = document.getElementById('del_value_med');
 
 add_value_med.addEventListener('click', function() {
-	var longueur = document.getElementsByTagName('li').length;
-	alert(longueur);
-	//var new_item = document.createElement('li');
-	//new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +" placeholder=Value Med "+ longueur +">";
+	var longueur = lists.length;
+	var new_item = document.createElement('li');
+	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +" placeholder=Value Med "+ longueur +">";
 	
-	//lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
+	lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
 });
 
 del_value_med.addEventListener('click', function() {
-	var longueur = document.getElementsByTagName('li').length;
+	var longueur = lists.length;
 	lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
 });
 
