@@ -78,7 +78,7 @@
             localStorage.clear();
             window.location.reload();
         });
-        $('li.manage').addClass("active");
+        $('li.manage_quali').addClass("active");
 
         var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
         var edit_mode = false;

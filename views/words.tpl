@@ -39,7 +39,7 @@
 
 <script>
 	$(function() {
-		$('li.questions').addClass("active");
+		$('li.questions_quali').addClass("active");
 		$('#attribute_name').hide()
 		$('#charts').hide();
 		$('#main_graph').hide();

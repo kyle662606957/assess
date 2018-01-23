@@ -71,10 +71,10 @@
                     <li class="credits">
                         <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
                     </li>
-					<li class="qualitative">
+					<li class="manage_quali">
                         <a href="{{ get_url('/qualitative') }}"><i class="fa fa-fw fa-file"></i>Qualitative - Manage attributes</a>
                     </li>
-                    <li class="words">
+                    <li class="questions_quali">
                         <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Qualitative - Utility assessment</a>
                     </li>
 				</ul>
