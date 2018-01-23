@@ -87,16 +87,18 @@ var lists = document.getElementsByTagName('li'),
 
 add_value_med.addEventListener('click', function() {
 	var longueur = document.getElementsByTagName('li').length;
-	var new_item = document.createElement('li');
-	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +" placeholder=Value Med "+ longueur +">";
+	alert(longueur);
+	//var new_item = document.createElement('li');
+	//new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +" placeholder=Value Med "+ longueur +">";
 	
-	lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
+	//lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
 });
 
 del_value_med.addEventListener('click', function() {
 	var longueur = document.getElementsByTagName('li').length;
 	lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
-		
+});
+
 
 
 
