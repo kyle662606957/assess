@@ -2,15 +2,16 @@
 
 <br />
 <br />
-<h2 style="display:inline-block; margin-right: 40px;"> Delete all attributes: </h2>
+
+<h2 style="display:inline-block; margin-right: 40px;">Delete all attributes: </h2>
 <button type="button" class="btn btn-default del_simu">Delete</button>
-<h2> List of current attributes: </h2>
+
+<h2>List of current attributes:</h2>
 <table class="table">
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
             <th>Attribute name</th>
-            <th>Unit</th>
             <th>Values</th>
             <th>Method</th>
             <th>Mode</th>
@@ -21,42 +22,45 @@
     <tbody id="table_attributes">
     </tbody>
 </table>
-<br />
-<br />
+
+<br /><br />
+
 <div id="add_attribute">
-    <h2> Add a new attribute: </h2>
+    <h2> Add a new qualitative attribute: </h2>
 
     <div class="form-group">
-        <label for="att_name">Name:</label>
+        <label for="att_name">Name :</label>
         <input type="text" class="form-control" id="att_name" placeholder="Name">
     </div>
 
     <div class="form-group">
-        <label for="att_unit">Unit:</label>
-        <input type="text" class="form-control" id="att_unit" placeholder="Unit">
-    </div>
-    <div class="form-group">
         <label for="att_value_min">Min value:</label>
         <input type="text" class="form-control" id="att_value_min" placeholder="Value">
     </div>
+	
     <div class="form-group">
         <label for="att_value_max">Max value:</label>
         <input type="text" class="form-control" id="att_value_max" placeholder="Value">
     </div>
+	
     <div class="form-group">
         <label for="att_method">Method:</label>
         <select class="form-control" id="att_method">
           <option value="PE">Probability Equivalence</option>
-          <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
-		      <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
-          <option value="LE">Lottery Equivalence</option>
+          <!-- <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
+		  <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
+          <option value="LE">Lottery Equivalence</option> -->
         </select>
     </div>
-    <div class="checkbox">
+	
+    <!-- 
+	<div class="checkbox">
         <label><input name="mode" type="checkbox" id="att_mode" placeholder="Mode"> The min value is preferred (decreasing utility function)</label>
     </div>
+	-->
 
     <button type="submit" class="btn btn-default" id="submit">Submit</button>
+
 </div>
 
 %include('header_end.tpl')
@@ -76,12 +80,12 @@
         });
         $('li.manage').addClass("active");
 
-        var asses_session = JSON.parse(localStorage.getItem("asses_session"));
+        var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
         var edit_mode = false;
         var edited_attribute=0;
 
-        if (!asses_session) {
-            asses_session = {
+        if (!assess_session_QUALI) {
+            assess_session_QUALI = {
                 "attributes": [],
                 "k_calculus": [{
                     "method": "multiplicative",
@@ -105,12 +109,12 @@
                     "display": "trees"
                 }
             };
-            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+            localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
         }
 
         function isAttribute(name) {
-            for (var i = 0; i < asses_session.attributes.length; i++) {
-                if (asses_session.attributes[i].name == name) {
+            for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
+                if (assess_session_QUALI.attributes[i].name == name) {
                     return true;
                 }
             }
@@ -122,28 +126,35 @@
             var i = $(element).val();
 
             //we modify the propriety
-            var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-            asses_session.attributes[i].checked = checked;
+            var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
+            assess_session_QUALI.attributes[i].checked = checked;
 
-            //we update the assess_session storage
-            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+            //we update the assess_session_QUALI storage
+            localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
         }
 
         function sync_table() {
             $('#table_attributes').empty();
-            if (asses_session) {
-                for (var i = 0; i < asses_session.attributes.length; i++) {
-                    var attribute = asses_session.attributes[i];
+            if (assess_session_QUALI) {
+                for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
+                    var attribute = assess_session_QUALI.attributes[i];
                     var text_table = "<tr>";
-                    if (attribute.checked)
+                    
+					if (attribute.checked)
                         text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" checked></td>';
                     else
                         text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
 
 
 
-                    text_table += '<td>' + attribute.name + '</td><td>' + attribute.unit + '</td><td>[' + attribute.val_min + ',' + attribute.val_max + ']</td><td>' + attribute.method + '</td><td>' + attribute.mode + '</td>';
-                    text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
+                    text_table += '<td>' + attribute.name + '</td>' +
+								  '<td><ul><li>' + attribute.val_min + '</li>'+
+								  '<li>' + attribute.val_max + '</li></td>'+
+								  '<td>' + attribute.method + '</td>'+
+								  '<td>' + attribute.mode + '</td>';
+								  
+                    text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
+								  '<td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
 
                     $('#table_attributes').append(text_table);
 
@@ -157,9 +168,9 @@
                             if (confirm("Are you sure ?") == false) {
                                 return
                             };
-                            asses_session.attributes.splice(_i, 1);
+                            assess_session_QUALI.attributes.splice(_i, 1);
                             // backup local
-                            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+                            localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
                             //refresh the page
                             window.location.reload();
                         });
@@ -169,7 +180,7 @@
                         $('#edit_' + _i).click(function() {
                           edit_mode=true;
                           edited_attribute=_i;
-                          var attribute_edit = asses_session.attributes[_i];
+                          var attribute_edit = assess_session_QUALI.attributes[_i];
                           $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
                           $('#att_name').val(attribute_edit.name);
                           $('#att_unit').val(attribute_edit.unit);
@@ -192,21 +203,20 @@
         var name = $('#att_name').val();
 
         $('#submit').click(function() {
-            var name = $('#att_name').val();
-            var unit = $('#att_unit').val();
-            var val_min = parseInt($('#att_value_min').val());
-            var val_max = parseInt($('#att_value_max').val());
+            var name = $('#att_name').val(),
+				val_min = parseInt($('#att_value_min').val()),
+				val_max = parseInt($('#att_value_max').val());
 
             var method = "PE";
-            if ($("select option:selected").text() == "Probability Equivalence") {
-                method = "PE";
-            } else if ($("select option:selected").text() == "Lottery Equivalence") {
-                method = "LE";
-            } else if ($("select option:selected").text() == "Certainty Equivalence - Constant Probability") {
-                method = "CE_Constant_Prob";
-            } else if ($("select option:selected").text() == "Certainty Equivalence - Variable Probability") {
-                method = "CE_Variable_Prob";
-            }
+            <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
+                <!-- method = "PE"; -->
+            <!-- } else if ($("select option:selected").text() == "Lottery Equivalence") { -->
+                <!-- method = "LE"; -->
+            <!-- } else if ($("select option:selected").text() == "Certainty Equivalence - Constant Probability") { -->
+                <!-- method = "CE_Constant_Prob"; -->
+            <!-- } else if ($("select option:selected").text() == "Certainty Equivalence - Variable Probability") { -->
+                <!-- method = "CE_Variable_Prob"; -->
+            <!-- } -->
 
             if ($('input[name=mode]').is(':checked')) {
                 var mode = "reversed";
@@ -226,7 +236,7 @@
 
             else {
               if (edit_mode==false) {
-                asses_session.attributes.push({
+                assess_session_QUALI.attributes.push({
                     "name": name,
                     'unit': unit,
                     'val_min': val_min,
@@ -242,8 +252,8 @@
                     }
                 });
               } else {
-                if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
-                  asses_session.attributes[edited_attribute]={
+                if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
+                  assess_session_QUALI.attributes[edited_attribute]={
                     "name": name,
                     'unit': unit,
                     'val_min': val_min,
@@ -263,7 +273,7 @@
                 $('#add_attribute h2').text("Add a new attribute");
               }
                 sync_table();
-                localStorage.setItem("asses_session", JSON.stringify(asses_session));
+                localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
             }
 
 

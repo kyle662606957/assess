@@ -1,5 +1,4 @@
 %include('header_init.tpl', heading='Assess utility functions - Qualitative attributes')
-
 <h3 id="attribute_name"></h3>
 
 <div id="select">
@@ -14,21 +13,18 @@
 				<th>Reset assessements</th>
 			</tr>
 		</thead>
-		
 		<tbody id="table_attributes">
 		</tbody>
 	</table>
 </div>
 
-<div id="trees">
-</div>
+<div id="trees"></div>
 
 <div id="charts">
 	<h2>Select the regression function you want to use</h2>
 </div>
 
 <div id="main_graph" class="col-lg-5"></div>
-
 <div id="functions" class="col-lg-7"></div>
 
 %include('header_end.tpl')
@@ -54,12 +50,9 @@
 
 		// We fill the table
 		for (var i = 0; i < asses_session.attributes.length; i++) {
-			if (!asses_session.attributes[i].checked) //if not activated
-				continue; //we skip this attribute and go to the next one
-			var text = '<tr>' +
-						'<td>' + asses_session.attributes[i].name + '</td>' +
-						'<td>' + asses_session.attributes[i].method + '</td>' +
-						'<td>' + asses_session.attributes[i].questionnaire.number + '</td>';
+			if (!asses_session.attributes[i].checked) //if note activated
+				continue; //we pass to the next one
+			var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>' + asses_session.attributes[i].method + '</td><td>' + asses_session.attributes[i].questionnaire.number + '</td>';
 
 			if (asses_session.attributes[i].questionnaire.number !== 3) {
 				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name + '">Assess</button></td>';
@@ -230,8 +223,7 @@
 					});
 				})()
 			}
-
-			
+		});
 
 
 
@@ -448,6 +440,7 @@
 		});
 	});
 </script>
+
 <!-- Library to copy into clipboard -->
 <script src="{{ get_url('static', path='js/clipboard.min.js') }}"></script>
 </body>
