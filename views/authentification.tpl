@@ -66,15 +66,11 @@ $("#success_admin").hide();
 $("#admin").hide();
 $("#fail_save").hide();
 
-$("#connect").click(actionOnConnectButton());
-$("#connect").keypress(if(event.keyCode==13){actionOnConnectButton()});
-
-function actionOnConnectButton() {
+$("#connect").click(function(){
     $.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
         retour(data);
     });
-}
-	
+});
 
 var mdps=[];
 function retour(data)
