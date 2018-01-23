@@ -16,9 +16,9 @@
 
 <div class="form-inline">
   <div class="form-group">
-    <input type="text" class="form-control" id="password" placeholder="password">
+    <input type="text" class="form-control" id="password" placeholder="password" onkeypress="if(event.keyCode==13){actionOnConnectButton()}">
   </div>
-  <button id="connect" class="btn btn-default" onkeypress="if(event.keyCode==13){actionOnConnectButton()}">Connect !</button>
+  <button id="connect" class="btn btn-default">Connect !</button>
 
 
 </div>
@@ -56,13 +56,6 @@
 
 
 <script>
-
-function actionOnConnectButton() {
-	$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
-		retour(data);
-	});
-}
-
 $(function(){
 $("#info").hide();
 $("#info_admin").hide();
@@ -73,6 +66,12 @@ $("#admin").hide();
 $("#fail_save").hide();
 
 $("#connect").click(actionOnConnectButton());
+
+function actionOnConnectButton() {
+	$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
+		retour(data);
+	});
+};
 
 var mdps=[];
 function retour(data)
