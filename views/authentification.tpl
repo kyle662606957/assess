@@ -72,8 +72,8 @@ $("#connect").click(function(){
     });
 });
 
-$("#connect").keypress(function(e){
-	if e.keyCode == 13 {
+$("#connect").keypress(function(event){
+	if (event.which == 13) {
 		$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
 			retour(data);
 		});
