@@ -72,7 +72,7 @@ $("#connect").click(function(){
     });
 });
 
-$("#connect").keypress(function(event){
+$("#password").keypress(function(event){
 	if (event.which == 13) {
 		$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
 			retour(data);
