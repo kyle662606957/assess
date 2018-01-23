@@ -56,7 +56,7 @@
 
 
 <script>
-$(function(){
+function(){
 $("#info").hide();
 $("#info_admin").hide();
 $("#success").hide();
