@@ -66,11 +66,13 @@ $("#success_admin").hide();
 $("#admin").hide();
 $("#fail_save").hide();
 
-$("#connect").click(function(){
-    $.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
+$("#connect").click(actionOnConnectButton());
+
+function actionOnConnectButton(){
+	$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
         retour(data);
     });
-});
+};
 
 var mdps=[];
 function retour(data)
