@@ -89,7 +89,7 @@
 		add_value_med.addEventListener('click', function() {
 			var longueur = document.getElementsByTagName('li').length;
 			var new_item = document.createElement('li');
-			new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_1" placeholder="Value Med 1">";
+			new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +" placeholder=Value Med "+ longueur +">";
 			
 			lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
 		});
