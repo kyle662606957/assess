@@ -63,7 +63,7 @@
 
 </div>
 
-%include('header_end.tpl')
+
 %include('js.tpl')
 
 <script>
@@ -281,6 +281,7 @@
 
     });
 </script>
+%include('header_end.tpl')
 </body>
 
 </html>
