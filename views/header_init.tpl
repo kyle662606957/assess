@@ -74,9 +74,6 @@
 					<li class="questions"> <!-- à changer après avoir créé la classe en CSS -->
                         <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Subjective Assessment (test)</a>
                     </li>
-					<li class="credits">
-                        <a href="{{ get_url('/authentification') }}"><i class="fa fa-fw fa-users"></i>Password management</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
