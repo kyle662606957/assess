@@ -18,7 +18,7 @@
   <div class="form-group">
     <input type="text" class="form-control" id="password" placeholder="password">
   </div>
-  <button id="connect" class="btn btn-default" type="button">Connect !</button>
+  <input id="connect" class="btn btn-default" type="button">Connect !</input>
 
 
 </div>
