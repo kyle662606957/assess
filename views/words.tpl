@@ -1,4 +1,4 @@
-%include('header_init.tpl', heading='Assess utility functions with Qualitative attributes')
+%include('header_init.tpl', heading='Assess utility functions - Qualitative attributes')
 
 <h3 id="attribute_name"></h3>
 

@@ -42,7 +42,7 @@ def regressions(liste_cord, dictionnaire={}):
         funcexpParam = lambda x, b: funcexp2(x, b, min, max)
         # fonction regression utilisant la funcexp du fichier functions.py
         popt1, pcov1 = curve_fit(funcexpParam, x, y, [0.1])
-        # popt1 = matrice ligne contenant les coefficients de la regression exponentielle optimisee apres calcul / popcov1 = matrice de covariances pour cette regression exp
+        # popt1 = matrice ligne contenant les coefficients de la regression exponentielle optimisee apres calcul / pcov1 = matrice de covariances pour cette regression exp
         # ajout des coeeficients a, b et c dans le dictionnaire pour la regression
         # exponentielle
         b1 = popt1[0]
