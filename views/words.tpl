@@ -1,4 +1,5 @@
-%include('header_init.tpl', heading='Assess utility functions')
+%include('header_init.tpl', heading='Assess utility functions with Qualitative attributes')
+
 <h3 id="attribute_name"></h3>
 
 <div id="select">
@@ -13,18 +14,21 @@
 				<th>Reset assessements</th>
 			</tr>
 		</thead>
+		
 		<tbody id="table_attributes">
 		</tbody>
 	</table>
 </div>
 
-<div id="trees"></div>
+<div id="trees">
+</div>
 
 <div id="charts">
 	<h2>Select the regression function you want to use</h2>
 </div>
 
 <div id="main_graph" class="col-lg-5"></div>
+
 <div id="functions" class="col-lg-7"></div>
 
 %include('header_end.tpl')
@@ -50,9 +54,12 @@
 
 		// We fill the table
 		for (var i = 0; i < asses_session.attributes.length; i++) {
-			if (!asses_session.attributes[i].checked) //if note activated
-				continue; //we pass to the next one
-			var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>' + asses_session.attributes[i].method + '</td><td>' + asses_session.attributes[i].questionnaire.number + '</td>';
+			if (!asses_session.attributes[i].checked) //if not activated
+				continue; //we skip this attribute and go to the next one
+			var text = '<tr>' +
+						'<td>' + asses_session.attributes[i].name + '</td>' +
+						'<td>' + asses_session.attributes[i].method + '</td>' +
+						'<td>' + asses_session.attributes[i].questionnaire.number + '</td>';
 
 			if (asses_session.attributes[i].questionnaire.number !== 3) {
 				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name + '">Assess</button></td>';
@@ -224,357 +231,7 @@
 				})()
 			}
 
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////// LE METHOD ////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			else if (method == 'LE') {
-				(function() {
-					// VARIABLES
-					var probability = random_proba(0.38, 0.13);
-					var min_interval = 0;
-					var max_interval = 0.5;
-
-					// INTERFACE
-
-					var arbre_le = new Arbre('gauche', '#trees', settings.display, "LE_left");
-					var arbre_droite = new Arbre('droite', '#trees', settings.display, "LE_right");
-
-					// SETUP ARBRE GAUCHE
-					arbre_le.questions_proba_haut = probability;
-					arbre_le.questions_val_max = val_max + ' ' + unit;
-					arbre_le.questions_val_min = val_min + ' ' + unit;
-					arbre_le.display();
-					arbre_le.update();
-
-					// SETUP ARBRE DROIT
-					arbre_droite.questions_proba_haut = settings.proba_le;
-
-					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2 + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4 + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4 + ' ' + unit;
-					}
-
-					arbre_droite.questions_val_min = val_min + ' ' + unit;
-					arbre_droite.display();
-					arbre_droite.update();
-
-					// we add the choice button
-					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default lottery_a">A</button><button type="button" class="btn btn-default lottery_b">B</button></div>')
-
-
-					function treat_answer(data) {
-						min_interval = data.interval[0];
-						max_interval = data.interval[1];
-						probability = parseFloat(data.proba).toFixed(2);
-
-						if (max_interval - min_interval <= 0.05) {
-							arbre_le.questions_proba_haut = probability;
-							arbre_le.update();
-							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
-						} else {
-							arbre_le.questions_proba_haut = probability;
-							arbre_le.update();
-						}
-					}
-
-					function ask_final_value(val) {
-						$('.choice').hide();
-						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done. Please enter the probability that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
-							'\
-						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
-							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
-						);
-
-						// when the user validate
-						$('.final_validation').click(function() {
-							var final_proba = parseFloat($('#final_proba').val());
-
-							if (final_proba <= 1 && final_proba >= 0) {
-								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([parseFloat(arbre_droite.questions_val_max), final_proba * 2]);
-								asses_session.attributes[indice].questionnaire.number += 1;
-								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
-								// we reload the page
-								window.location.reload();
-							}
-						});
-					}
-
-
-
-					// HANDLE USERS ACTIONS
-					$('.lottery_a').click(function() {
-						$.post('ajax', '{"type":"question", "method": "LE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-
-					$('.lottery_b').click(function() {
-						$.post('ajax', '{"type":"question","method": "LE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-				})()
-			}
-
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////// CE METHOD ////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			else if (method == 'CE_Constant_Prob') {
-				(function() {
-
-					// VARIABLES
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						var min_interval = val_min;
-						var max_interval = val_max;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = asses_session.attributes[indice].questionnaire.points[0][0];
-						var max_interval = val_max;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						var min_interval = val_min;
-						var max_interval = asses_session.attributes[indice].questionnaire.points[0][0];
-					}
-
-					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
-					var gain = Math.round(random_proba(L[0], L[1]));
-
-					// INTERFACE
-
-					var arbre_ce = new Arbre('ce', '#trees', settings.display, "CE");
-
-					// SETUP ARBRE GAUCHE
-					arbre_ce.questions_proba_haut = settings.proba_ce;
-					arbre_ce.questions_val_max = max_interval + ' ' + unit;
-					arbre_ce.questions_val_min = min_interval + ' ' + unit;
-					arbre_ce.questions_val_mean = gain + ' ' + unit;
-					arbre_ce.display();
-					arbre_ce.update();
-
-					// we add the choice button
-					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>')
-
-					function utility_finder(gain) {
-						var points = asses_session.attributes[indice].questionnaire.points;
-						if (gain == val_min) {
-							if (mode == 'normal') {
-								return 0;
-							} else {
-								return 1;
-							}
-						} else if (gain == val_max) {
-							if (mode == 'normal') {
-								return 1;
-							} else {
-								return 0;
-							}
-						} else {
-							for (var i = 0; i < points.length; i++) {
-								if (points[i][0] == gain) {
-									return points[i][1];
-								}
-							}
-						}
-					}
-
-					function treat_answer(data) {
-						min_interval = data.interval[0];
-						max_interval = data.interval[1];
-						gain = data.gain;
-
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_ce.questions_val_max) - parseFloat(arbre_ce.questions_val_min) || max_interval - min_interval < 2) {
-							$('.choice').hide();
-							arbre_ce.questions_val_mean = gain + ' ' + unit;
-							arbre_ce.update();
-							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
-						} else {
-							arbre_ce.questions_val_mean = gain + ' ' + unit;
-							arbre_ce.update();
-						}
-					}
-
-					function ask_final_value(val) {
-						$('.lottery_a').hide();
-						$('.lottery_b').hide();
-						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p><p>We are almost done. Please enter the value that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
-							'\
-						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
-							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
-						);
-
-						// when the user validate
-						$('.final_validation').click(function() {
-							var final_gain = parseInt($('#final_proba').val());
-							var final_utility = arbre_ce.questions_proba_haut * utility_finder(parseFloat(arbre_ce.questions_val_max)) + (1 - arbre_ce.questions_proba_haut) * utility_finder(parseFloat(arbre_ce.questions_val_min));
-							console.log(arbre_ce.questions_proba_haut);
-							console.log(utility_finder(parseFloat(arbre_ce.questions_val_max)));
-							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
-							if (final_gain <= max_interval && final_gain >= min_interval) {
-								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
-								asses_session.attributes[indice].questionnaire.number += 1;
-								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
-								// we reload the page
-								window.location.reload();
-							}
-						});
-					}
-
-
-
-					// HANDLE USERS ACTIONS
-					$('#lottery').click(function() {
-						$.post('ajax', '{"type":"question", "method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-
-					$('#gain').click(function() {
-						$.post('ajax', '{"type":"question","method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-				})()
-			}
-
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////////////////////////////////////////////////// CEPV METHOD ////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			else if (method == 'CE_Variable_Prob') {
-				(function() {
-
-					// VARIABLES
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
-						var min_interval = val_min;
-						var max_interval = val_max;
-						p = 0.5;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = asses_session.attributes[indice].questionnaire.points[0][0];
-						var max_interval = val_max;
-						p = 0.25;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
-						var min_interval = val_min;
-						var max_interval = asses_session.attributes[indice].questionnaire.points[0][0];
-						p = 0.75;
-					}
-
-					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
-					var gain = Math.round(random_proba(L[0], L[1]));
-
-					// INTERFACE
-
-					var arbre_cepv = new Arbre('cepv', '#trees', settings.display, "CE_PV");
-
-					// SETUP ARBRE GAUCHE
-					arbre_cepv.questions_proba_haut = p;
-					arbre_cepv.questions_val_max = max_interval + ' ' + unit;
-					arbre_cepv.questions_val_min = min_interval + ' ' + unit;
-					arbre_cepv.questions_val_mean = gain + ' ' + unit;
-					arbre_cepv.display();
-					arbre_cepv.update();
-
-					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
-
-					function utility_finder(gain) {
-						var points = asses_session.attributes[indice].questionnaire.points;
-						if (gain == val_min) {
-							if (mode == 'normal') {
-								return 0;
-							} else {
-								return 1;
-							}
-						} else if (gain == val_max) {
-							if (mode == 'normal') {
-								return 1;
-							} else {
-								return 0;
-							}
-						} else {
-							for (var i = 0; i < points.length; i++) {
-								if (points[i][0] == gain) {
-									return points[i][1];
-								}
-							}
-						}
-					}
-
-					function treat_answer(data) {
-						min_interval = data.interval[0];
-						max_interval = data.interval[1];
-						gain = data.gain;
-
-						if (max_interval - min_interval <= 0.05 * parseFloat(arbre_cepv.questions_val_max) - parseFloat(arbre_cepv.questions_val_min) || max_interval - min_interval < 2) {
-							$('#gain').hide();
-							$('#lottery').hide();
-							arbre_cepv.questions_val_mean = gain + ' ' + unit;
-							arbre_cepv.update();
-							ask_final_value(Math.round((max_interval + min_interval) * 100 / 2) / 100);
-						} else {
-							arbre_cepv.questions_val_mean = gain + ' ' + unit;
-							arbre_cepv.update();
-						}
-					}
-
-					function ask_final_value(val) {
-						$('.lottery_a').hide();
-						$('.lottery_b').hide();
-						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done, please now enter the value of the gain: <br /> ' + min_interval +
-							'\
-						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
-							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
-						);
-
-						// when the user validate
-						$('.final_validation').click(function() {
-							var final_gain = parseInt($('#final_proba').val());
-							var final_utility = arbre_cepv.questions_proba_haut * utility_finder(parseFloat(arbre_cepv.questions_val_max)) + (1 - arbre_cepv.questions_proba_haut) * utility_finder(parseFloat(arbre_cepv.questions_val_min));
-							console.log(arbre_cepv.questions_proba_haut);
-							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_max)));
-							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_min)));
-							if (final_gain <= max_interval && final_gain >= min_interval) {
-								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
-								asses_session.attributes[indice].questionnaire.number += 1;
-								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
-								// we reload the page
-								window.location.reload();
-							}
-						});
-					}
-
-
-
-					// HANDLE USERS ACTIONS
-					$('#lottery').click(function() {
-						$.post('ajax', '{"type":"question", "method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-
-					$('#gain').click(function() {
-						$.post('ajax', '{"type":"question","method": "CE_Constant_Prob", "gain": ' + String(gain) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + String(mode) + '"}', function(data) {
-							treat_answer(data);
-							console.log(data);
-						});
-					});
-				})()
-			}
-		});
+			
 
 
 
