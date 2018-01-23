@@ -14,7 +14,6 @@
             <th>Attribute name</th>
             <th>Values</th>
             <th>Method</th>
-            <th>Mode</th>
             <th>Edit</th>
             <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
         </tr>
@@ -41,6 +40,9 @@
 	<div class="form-group">
         <label for="att_value_med">Medium value:</label>
         <input type="text" class="form-control" id="att_value_med" placeholder="Value">
+		
+		<input type="button" id="add_value_med" value="Add an item"/>
+		<input type="button" id="del_value_med" value="Delete last item"/>
     </div>
 	
     <div class="form-group">
@@ -154,7 +156,7 @@
 					// A CHANGER APRES AVOIR FINI DE CREER LES VALEURS INTERMEDIAIRES
                     text_table += '<td>' + attribute.name + '</td>' +
 								  '<td><ul><li>' + attribute.val_worst + '</li>'+
-								  '<li>' + attribute.val_med + '</li>'+
+								  '<li>' + attribute.val_med + '</li>'+ //////////////////////////////////////////////////////////////////////////////////////
 								  '<li>' + attribute.val_best + '</li></td>'+
 								  '<td>' + attribute.method + '</td>'+
 								  '<td>' + attribute.mode + '</td>';
@@ -190,7 +192,7 @@
                           $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
                           $('#att_name').val(attribute_edit.name);
                           $('#att_value_worst').val(attribute_edit.val_worst);
-						  $('#att_value_med').val(attribute_edit.val_med);
+						  $('#att_value_med').val(attribute_edit.val_med);/////////////////////////////////////////////////
                           $('#att_value_best').val(attribute_edit.val_best);
                           $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
                           if (attribute_edit.mode=="normal") {
@@ -211,7 +213,7 @@
         $('#submit').click(function() {
             var name = $('#att_name').val(),
 				val_worst = $('#att_value_worst').val(),
-				val_med = $('#att_value_med').val(),
+				val_med = $('#att_value_med').val(),//////////////////////////////////////////////////////////////////////////////////////
 				val_best = $('#att_value_best').val();
 
             var method = "PE";
@@ -226,7 +228,7 @@
             <!-- } -->
 
             
-            if (!(name || val_worst || val_best || val_med)) {
+            if (!(name || val_worst || val_best || val_med)) {//////////////////////////////////////////////////////////////////////////////////////
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
@@ -238,7 +240,7 @@
                 assess_session_QUALI.attributes.push({
                     "name": name,
                     'val_worst': val_worst,
-                    'val_med': val_med,
+                    'val_med': val_med,//////////////////////////////////////////////////////////////////////////////////////
                     'val_best': val_best,
                     'method': method,
                     'completed': 'False',
@@ -254,7 +256,7 @@
                   assess_session_QUALI.attributes[edited_attribute]={
                     "name": name,
                     'val_worst': val_worst,
-                    'val_med': val_med,
+                    'val_med': val_med,//////////////////////////////////////////////////////////////////////////////////////
 					'val_best': val_best,
                     'method': method,
                     'completed': 'False',
@@ -273,7 +275,7 @@
                 localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 				$('#att_name').val("");
 				$('#att_value_worst').val("");
-				$('#att_value_med').val("");				
+				$('#att_value_med').val("");				//////////////////////////////////////////////////////////////////////////////////////
 				$('#att_value_best').val("");
             }
 
