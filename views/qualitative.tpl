@@ -90,7 +90,11 @@ add_value_med.addEventListener('click', function() {
 
 del_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
-	lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+	if (longueur!=2){
+		lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+	} else {
+		alert("Please put at lease one medium value for the attribute "+$('#att_name').val());
+	};
 });
 
 
