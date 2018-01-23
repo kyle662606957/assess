@@ -66,13 +66,20 @@ $("#success_admin").hide();
 $("#admin").hide();
 $("#fail_save").hide();
 
-$("#connect").click(actionOnConnectButton());
-
-function actionOnConnectButton(){
-	$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
+$("#connect").click(function(){
+    $.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
         retour(data);
     });
-};
+});
+
+$("#connect").keypress(function(e){
+	if e.keyCode == 13 {
+		$.post('auth', JSON.stringify({"type":"authentification","mdp":$("#password").val()}), function (data) {
+			retour(data);
+		});
+	};
+});
+
 
 var mdps=[];
 function retour(data)
