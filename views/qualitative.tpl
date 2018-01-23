@@ -154,6 +154,7 @@
 					// A CHANGER APRES AVOIR FINI DE CREER LES VALEURS INTERMEDIAIRES
                     text_table += '<td>' + attribute.name + '</td>' +
 								  '<td><ul><li>' + attribute.val_worst + '</li>'+
+								  '<li>' + attribute.val_med + '</li>'+
 								  '<li>' + attribute.val_best + '</li></td>'+
 								  '<td>' + attribute.method + '</td>'+
 								  '<td>' + attribute.mode + '</td>';
@@ -189,6 +190,7 @@
                           $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
                           $('#att_name').val(attribute_edit.name);
                           $('#att_value_worst').val(attribute_edit.val_worst);
+						  $('#att_value_med').val(attribute_edit.val_med);
                           $('#att_value_best').val(attribute_edit.val_best);
                           $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
                           if (attribute_edit.mode=="normal") {
@@ -207,7 +209,10 @@
         var name = $('#att_name').val();
 
         $('#submit').click(function() {
-            var name = $('#att_name').val();
+            var name = $('#att_name').val(),
+				val_worst = $('#att_value_worst').val(),
+				val_med = $('#att_value_med').val(),
+				val_best = $('#att_value_best').val();
 
             var method = "PE";
             <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
@@ -221,7 +226,7 @@
             <!-- } -->
 
             
-            if (!(name || val_worst || val_best)) {
+            if (!(name || val_worst || val_best || val_med)) {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
@@ -233,6 +238,7 @@
                 assess_session_QUALI.attributes.push({
                     "name": name,
                     'val_worst': val_worst,
+                    'val_med': val_med,
                     'val_best': val_best,
                     'method': method,
                     'completed': 'False',
@@ -248,7 +254,8 @@
                   assess_session_QUALI.attributes[edited_attribute]={
                     "name": name,
                     'val_worst': val_worst,
-                    'val_best': val_best,
+                    'val_med': val_med,
+					'val_best': val_best,
                     'method': method,
                     'completed': 'False',
                     'checked': true,
@@ -266,6 +273,7 @@
                 localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 				$('#att_name').val("");
 				$('#att_value_worst').val("");
+				$('#att_value_med').val("");				
 				$('#att_value_best').val("");
             }
 
