@@ -43,5 +43,7 @@ var d="";for(var i=0;i<505;i++)d+=String.fromCharCode(("*t&3(P5IZW}XEF[$T={dGH.+
 </script></li>
 </ul>
 
+<script>$('li.credits').addClass("active");</script>
+
 %include('header_end.tpl')
 %include('js.tpl')
