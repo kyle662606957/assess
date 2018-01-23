@@ -71,15 +71,17 @@
                     <li class="credits">
                         <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
                     </li>
-					<li class="qualit">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						  Qualitative
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						  <a class="qualitative" href="{{ get_url('/qualitative') }}"><i class="fa fa-fw fa-file"></i>Attributes Management</a>
-						  <a class="words" href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Utility Assessment</a>
-						</div>
-					</li>
+					<div class="btn-group dropright">
+						<li class="qualit">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  Qualitative
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropright">
+							  <a href="{{ get_url('/qualitative') }}"><i class="fa fa-fw fa-file"></i>Attributes Management</a>
+							  <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Utility Assessment</a>
+							</div>
+						</li>
+					</div>
 				</ul>
 			</div>
             <!-- /.navbar-collapse -->
