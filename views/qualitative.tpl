@@ -41,8 +41,8 @@
         <label for="att_value_med">Medium value:</label>
         <input type="text" class="form-control" id="att_value_med" placeholder="Value">
 		
-		<input type="button" id="add_value_med" value="Add an item"/>
-		<input type="button" id="del_value_med" value="Delete last item"/>
+		<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>
+		<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
     </div>
 	
     <div class="form-group">
@@ -158,8 +158,7 @@
 								  '<td><ul><li>' + attribute.val_worst + '</li>'+
 								  '<li>' + attribute.val_med + '</li>'+ //////////////////////////////////////////////////////////////////////////////////////
 								  '<li>' + attribute.val_best + '</li></td>'+
-								  '<td>' + attribute.method + '</td>'+
-								  '<td>' + attribute.mode + '</td>';
+								  '<td>' + attribute.method + '</td>';
 								  
                     text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
 								  '<td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
