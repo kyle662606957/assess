@@ -154,6 +154,15 @@ del_value_med.addEventListener('click', function() {
             }
             return false;
         }
+		
+		function isOneValueOfTheListEmpty(val_list){
+			var list_len = val_list.length;
+			for (var i=0; i<list_len; i++) {
+				if(val_list[i] == ""){return true}
+			};
+			return false;
+		};
+		
 
         function checked_button_clicked(element) {
             var checked = $(element).prop("checked");
@@ -180,11 +189,14 @@ del_value_med.addEventListener('click', function() {
                         text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
 
 
-					// A CHANGER APRES AVOIR FINI DE CREER LES VALEURS INTERMEDIAIRES
                     text_table += '<td>' + attribute.name + '</td>' +
-								  '<td><ul><li>' + attribute.val_worst + '</li>'+
-								  '<li>' + attribute.val_med + '</li>'+ //////////////////////////////////////////////////////////////////////////////////////
-								  '<li>' + attribute.val_best + '</li></td>'+
+								  '<td><ul><li>' + attribute.val_worst + '</li>';
+								  
+					for (var ii=0, len=attribute.val_med.length; ii<len; ii++){			  
+						text_table += '<li>' + attribute.val_med[ii] + '</li>'
+								  
+								  
+					text_table += '<li>' + attribute.val_best + '</li></td>'+
 								  '<td>' + attribute.method + '</td>';
 								  
                     text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
@@ -246,7 +258,6 @@ del_value_med.addEventListener('click', function() {
 			for (var ii=1; ii<nb_med_values+1; ii++){
 				val_med.push($('#att_value_med_'+ii).val());
 			};
-			alert(val_med);
 
             var method = "PE";
             <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
@@ -265,14 +276,16 @@ del_value_med.addEventListener('click', function() {
             }
             else if (isAttribute(name) && (edit_mode == false)) {
 				alert ("An attribute with the same name already exists");
-            }
+            } else if (isOneValueOfTheListEmpty(val_med)) {
+				alert("One of your medium values is empty");
+			}
 
             else {
               if (edit_mode==false) {
                 assess_session_QUALI.attributes.push({
                     "name": name,
                     'val_worst': val_worst,
-                    'val_med': val_med,//////////////////////////////////////////////////////////////////////////////////////
+                    'val_med': val_med,
                     'val_best': val_best,
                     'method': method,
                     'completed': 'False',
@@ -288,7 +301,7 @@ del_value_med.addEventListener('click', function() {
                   assess_session_QUALI.attributes[edited_attribute]={
                     "name": name,
                     'val_worst': val_worst,
-                    'val_med': val_med,//////////////////////////////////////////////////////////////////////////////////////
+                    'val_med': val_med,
 					'val_best': val_best,
                     'method': method,
                     'completed': 'False',
