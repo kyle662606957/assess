@@ -87,11 +87,13 @@
 				text_table += '<td>All points have already been assessed</td>';
 			}
 
-			if (assess_session_QUALI.attributes[i].questionnaire.number > 0) {
-				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session_QUALI.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			if (attribute.questionnaire.number !== attribute.val_med.length) {
+				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session_QUALI.attributes[i].name + '">Utility function</button></td>';
 			} else {
-				text_table += '<td>No assessment yet</td>';
+				text_table += '<td>Please assess all the medium values</td>';
 			}
+			
+			text_table += '<td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 
 			$('#table_attributes').append(text_table);
 
