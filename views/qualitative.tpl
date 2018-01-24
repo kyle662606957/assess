@@ -244,7 +244,7 @@ del_value_med.addEventListener('click', function() {
 				val_best = $('#att_value_best').val();
 				
 			for (var ii=1; ii<nb_med_values; i++){
-				val_med.push($('#att_value_med_'+ii).val();
+				val_med.push($('#att_value_med_'+ii).val());
 			};
 			alert(val_med);
 
