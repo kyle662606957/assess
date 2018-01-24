@@ -280,12 +280,10 @@
 			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
 				val_best = assess_session_QUALI.attributes[indice].val_best,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
-				list_names = val_med,
+				list_names = [].concat(val_worst, val_med, val_best),
 				points = assess_session_QUALI.attributes[indice].questionnaire.points;
 				
-			list_names.unshift(val_worst);
-			list_names.push(val_best);
-			alert(val_med);
+			alert(list_names);
 
 			
 			function addGraph(data_graph, names_graph) {
@@ -302,7 +300,7 @@
 			}
 			
 			$('#main_graph').show().empty();
-			// addGraph(points, list_names);
+			addGraph(points, list_names);
 			
 		});
 	});
