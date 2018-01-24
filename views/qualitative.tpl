@@ -297,7 +297,7 @@ del_value_med.addEventListener('click', function() {
 				alert("One of your medium values is empty");
 			} else if (val_worst==val_best) {
 				alert("The least prefered and most prefered values are the same");
-			} else if (areAllValuesDifferent==false) {
+			} else if (areAllValuesDifferent(val_med, val_worst, val_best)==false) {
 				alert("At least one of the values is appearing more than once");
 			}
 
