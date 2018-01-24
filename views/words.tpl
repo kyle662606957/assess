@@ -9,7 +9,7 @@
 				<th>Method</th>
 				<th>Number of assessed points</th>
 				<th>Assess another point</th>
-				<th>Calculate utility function</th>
+				<th>Display utility graph</th>
 				<th>Reset assessements</th>
 			</tr>
 		</thead>
@@ -92,7 +92,7 @@
 							assess_session_QUALI.attributes[_i].questionnaire = {
 									'number': 0,
 									'points': {'val_worst' : 0, 'val_best' : 1},
-									'utility': {}
+									'order': []
 							};
 							// backup local
 							localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
@@ -172,8 +172,8 @@
 
 					$('#trees').append('</div><div class=choice style="text-align: center;">'+
 										'<p>Which option do you prefer?</p>'+
-										'<button type="button" class="btn btn-default" id="gain">A</button>'+
-										'<button type="button" class="btn btn-default" id="lottery">B</button></div>');
+										'<button type="button" class="btn btn-default" id="gain"> A </button>'+
+										'<button type="button" class="btn btn-default" id="lottery"> B </button></div>');
 
 					// FUNCTIONS
 					function sync_values() {
@@ -213,6 +213,7 @@
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
 								assess_session_QUALI.attributes[indice].questionnaire.points[gain_certain]=final_proba;
+								assess_session_QUALI.attributes[indice].questionnaire.order.unshift(question_id);
 								assess_session_QUALI.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
@@ -281,9 +282,10 @@
 				val_best = assess_session_QUALI.attributes[indice].val_best,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
 				list_names = [].concat(val_worst, val_med, val_best),
-				points = assess_session_QUALI.attributes[indice].questionnaire.points;
+				points = assess_session_QUALI.attributes[indice].questionnaire.points,
+				order = assess_session_QUALI.attributes[indice].questionnaire.order;
 				
-			alert(list_names);
+			alert(order);
 
 			
 			function addGraph(data_graph, names_graph) {
