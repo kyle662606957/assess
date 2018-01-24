@@ -69,8 +69,9 @@
 							
 			if (attribute.questionnaire.number !== attribute.val_med.length) {
 				
-				// text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
+				text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
 				
+				text_table += '<li>' + attribute.val_med[0] + ' : to define</li>';
 				// for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 					// text_table += '<li>' + attribute.val_med[ii] + ' : '; 
 					// if(attribute.questionnaire.points[val_med[ii]]){
@@ -80,8 +81,8 @@
 					// };
 				// }; 
 				
-				// text_table += '<li>' + attribute.val_best + ' : 1</li></ul></td>';
-				text_table += '<td>Lolilol</td>';
+				text_table += '<li>' + attribute.val_best + ' : 1</li></ul></td>';
+				
 			} 
 			else {
 				text_table += '<td>All points have already been assessed</td>';
