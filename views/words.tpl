@@ -280,10 +280,11 @@
 			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
 				val_best = assess_session_QUALI.attributes[indice].val_best,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
-				/////////list_names = val_med.push(val_best),
+				list_names = val_med,
 				points = assess_session_QUALI.attributes[indice].questionnaire.points;
 				
-			//list_names.unshift(val_worst)
+			list_names.unshift(val_worst);
+			list_names.push(val_best);
 			alert(val_med);
 
 			
