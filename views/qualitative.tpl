@@ -221,22 +221,32 @@ del_value_med.addEventListener('click', function() {
                     })(i);
 
                     (function(_i) {
-                        $('#edit_' + _i).click(function() {
-                          edit_mode=true;
-                          edited_attribute=_i;
-                          var attribute_edit = assess_session_QUALI.attributes[_i];
-                          $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
-                          $('#att_name').val(attribute_edit.name);
-                          $('#att_value_worst').val(attribute_edit.val_worst);
-						  $('#att_value_med').val(attribute_edit.val_med);/////////////////////////////////////////////////
-                          $('#att_value_best').val(attribute_edit.val_best);
-                          $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
-                          if (attribute_edit.mode=="normal") {
-                            $('#att_mode').prop('checked', false);
-                          } else {
-                            $('#att_mode').prop('checked', true);
-                          }
-                        });
+						$('#edit_' + _i).click(function() {
+							edit_mode=true;
+							edited_attribute=_i;
+							var attribute_edit = assess_session_QUALI.attributes[_i];
+							$('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
+							$('#att_name').val(attribute_edit.name);
+							$('#att_value_worst').val(attribute_edit.val_worst);
+							$('#att_value_med_1').val(attribute_edit.val_med[0]);
+							
+							for (var ii=2, len=attribute_edit.val_med.length; ii<len; ii++) {
+								var longueur = lists.length;
+								var new_item = document.createElement('li');
+								new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
+								lists[longueur-1].parentNode.appendChild(new_item);
+								
+								$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);/////////////////////////////////////////////////
+							};
+							
+							$('#att_value_best').val(attribute_edit.val_best);
+							$('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
+							if (attribute_edit.mode=="normal") {
+								$('#att_mode').prop('checked', false);
+							} else {
+								$('#att_mode').prop('checked', true);
+							}
+						});
                     })(i);
                 }
 
@@ -277,7 +287,6 @@ del_value_med.addEventListener('click', function() {
 			}
 
             else {
-				alert(val_med);////////////////////////
 				if (edit_mode==false) {
 					assess_session_QUALI.attributes.push({
 						"name": name,
