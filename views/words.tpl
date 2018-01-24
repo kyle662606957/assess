@@ -286,6 +286,7 @@
 				order = assess_session_QUALI.attributes[indice].questionnaire.order;
 				
 			alert(order);
+			order.push(-1, val_med.length);
 
 			
 			function addGraph(data_graph, names_graph) {
