@@ -82,7 +82,7 @@ var list_med_values = document.getElementById('list_med_values'),
 add_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
 	var new_item = document.createElement('li');
-	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +"' placeholder='Value Med " + longueur +"'/>";
+	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
 	lists[longueur-1].parentNode.appendChild(new_item);
 });
 
