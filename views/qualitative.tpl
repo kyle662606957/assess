@@ -190,7 +190,7 @@ del_value_med.addEventListener('click', function() {
                     text_table += '<td>' + attribute.name + '</td>' +
 								  '<td><ul><li>' + attribute.val_worst + '</li>';
 								  
-					for (var ii=0, len=attribute.val_med.length; ii<len+1; ii++){			  
+					for (var ii=0, len=attribute.val_med.length; ii<len+1; ii++){
 						text_table += '<li>' + attribute.val_med[ii] + '</li>';
 					};
 						
@@ -272,7 +272,7 @@ del_value_med.addEventListener('click', function() {
             }
             else if (isAttribute(name) && (edit_mode == false)) {
 				alert ("An attribute with the same name already exists");
-            } else if (isOneValueOfTheListEmpty(val_med.push(val_best, val_worst)) {
+            } else if (isOneValueOfTheListEmpty(val_med.push(val_best, val_worst))) {
 				alert("One of your medium values is empty");
 			}
 
