@@ -190,7 +190,7 @@ del_value_med.addEventListener('click', function() {
                     text_table += '<td>' + attribute.name + '</td>' +
 								  '<td><ul><li>' + attribute.val_worst + '</li>';
 								  
-					for (var ii=0, len=attribute.val_med.length; ii<len; ii++){			  
+					for (var ii=0, len=attribute.val_med.length; ii<len+1; ii++){			  
 						text_table += '<li>' + attribute.val_med[ii] + '</li>';
 					};
 						
@@ -272,42 +272,43 @@ del_value_med.addEventListener('click', function() {
             }
             else if (isAttribute(name) && (edit_mode == false)) {
 				alert ("An attribute with the same name already exists");
-            } else if (isOneValueOfTheListEmpty(val_med)) {
+            } else if (isOneValueOfTheListEmpty(val_med.push(val_best, val_worst)) {
 				alert("One of your medium values is empty");
 			}
 
             else {
-              if (edit_mode==false) {
-                assess_session_QUALI.attributes.push({
-                    "name": name,
-                    'val_worst': val_worst,
-                    'val_med': val_med,
-                    'val_best': val_best,
-                    'method': method,
-                    'completed': 'False',
-                    'checked': true,
-                    'questionnaire': {
-                        'number': 0,
-                        'points': [],
-                        'utility': {}
-                    }
-                });
+				alert(val_med);////////////////////////
+				if (edit_mode==false) {
+					assess_session_QUALI.attributes.push({
+						"name": name,
+						'val_worst': val_worst,
+						'val_med': val_med,
+						'val_best': val_best,
+						'method': method,
+						'completed': 'False',
+						'checked': true,
+						'questionnaire': {
+							'number': 0,
+							'points': [],
+							'utility': {}
+						}
+					});
               } else {
                 if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
-                  assess_session_QUALI.attributes[edited_attribute]={
-                    "name": name,
-                    'val_worst': val_worst,
-                    'val_med': val_med,
-					'val_best': val_best,
-                    'method': method,
-                    'completed': 'False',
-                    'checked': true,
-                    'questionnaire': {
-                        'number': 0,
-                        'points': [],
-                        'utility': {}
-                    }
-                  };
+					assess_session_QUALI.attributes[edited_attribute]={
+						"name": name,
+						'val_worst': val_worst,
+						'val_med': val_med,
+						'val_best': val_best,
+						'method': method,
+						'completed': 'False',
+						'checked': true,
+						'questionnaire': {
+							'number': 0,
+							'points': [],
+							'utility': {}
+						}
+					};
                 }
                 edit_mode=false;
                 $('#add_attribute h2').text("Add a new attribute");
