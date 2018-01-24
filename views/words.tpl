@@ -45,41 +45,63 @@
 		$('#main_graph').hide();
 		$('#functions').hide();
 
-		var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-		var settings=asses_session.settings;
-
+		var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
+		var settings=assess_session_QUALI.settings;
+		
+		// function isInList(item, test_list) { // only works when item can be found in the first position of a table in test_list
+			// for (var ii=0, leng = test_list.length; ii<leng; ii++) {
+				// if(item==test_list[ii][0]){return true};
+			// };
+			// return false;			
+		// };
+		
+		
 		// We fill the table
-		for (var i = 0; i < asses_session.attributes.length; i++) {
-			if (!asses_session.attributes[i].checked) //if note activated
-				continue; //we pass to the next one
-			var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>' + asses_session.attributes[i].method + '</td><td>' + asses_session.attributes[i].questionnaire.number + '</td>';
-
-			if (asses_session.attributes[i].questionnaire.number !== 3) {
-				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name + '">Assess</button></td>';
-			} else {
-				text += '<td>Three points max</td>';
+		for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
+			var attribute = assess_session_QUALI.attributes[i];
+			
+			if (!assess_session_QUALI.attributes[i].checked) //if this attribute is not activated
+				continue; //we skip this attribute and go to the next one
+			
+			var text_table = '<tr><td>' + attribute.name + '</td>'+
+							'<td>' + attribute.method + '</td>'+
+							'<td>' + attribute.questionnaire.number + '</td>';
+							
+			if (attribute.questionnaire.number !== attribute.val_med.length) {
+				
+				text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
+				
+				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
+					text_table += '<li>' + attribute.val_med[ii] + ' : ' + (attribute.questionnaire.points.val_med[ii] ? attribute.questionnaire.points.val_med[ii] : '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '">Assess</button>') + '</li>';
+				}; 
+				
+				text_table += '<li>' + attribute.val_best + ' : 1</li></ul></td>';
+				
+			} 
+			else {
+				text_table += '<td>All points have already been assessed</td>';
 			}
 
-			if (asses_session.attributes[i].questionnaire.number > 0) {
-				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			if (assess_session_QUALI.attributes[i].questionnaire.number > 0) {
+				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session_QUALI.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
-				text += '<td>No assessment yet</td>';
+				text_table += '<td>No assessment yet</td>';
 			}
 
-			$('#table_attributes').append(text);
+			$('#table_attributes').append(text_table);
 
 			(function(_i) {
 					$('#deleteK' + _i).click(function() {
 							if (confirm("Are you sure ?") == false) {
 									return
 							};
-							asses_session.attributes[_i].questionnaire = {
+							assess_session_QUALI.attributes[_i].questionnaire = {
 									'number': 0,
-									'points': [],
+									'points': {},
 									'utility': {}
 							};
 							// backup local
-							localStorage.setItem("asses_session", JSON.stringify(asses_session));
+							localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 							//refresh the page
 							window.location.reload();
 					});
@@ -102,17 +124,17 @@
 
 			// which index is it ?
 			var indice;
-			for (var j = 0; j < asses_session.attributes.length; j++) {
-				if (asses_session.attributes[j].name == name) {
+			for (var j = 0; j < assess_session_QUALI.attributes.length; j++) {
+				if (assess_session_QUALI.attributes[j].name == name) {
 					indice = j;
 				}
 			}
 
-			var mode = asses_session.attributes[indice].mode;
-			var val_min = asses_session.attributes[indice].val_min;
-			var val_max = asses_session.attributes[indice].val_max;
-			var method = asses_session.attributes[indice].method;
-			var unit = asses_session.attributes[indice].unit;
+			var mode = assess_session_QUALI.attributes[indice].mode;
+			var val_min = assess_session_QUALI.attributes[indice].val_min;
+			var val_max = assess_session_QUALI.attributes[indice].val_max;
+			var method = assess_session_QUALI.attributes[indice].method;
+			var unit = assess_session_QUALI.attributes[indice].unit;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -139,13 +161,13 @@
 					
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
+					if (assess_session_QUALI.attributes[indice].questionnaire.number == 0) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
+					} else if (assess_session_QUALI.attributes[indice].questionnaire.number == 1) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+					} else if (assess_session_QUALI.attributes[indice].questionnaire.number == 2) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
@@ -197,10 +219,10 @@
 
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([gain_certain, final_proba]);
-								asses_session.attributes[indice].questionnaire.number += 1;
+								assess_session_QUALI.attributes[indice].questionnaire.points[gain_certain]=final_proba;
+								assess_session_QUALI.attributes[indice].questionnaire.number += 1;
 								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
+								localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 								// we reload the page
 								window.location.reload();
 							}
@@ -238,26 +260,22 @@
 
 			// which index is it ?
 			var indice;
-			for (var j = 0; j < asses_session.attributes.length; j++) {
-				if (asses_session.attributes[j].name == name) {
+			for (var j = 0; j < assess_session_QUALI.attributes.length; j++) {
+				if (assess_session_QUALI.attributes[j].name == name) {
 					indice = j;
 				}
 			}
 
-			var val_min = asses_session.attributes[indice].val_min;
-			var val_max = asses_session.attributes[indice].val_max;
-			var mode = asses_session.attributes[indice].mode;
-			var points = asses_session.attributes[indice].questionnaire.points.slice();
+			var val_worst = assess_session_QUALI.attributes[indice].val_worst;
+			var val_best = assess_session_QUALI.attributes[indice].val_best;
+			var mode = assess_session_QUALI.attributes[indice].mode;
+			var points = assess_session_QUALI.attributes[indice].questionnaire.points.slice(); //////////////////////////////////////
 
-			if (mode == "normal") {
-				points.push([val_max, 1]);
-				points.push([val_min, 0]);
-			} else {
-				points.push([val_max, 0]);
-				points.push([val_min, 1]);
-			}
+			points[val_worst] = 0;
+			points[val_best] = 1;
+			
 			var json_2_send = {
-				"type": "calc_util_multi"
+				"type": "calc_util_multi" /////////////////////////
 			};
 			json_2_send["points"] = points;
 
@@ -412,13 +430,13 @@
 			}
 
 			function availableRegressions(data) {
-				var text = '';
+				var text_reg = '';
 				for (var key in data) {
 					if (typeof(data[key]['r2']) !== 'undefined') {
-						text = text + key + ': ' + Math.round(data[key]['r2'] * 100) / 100 + ', ';
+						text_reg += key + ': ' + Math.round(data[key]['r2'] * 100) / 100 + ', ';
 					}
 				}
-				return text;
+				return text_reg;
 			}
 
 
