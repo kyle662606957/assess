@@ -72,7 +72,7 @@
 				text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
 				
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-					text_table += '<li>' + attribute.val_med[ii] + ' : ' + (attribute.questionnaire.points.val_med[ii] ? attribute.questionnaire.points.val_med[ii] : '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '">Assess</button>') + '</li>';
+					text_table += '<li>' + attribute.val_med[ii] + ' : ' + (attribute.questionnaire.points[val_med[ii]] ? attribute.questionnaire.points.val_med[ii] : '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '">Assess</button>') + '</li>';
 				}; 
 				
 				text_table += '<li>' + attribute.val_best + ' : 1</li></ul></td>';
