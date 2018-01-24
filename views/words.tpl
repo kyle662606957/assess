@@ -20,10 +20,6 @@
 
 <div id="trees"></div>
 
-<div id="charts">
-	<h2>Select the regression function you want to use</h2>
-</div>
-
 <div id="main_graph" class="col-lg-5"></div>
 <div id="functions" class="col-lg-7"></div>
 
@@ -41,7 +37,6 @@
 	$(function() {
 		$('li.questions_quali').addClass("active");
 		$('#attribute_name').hide()
-		$('#charts').hide();
 		$('#main_graph').hide();
 		$('#functions').hide();
 
@@ -284,24 +279,28 @@
 
 			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
 				val_best = assess_session_QUALI.attributes[indice].val_best,
-				points = assess_session_QUALI.attributes[indice].questionnaire.points; 
+				val_med = assess_session_QUALI.attributes[indice].val_med,
+				list_names = val_med.push(val_best).unshift(val_worst),
+				points = assess_session_QUALI.attributes[indice].questionnaire.points;
+				
+			alert(list_names);
+
 			
-			alert(points);
+			function addGraph(data_graph, names_graph) {
+				$.post('ajax', 
+					JSON.stringify({
+						"type": "svg_QUALI",
+						"data": data_graph,
+						"list_names": names_graph,
+						"width": 6
+					}), 
+				function(data2) {
+					$('#main_graph').append(data2);
+				});
+			}
 			
-			// function addGraph(i, data_graph, min_graph, max_graph) {
-				// $.post('ajax', JSON.stringify({
-					// "type": "svg_QUALI",
-					// "data": data_graph[i],
-					// "liste_cord": data_graph[i]['coord'],
-					// "width": 6
-				// }), 
-				// function(data2) {
-					// $('#main_graph').append(data2);
-				// });
-			// }
-			
-			// $('#main_graph').show().empty();
-			// addGraph(Number(this.value), data['data'], val_min, val_max);
+			$('#main_graph').show().empty();
+			addGraph(points, list_names);
 			
 		});
 	});

@@ -100,7 +100,7 @@ def pie_chart(names, probas):
 
     return imgdata.getvalue()
 
-def generate_svg_plot_QUALI(dict_coords, values_names, width):
+def generate_svg_plot_QUALI(dictionary, list_names, width):
 
 	# img
 	imgdata = io.BytesIO()
@@ -108,14 +108,13 @@ def generate_svg_plot_QUALI(dict_coords, values_names, width):
 	# Open a new figure with the right width
 	plt.figure(figsize=(width, width))
 	
-	graph_values = list(dict_coords.keys())
-	graph_x = list(range(len(graph_values)))
-	graph_y = list(dict_coords.values())
-
+	graph_x = list(range(len(dictionary)))
+	graph_y = list(dictionary.values())
+	
 	plt.figure(1)
 	plt.plot(graph_x, graph_y, 'r')
 	plt.axis([0, graph_x[-1], 0, 1])
-	plt.xticks(graph_x, graph_values)
+	plt.xticks(graph_x, list_names)
 
 	plt.savefig(imgdata, format='svg')
 	plt.close()
