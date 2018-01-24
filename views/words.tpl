@@ -303,8 +303,6 @@
 			// $('#main_graph').show().empty();
 			// addGraph(Number(this.value), data['data'], val_min, val_max);
 			
-			});
-
 		});
 	});
 </script>
