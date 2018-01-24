@@ -243,7 +243,7 @@ del_value_med.addEventListener('click', function() {
 				val_med = [],
 				val_best = $('#att_value_best').val();
 				
-			for (var ii=1; ii<nb_med_values; ii++){
+			for (var ii=1; ii<nb_med_values+1; ii++){
 				val_med.push($('#att_value_med_'+ii).val());
 			};
 			alert(val_med);
@@ -264,7 +264,7 @@ del_value_med.addEventListener('click', function() {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
-              alert ("An attribute with the same name already exists");
+				alert ("An attribute with the same name already exists");
             }
 
             else {
@@ -307,8 +307,13 @@ del_value_med.addEventListener('click', function() {
                 localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 				$('#att_name').val("");
 				$('#att_value_worst').val("");
-				$('#att_value_med').val("");				//////////////////////////////////////////////////////////////////////////////////////
+				$('#att_value_med_1').val("");
 				$('#att_value_best').val("");
+				
+				for (var ii=val_med.length; ii>1; ii--) {
+					var longueur = document.getElementById('list_med_values').getElementsByTagName('li').length;
+					lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+				};
             }
 
 
