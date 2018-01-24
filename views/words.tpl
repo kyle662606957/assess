@@ -170,21 +170,24 @@
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
 					
 
-					// The certain gain is the clicked mad_value
-					var gain_certain = ;
+					// The certain gain is the clicked med_value
+					var gain_certain = question_val;
 					
 					arbre_pe.questions_val_mean = gain_certain;
 					
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
 					
-					arbre_pe.questions_val_max = (mode=="normal"? val_max : val_min) + ' ' + unit;
-					arbre_pe.questions_val_min = (mode=="normal"? val_min : val_max) + ' ' + unit;
+					arbre_pe.questions_val_max = val_best;
+					arbre_pe.questions_val_min = val_worst;
 					
 					arbre_pe.display();
 					arbre_pe.update();
 
-					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>');
+					$('#trees').append('</div><div class=choice style="text-align: center;">'+
+										'<p>Which option do you prefer?</p>'+
+										'<button type="button" class="btn btn-default" id="gain">A</button>'+
+										'<button type="button" class="btn btn-default" id="lottery">B</button></div>');
 
 					// FUNCTIONS
 					function sync_values() {
@@ -209,9 +212,10 @@
 						// we delete the choice div
 						$('.choice').hide();
 						$('.container-fluid').append(
-							'<div id= "final_value" style="text-align: center;"><br /><br /><p>We are almost done. Please enter the probability that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
+							'<div id= "final_value" style="text-align: center;"><br /><br />'+
+							'<p>We are almost done. Please enter the probability that makes you indifferent between the two situations above. Your previous choices indicate that it should be between ' + min_interval + ' and ' + max_interval + ' but you are not constrained to that range <br /> ' + min_interval +
 							'\
-						 <= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
+							<= <input type="text" class="form-control" id="final_proba" placeholder="Probability" value="' + val + '" style="width: 100px; display: inline-block"> <= ' + max_interval +
 							'</p><button type="button" class="btn btn-default final_validation">Validate</button></div>'
 						);
 
