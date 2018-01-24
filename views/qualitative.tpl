@@ -193,9 +193,9 @@ del_value_med.addEventListener('click', function() {
 								  '<td><ul><li>' + attribute.val_worst + '</li>';
 								  
 					for (var ii=0, len=attribute.val_med.length; ii<len; ii++){			  
-						text_table += '<li>' + attribute.val_med[ii] + '</li>'
-								  
-								  
+						text_table += '<li>' + attribute.val_med[ii] + '</li>';
+					};
+						
 					text_table += '<li>' + attribute.val_best + '</li></td>'+
 								  '<td>' + attribute.method + '</td>';
 								  
@@ -271,7 +271,7 @@ del_value_med.addEventListener('click', function() {
             <!-- } -->
 
             
-            if (!(name || val_worst || val_best || val_med)) {//////////////////////////////////////////////////////////////////////////////////////
+            if (!(name || val_worst || val_best || val_med)) {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
