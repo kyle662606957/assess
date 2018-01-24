@@ -291,9 +291,6 @@
 				list_points.push(points[list_names[ii]]);
 			};
 			
-			alert(list_points);
-
-			
 			function addGraph(data_graph, names_graph) {
 				$.post('ajax', 
 					JSON.stringify({
@@ -308,7 +305,7 @@
 			}
 			
 			$('#main_graph').show().empty();
-			//addGraph(list_points, list_names);
+			addGraph(list_points, list_names);
 			
 		});
 	});
