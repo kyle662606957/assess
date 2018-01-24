@@ -314,7 +314,7 @@ del_value_med.addEventListener('click', function() {
 						'questionnaire': {
 							'number': 0,
 							'points': {'val_worst' : 0, 'val_best' : 1},
-							'utility': []
+							'order': []
 						}
 					});
 				} else {
