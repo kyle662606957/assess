@@ -234,13 +234,19 @@ del_value_med.addEventListener('click', function() {
         }
         sync_table();
 
-        var name = $('#att_name').val();
+        //var name = $('#att_name').val();
 
         $('#submit').click(function() {
             var name = $('#att_name').val(),
 				val_worst = $('#att_value_worst').val(),
-				val_med = $('#att_value_med').val(),//////////////////////////////////////////////////////////////////////////////////////
+				nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length-1,
+				val_med = [],
 				val_best = $('#att_value_best').val();
+				
+			for (var ii=1; ii<nb_med_values; i++){
+				val_med.push($('#att_value_med_'+ii).val();
+			};
+			alert(val_med);
 
             var method = "PE";
             <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
