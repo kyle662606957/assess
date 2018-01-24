@@ -33,23 +33,21 @@
     </div>
 
     <div class="form-group">
-        <label for="att_value_worst">Min value:</label>
+        <label for="att_value_worst">Least prefered value:</label>
         <input type="text" class="form-control" id="att_value_worst" placeholder="Value">
     </div>
 	
 	<div class="form-group">
-        <label for="att_value_med">Medium value:</label>
-		<ol id="list_med_values">
-			<li><input type="text" class="form-control" id="att_value_med_1" placeholder='Value Med 1'/></li>
-			<li>
-				<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
-				<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
-			</li>
-		</ol>
+        <label for="att_value_med">Medium value(s):</label>
+			<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
+			<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
+			<ol id="list_med_values">
+				<li><input type="text" class="form-control" id="att_value_med_1" placeholder='Value Med 1'/></li>
+			</ol>
     </div>
 	
     <div class="form-group">
-        <label for="att_value_best">Max value:</label>
+        <label for="att_value_best">Most prefered value:</label>
         <input type="text" class="form-control" id="att_value_best" placeholder="Value">
     </div>
 	
@@ -85,13 +83,13 @@ add_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
 	var new_item = document.createElement('li');
 	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ longueur +"' placeholder='Value Med " + longueur +"'/>";
-	lists[longueur-1].parentNode.insertBefore(new_item, lists[longueur-1]);
+	lists[longueur-1].parentNode.appendChild(new_item);
 });
 
 del_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
-	if (longueur!=2){
-		lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+	if (longueur!=1){
+		lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 	} else {
 		alert("Please put at lease one medium value for the attribute "+$('#att_name').val());
 	};
@@ -246,12 +244,10 @@ del_value_med.addEventListener('click', function() {
         }
         sync_table();
 
-        //var name = $('#att_name').val();
-
         $('#submit').click(function() {
             var name = $('#att_name').val(),
 				val_worst = $('#att_value_worst').val(),
-				nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length-1,
+				nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length,
 				val_med = [],
 				val_best = $('#att_value_best').val();
 				
@@ -325,7 +321,7 @@ del_value_med.addEventListener('click', function() {
 				
 				for (var ii=val_med.length; ii>1; ii--) {
 					var longueur = document.getElementById('list_med_values').getElementsByTagName('li').length;
-					lists[longueur-1].parentNode.removeChild(lists[longueur-2]);
+					lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 				};
             }
 
