@@ -286,28 +286,23 @@
 				val_best = assess_session_QUALI.attributes[indice].val_best,
 				points = assess_session_QUALI.attributes[indice].questionnaire.points; 
 			
-			var json_2_send = {
-				"type": "calc_util_multi",
-				"points": points
-			};
-
-			function addGraph(i, data, min, max) {
-				$.post('ajax', JSON.stringify({
-					"type": "svg",
-					"data": data[i],
-					"min": min,
-					"max": max,
-					"liste_cord": data[i]['coord'],
-					"width": 6
-				}), function(data2) {
-					$('#main_graph').append(data2);
-				});
-			}
-
-			$.post('ajax', JSON.stringify(json_2_send), function(data) {
-				$('#main_graph').show().empty();
-				addGraph(Number(this.value), data['data'], val_min, val_max);
-				});
+			alert(points);
+			
+			// function addGraph(i, data_graph, min_graph, max_graph) {
+				// $.post('ajax', JSON.stringify({
+					// "type": "svg_QUALI",
+					// "data": data_graph[i],
+					// "liste_cord": data_graph[i]['coord'],
+					// "width": 6
+				// }), 
+				// function(data2) {
+					// $('#main_graph').append(data2);
+				// });
+			// }
+			
+			// $('#main_graph').show().empty();
+			// addGraph(Number(this.value), data['data'], val_min, val_max);
+			
 			});
 
 		});
