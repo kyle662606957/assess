@@ -122,24 +122,26 @@
 
 		$('.answer_quest').click(function() {
 			// we store the name of the attribute
-			var name_val = $(this).attr('id').split('_');//slice(2);
-			alert(name_val);
+			var question_id = $(this).attr('id').slice(2).split('_'),
+				question_name = question_id[0],
+				question_val = question_id[1],
+				question_index = question_id[2];
+			alert(question_id);
 			
 			// we delete the select div
 			$('#select').hide();
-			$('#attribute_name').show().html(name.toUpperCase());
+			$('#attribute_name').show().html(question_name.toUpperCase());
 
 
 			// which index is it ? / which attribute is it ?
 			var indice;
 			for (var j = 0; j < assess_session_QUALI.attributes.length; j++) {
-				if (assess_session_QUALI.attributes[j].name == name) {
+				if (assess_session_QUALI.attributes[j].name == question_name) {
 					indice = j;
 				}
 			}
 
-			var id_val_med = name.slice(
-				val_worst = assess_session_QUALI.attributes[indice].val_worst,
+			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
 				val_best = assess_session_QUALI.attributes[indice].val_best,
 				method = assess_session_QUALI.attributes[indice].method;
