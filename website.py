@@ -171,7 +171,7 @@ def ajax():
         dictionary = query['data']
         list_names = query['list_names']
         width = query['width']
-        return plot.generate_svg_plot(dictionary, list_names, width)
+        return plot.generate_svg_plot_QUALI(dictionary, list_names, width)
 
     elif query['type'] == "pie_chart":
         names = query['names']
