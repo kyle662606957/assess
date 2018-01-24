@@ -313,8 +313,8 @@ del_value_med.addEventListener('click', function() {
 						'checked': true,
 						'questionnaire': {
 							'number': 0,
-							'points': {'val_worst' : 0, 'val_best' : 1},
-							'order': []
+							'points': {},//{'val_worst' : [0, -1], 'val_best' : [1, -2]},
+							'utility': {}
 						}
 					});
 				} else {
@@ -329,8 +329,8 @@ del_value_med.addEventListener('click', function() {
 							'checked': true,
 							'questionnaire': {
 								'number': 0,
-								'points': {'val_worst' : 0, 'val_best' : 1},
-								'order': []
+								'points': {},
+								'utility': {}
 							}
 						};
 					}

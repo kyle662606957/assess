@@ -66,8 +66,8 @@
 			text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
 			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 				text_table += '<li>' + attribute.val_med[ii] + ' : '; 
-				if(attribute.questionnaire.points[attribute.val_med[ii]]){
-					text_table += attribute.questionnaire.points[attribute.val_med[ii]];
+				if(attribute.questionnaire.points[attribute.val_med[ii]][0]){
+					text_table += attribute.questionnaire.points[attribute.val_med[ii]][0];
 				} else {
 					text_table += '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</li>';
 				};
@@ -91,8 +91,8 @@
 							};
 							assess_session_QUALI.attributes[_i].questionnaire = {
 									'number': 0,
-									'points': {'val_worst' : 0, 'val_best' : 1},
-									'order': []
+									'points': {},
+									'utility': {}
 							};
 							// backup local
 							localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
@@ -213,7 +213,6 @@
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
 								assess_session_QUALI.attributes[indice].questionnaire.points[gain_certain]=final_proba;
-								assess_session_QUALI.attributes[indice].questionnaire.order.unshift(question_id);
 								assess_session_QUALI.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
@@ -283,10 +282,16 @@
 				val_med = assess_session_QUALI.attributes[indice].val_med,
 				list_names = [].concat(val_worst, val_med, val_best),
 				points = assess_session_QUALI.attributes[indice].questionnaire.points,
-				order = assess_session_QUALI.attributes[indice].questionnaire.order;
-				
-			alert(order);
-			order.push(-1, val_med.length);
+				liste_points = [];
+
+			points[val_worst] = 0; //On force l'utilité de la pire à 0
+			points[val_best] = 1; //On force l'utilité de la meilleure à 1
+			
+			for (var name_val in list_names) {
+				liste_points.push(points[name_val]);
+			};
+			
+			alert(liste_points);
 
 			
 			function addGraph(data_graph, names_graph) {
@@ -303,7 +308,7 @@
 			}
 			
 			$('#main_graph').show().empty();
-			addGraph(points, list_names);
+			//addGraph(liste_points, list_names);
 			
 		});
 	});
