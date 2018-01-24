@@ -267,7 +267,7 @@ del_value_med.addEventListener('click', function() {
             <!-- } -->
 
             
-            if (name=="" || val_worst=="" || val_best=="" || val_med==[])) {
+            if (name=="" || val_worst=="" || val_best=="" || val_med==[]) {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
