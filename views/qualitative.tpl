@@ -161,6 +161,22 @@ del_value_med.addEventListener('click', function() {
 			return false;
 		};
 		
+		function areAllValuesDifferent(val_list, val_min, val_max){
+			var list_len = val_list.length;
+			for (var i=0; i<list_len; i++) {
+				if (val_list[i] == val_min || val_list[i] == val_max){
+					return false;
+				};
+				for (var j=0; j<list_len; j++) {
+					if(val_list[i] == val_list[j] && i!=j){
+						return false;
+					}
+				}
+			};
+			return true;
+		};
+		
+		
 
         function checked_button_clicked(element) {
             var checked = $(element).prop("checked");
@@ -230,22 +246,17 @@ del_value_med.addEventListener('click', function() {
 							$('#att_value_worst').val(attribute_edit.val_worst);
 							$('#att_value_med_1').val(attribute_edit.val_med[0]);
 							
-							for (var ii=2, len=attribute_edit.val_med.length; ii<len; ii++) {
+							for (var ii=2, len=attribute_edit.val_med.length; ii<len+1; ii++) {
 								var longueur = lists.length;
 								var new_item = document.createElement('li');
 								new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
 								lists[longueur-1].parentNode.appendChild(new_item);
 								
-								$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);/////////////////////////////////////////////////
+								$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);
 							};
 							
 							$('#att_value_best').val(attribute_edit.val_best);
 							$('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
-							if (attribute_edit.mode=="normal") {
-								$('#att_mode').prop('checked', false);
-							} else {
-								$('#att_mode').prop('checked', true);
-							}
 						});
                     })(i);
                 }
@@ -277,13 +288,17 @@ del_value_med.addEventListener('click', function() {
             <!-- } -->
 
             
-            if (name=="" || val_worst=="" || val_best=="" || val_med==[]) {
+            if (name=="" || val_worst=="" || val_best=="") {
                 alert('Please fill correctly all the fields');
             }
             else if (isAttribute(name) && (edit_mode == false)) {
 				alert ("An attribute with the same name already exists");
             } else if (isOneValueOfTheListEmpty(val_med)) {
 				alert("One of your medium values is empty");
+			} else if (val_worst==val_best) {
+				alert("The least prefered and most prefered values are the same");
+			} else if (areAllValuesDifferent==false) {
+				alert("At least one of the values is appearing more than once");
 			}
 
             else {
@@ -302,26 +317,27 @@ del_value_med.addEventListener('click', function() {
 							'utility': {}
 						}
 					});
-              } else {
-                if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
-					assess_session_QUALI.attributes[edited_attribute]={
-						"name": name,
-						'val_worst': val_worst,
-						'val_med': val_med,
-						'val_best': val_best,
-						'method': method,
-						'completed': 'False',
-						'checked': true,
-						'questionnaire': {
-							'number': 0,
-							'points': [],
-							'utility': {}
-						}
-					};
-                }
-                edit_mode=false;
-                $('#add_attribute h2').text("Add a new attribute");
-              }
+				} else {
+					if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
+						assess_session_QUALI.attributes[edited_attribute]={
+							"name": name,
+							'val_worst': val_worst,
+							'val_med': val_med,
+							'val_best': val_best,
+							'method': method,
+							'completed': 'False',
+							'checked': true,
+							'questionnaire': {
+								'number': 0,
+								'points': [],
+								'utility': {}
+							}
+						};
+					}
+					edit_mode=false;
+					$('#add_attribute h2').text("Add a new attribute");
+				}
+				
                 sync_table();
                 localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
 				$('#att_name').val("");
