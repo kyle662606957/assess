@@ -272,7 +272,7 @@ del_value_med.addEventListener('click', function() {
             }
             else if (isAttribute(name) && (edit_mode == false)) {
 				alert ("An attribute with the same name already exists");
-            } else if (isOneValueOfTheListEmpty(val_med.push(val_best, val_worst))) {
+            } else if (isOneValueOfTheListEmpty(val_med)) {
 				alert("One of your medium values is empty");
 			}
 
