@@ -231,15 +231,31 @@
 
 					// HANDLE USERS ACTIONS
 					$('#gain').click(function() {
-						$.post('ajax', '{"type":"question", "method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "0", "mode": "' + 'normal' + '"}', function(data) {
-							treat_answer(data);
-						});
+						$.post('ajax', 
+							'{"type":"question",'+
+							'"method": "PE",'+
+							'"proba": ' + String(probability) + ','+
+							'"min_interval": ' + min_interval + ','+
+							'"max_interval": ' + max_interval + ','+
+							'"choice": "0",'+
+							'"mode": "normal"}',
+							function(data) {
+								treat_answer(data);
+							});
 					});
 
 					$('#lottery').click(function() {
-						$.post('ajax', '{"type":"question","method": "PE", "proba": ' + String(probability) + ', "min_interval": ' + min_interval + ', "max_interval": ' + max_interval + ' ,"choice": "1" , "mode": "' + 'normal' + '"}', function(data) {
-							treat_answer(data);
-						});
+						$.post('ajax', 
+							'{"type":"question",'+
+							'"method": "PE",'+
+							'"proba": ' + String(probability) + ','+
+							'"min_interval": ' + min_interval + ','+
+							'"max_interval": ' + max_interval + ','+
+							'"choice": "1",'+
+							'"mode": "normal"}',
+							function(data) {
+								treat_answer(data);
+							});
 					});
 				})()
 			}
@@ -271,10 +287,9 @@
 				points = assess_session_QUALI.attributes[indice].questionnaire.points; 
 			
 			var json_2_send = {
-				"type": "calc_util_multi" /////////////////////////
+				"type": "calc_util_multi",
+				"points": points
 			};
-			json_2_send["points"] = points;
-
 
 			function addGraph(i, data, min, max) {
 				$.post('ajax', JSON.stringify({
@@ -288,9 +303,6 @@
 					$('#main_graph').append(data2);
 				});
 			}
-
-
-
 
 			$.post('ajax', JSON.stringify(json_2_send), function(data) {
 				$('#main_graph').show().empty();
