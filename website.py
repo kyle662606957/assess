@@ -166,12 +166,6 @@ def ajax():
         liste_cord = query['liste_cord']
         width = query['width']
         return plot.generate_svg_plot(dictionary, min, max, liste_cord, width)
-		
-	elif query['type'] == "svg_QUALI":
-        dict_points = query['data']
-        list_names = query['list_names']
-        width = query['width']
-        return plot.generate_svg_plot_QUALI(dict_points, list_names, width)
 
     elif query['type'] == "pie_chart":
         names = query['names']
