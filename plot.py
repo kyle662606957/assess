@@ -109,7 +109,7 @@ def generate_svg_plot_QUALI(dictionary, list_names, width):
 	plt.figure(figsize=(width, width))
 	
 	graph_x = list(range(len(dictionary)))
-	graph_y = list(dictionary.values())
+	graph_y = dictionary
 	
 	plt.figure(1)
 	plt.plot(graph_x, graph_y, 'r')

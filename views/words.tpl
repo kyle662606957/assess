@@ -282,16 +282,16 @@
 				val_med = assess_session_QUALI.attributes[indice].val_med,
 				list_names = [].concat(val_worst, val_med, val_best),
 				points = assess_session_QUALI.attributes[indice].questionnaire.points,
-				liste_points = [];
+				list_points = [];
 
 			points[val_worst] = 0; //On force l'utilité de la pire à 0
 			points[val_best] = 1; //On force l'utilité de la meilleure à 1
 			
-			for (var name_val in list_names) {
-				liste_points.push(points[name_val]);
+			for (var ii=0, len=list_names.length; ii<len; ii++) {
+				list_points.push(points[list_names[ii]]);
 			};
 			
-			alert(liste_points);
+			alert(list_points);
 
 			
 			function addGraph(data_graph, names_graph) {
@@ -308,7 +308,7 @@
 			}
 			
 			$('#main_graph').show().empty();
-			//addGraph(liste_points, list_names);
+			//addGraph(list_points, list_names);
 			
 		});
 	});
