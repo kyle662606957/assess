@@ -301,8 +301,8 @@
 				});
 			}
 			
-			$('#main_graph').show().empty();
-			addGraph(points, list_names);
+			// $('#main_graph').show().empty();
+			// addGraph(points, list_names);
 			
 		});
 	});
