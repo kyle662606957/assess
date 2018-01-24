@@ -313,7 +313,7 @@ del_value_med.addEventListener('click', function() {
 						'checked': true,
 						'questionnaire': {
 							'number': 0,
-							'points': [],
+							'points': {},
 							'utility': {}
 						}
 					});
@@ -329,7 +329,7 @@ del_value_med.addEventListener('click', function() {
 							'checked': true,
 							'questionnaire': {
 								'number': 0,
-								'points': [],
+								'points': {},
 								'utility': {}
 							}
 						};
