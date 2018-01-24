@@ -66,8 +66,8 @@
 			text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
 			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 				text_table += '<li>' + attribute.val_med[ii] + ' : '; 
-				if(attribute.questionnaire.points[attribute.val_med[ii]][0]){
-					text_table += attribute.questionnaire.points[attribute.val_med[ii]][0];
+				if(attribute.questionnaire.points[attribute.val_med[ii]]){
+					text_table += attribute.questionnaire.points[attribute.val_med[ii]];
 				} else {
 					text_table += '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</li>';
 				};
