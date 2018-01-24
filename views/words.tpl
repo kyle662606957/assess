@@ -123,6 +123,7 @@
 		$('.answer_quest').click(function() {
 			// we store the name of the attribute
 			var name = $(this).attr('id').slice(2);
+			alert(name);
 
 			// we delete the slect div
 			$('#select').hide();
