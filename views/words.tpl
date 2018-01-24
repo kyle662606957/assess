@@ -88,7 +88,7 @@
 			}
 
 			if (attribute.questionnaire.number === attribute.val_med.length) {
-				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session_QUALI.attributes[i].name + '">Utility function</button></td>';
+				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td>';
 			} else {
 				text_table += '<td>Please assess all the medium values</td>';
 			}
@@ -104,7 +104,7 @@
 							};
 							assess_session_QUALI.attributes[_i].questionnaire = {
 									'number': 0,
-									'points': {},
+									'points': {'val_worst' : 0, 'val_best' : 1},
 									'utility': {}
 							};
 							// backup local
@@ -126,7 +126,6 @@
 				question_name = question_id[0],
 				question_val = question_id[1],
 				question_index = question_id[2];
-			alert(question_id);
 			
 			// we delete the select div
 			$('#select').hide();
@@ -261,25 +260,23 @@
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$('.calc_util').click(function() {
 			// we store the name of the attribute
-			var name = $(this).attr('id').slice(2);
-			// we hide the slect div
+			var utility_name = $(this).attr('id').slice(2);
+			
+			// we delete the select div
 			$('#select').hide();
+			//$('#attribute_name').show().html(question_name.toUpperCase());
 
 			// which index is it ?
 			var indice;
 			for (var j = 0; j < assess_session_QUALI.attributes.length; j++) {
-				if (assess_session_QUALI.attributes[j].name == name) {
+				if (assess_session_QUALI.attributes[j].name == utility_name) {
 					indice = j;
 				}
 			}
 
-			var val_worst = assess_session_QUALI.attributes[indice].val_worst;
-			var val_best = assess_session_QUALI.attributes[indice].val_best;
-			var mode = assess_session_QUALI.attributes[indice].mode;
-			var points = assess_session_QUALI.attributes[indice].questionnaire.points.slice(); //////////////////////////////////////
-
-			points[val_worst] = 0;
-			points[val_best] = 1;
+			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
+				val_best = assess_session_QUALI.attributes[indice].val_best,
+				points = assess_session_QUALI.attributes[indice].questionnaire.points; 
 			
 			var json_2_send = {
 				"type": "calc_util_multi" /////////////////////////

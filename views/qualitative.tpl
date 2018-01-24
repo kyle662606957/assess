@@ -91,7 +91,7 @@ del_value_med.addEventListener('click', function() {
 	if (longueur!=1){
 		lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 	} else {
-		alert("Please put at lease one medium value for the attribute "+$('#att_name').val());
+		alert("Please put at least one medium value for the attribute "+$('#att_name').val());
 	};
 });
 
@@ -313,7 +313,7 @@ del_value_med.addEventListener('click', function() {
 						'checked': true,
 						'questionnaire': {
 							'number': 0,
-							'points': {},
+							'points': {'val_worst' : 0, 'val_best' : 1},
 							'utility': {}
 						}
 					});
@@ -329,7 +329,7 @@ del_value_med.addEventListener('click', function() {
 							'checked': true,
 							'questionnaire': {
 								'number': 0,
-								'points': {},
+								'points': {'val_worst' : 0, 'val_best' : 1},
 								'utility': {}
 							}
 						};
