@@ -76,7 +76,7 @@
 					if(attribute.questionnaire.points[attribute.val_med[ii]]){
 						text_table += attribute.questionnaire.points[attribute.val_med[ii]];
 					} else {
-						text_table += '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '">Assess</button>' + '</li>';
+						text_table += '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</li>';
 					};
 				}; 
 				
@@ -87,7 +87,7 @@
 				text_table += '<td>All points have already been assessed</td>';
 			}
 
-			if (attribute.questionnaire.number !== attribute.val_med.length) {
+			if (attribute.questionnaire.number === attribute.val_med.length) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session_QUALI.attributes[i].name + '">Utility function</button></td>';
 			} else {
 				text_table += '<td>Please assess all the medium values</td>';
@@ -122,15 +122,15 @@
 
 		$('.answer_quest').click(function() {
 			// we store the name of the attribute
-			var name = $(this).attr('id').slice(2);
-			alert(name);
-
-			// we delete the slect div
+			var name_val = $(this).attr('id').split('_');//slice(2);
+			alert(name_val);
+			
+			// we delete the select div
 			$('#select').hide();
 			$('#attribute_name').show().html(name.toUpperCase());
 
 
-			// which index is it ?
+			// which index is it ? / which attribute is it ?
 			var indice;
 			for (var j = 0; j < assess_session_QUALI.attributes.length; j++) {
 				if (assess_session_QUALI.attributes[j].name == name) {
@@ -138,11 +138,11 @@
 				}
 			}
 
-			var mode = assess_session_QUALI.attributes[indice].mode;
-			var val_min = assess_session_QUALI.attributes[indice].val_min;
-			var val_max = assess_session_QUALI.attributes[indice].val_max;
-			var method = assess_session_QUALI.attributes[indice].method;
-			var unit = assess_session_QUALI.attributes[indice].unit;
+			var id_val_med = name.slice(
+				val_worst = assess_session_QUALI.attributes[indice].val_worst,
+				val_med = assess_session_QUALI.attributes[indice].val_med,
+				val_best = assess_session_QUALI.attributes[indice].val_best,
+				method = assess_session_QUALI.attributes[indice].method;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -168,18 +168,11 @@
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
 					
 
-					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (assess_session_QUALI.attributes[indice].questionnaire.number == 0) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (assess_session_QUALI.attributes[indice].questionnaire.number == 1) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (assess_session_QUALI.attributes[indice].questionnaire.number == 2) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					}
-
+					// The certain gain is the clicked mad_value
+					var gain_certain = ;
+					
+					arbre_pe.questions_val_mean = gain_certain;
+					
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
 					
