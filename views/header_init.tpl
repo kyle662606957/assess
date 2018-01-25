@@ -71,25 +71,26 @@
                     <li class="credits">
                         <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
                     </li>
+					
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Dropdown
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Action</a>
+							<a class="dropdown-item" href="#">Another action</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Something else here</a>
+						</div>
+					</li>
+					
 					<li class="manage_quali">
                         <a href="{{ get_url('/qualitative') }}"><i class="fa fa-fw fa-file"></i>Qualitative - Manage attributes</a>
                     </li>
                     <li class="questions_quali">
                         <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Qualitative - Utility assessment</a>
                     </li>
-					<li>
-						<div class="dropdown show">
-						  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Dropdown link
-						  </a>
-
-						  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="#">Action</a>
-							<a class="dropdown-item" href="#">Another action</a>
-							<a class="dropdown-item" href="#">Something else here</a>
-						  </div>
-						</div>
-					</li>
+					
 				</ul>
 			</div>
             <!-- /.navbar-collapse -->
