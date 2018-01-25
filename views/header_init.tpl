@@ -12,7 +12,7 @@
     <title>ASSESS THIBAUT</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{ get_url('static', path='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ get_url('static', path='css/bootstrap.css') }}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{ get_url('static', path='css/sb-admin.css') }}" rel="stylesheet">

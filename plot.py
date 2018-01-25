@@ -113,7 +113,7 @@ def generate_svg_plot_QUALI(dictionary, list_names, width):
 	
 	plt.figure(1)
 	plt.plot(graph_x, graph_y, 'r')
-	plt.plot([0, graph_x[-1]], [0, 1], 'b')
+	plt.plot([0, graph_x[-1]], [0, 1], 'k')
 	plt.axis([0, graph_x[-1], 0, 1])
 	plt.grid()
 	plt.xticks(graph_x, list_names)

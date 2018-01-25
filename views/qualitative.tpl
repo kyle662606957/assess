@@ -34,7 +34,7 @@
 
     <div class="form-group">
         <label for="att_value_worst">Least prefered value:</label>
-        <input type="text" class="form-control" id="att_value_worst" placeholder="Value">
+        <input type="text" class="form-control" id="att_value_worst" placeholder="Worst value">
     </div>
 	
 	<div class="form-group">
@@ -48,7 +48,7 @@
 	
     <div class="form-group">
         <label for="att_value_best">Most prefered value:</label>
-        <input type="text" class="form-control" id="att_value_best" placeholder="Value">
+        <input type="text" class="form-control" id="att_value_best" placeholder="Best value">
     </div>
 	
     <div class="form-group">
