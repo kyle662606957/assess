@@ -12,7 +12,7 @@
     <title>ASSESS THIBAUT</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{ get_url('static', path='css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ get_url('static', path='css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{ get_url('static', path='css/sb-admin.css') }}" rel="stylesheet">
@@ -77,6 +77,19 @@
                     <li class="questions_quali">
                         <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-file"></i>Qualitative - Utility assessment</a>
                     </li>
+					<li>
+						<div class="dropdown show">
+						  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Dropdown link
+						  </a>
+
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="#">Action</a>
+							<a class="dropdown-item" href="#">Another action</a>
+							<a class="dropdown-item" href="#">Something else here</a>
+						  </div>
+						</div>
+					</li>
 				</ul>
 			</div>
             <!-- /.navbar-collapse -->
