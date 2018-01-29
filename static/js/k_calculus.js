@@ -356,7 +356,7 @@ function k_multilinear_answer(i){
 					attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
 					attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
 					
-				if (isInList(l, ID_att) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
+				if (isInList(l, ID_att)) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
 					gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 				} else {
 					gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
