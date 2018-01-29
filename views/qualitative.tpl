@@ -12,8 +12,10 @@
         <tr>
             <th style='width:50px;'>State</th>
             <th>Attribute name</th>
+			<th>Unit</th> ///////////////////////////////////
             <th>Values</th>
             <th>Method</th>
+			<th>Mode</th> ///////////////////////////////////
             <th>Edit</th>
             <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
         </tr>
@@ -196,6 +198,7 @@ $(function() {
 
 
 				text_table += '<td>' + attribute.name + '</td>' +
+							  '<td>' + attribute.unit + '</td>' +
 							  '<td><ul><li>' + attribute.val_worst + '</li>';
 							  
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
@@ -203,7 +206,8 @@ $(function() {
 				};
 					
 				text_table += '<li>' + attribute.val_best + '</li></td>'+
-							  '<td>' + attribute.method + '</td>';
+							  '<td>' + attribute.method + '</td>' +
+							  '<td>' + attribute.mode + '</td>';
 							  
 				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
 							  '<td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
@@ -286,10 +290,12 @@ $(function() {
 			if (edit_mode==false) {
 				assess_session_QUALI.attributes.push({
 					"name": name,
+					'unit': '',
 					'val_worst': val_worst,
 					'val_med': val_med,
 					'val_best': val_best,
 					'method': method,
+					'mode': 'normal',
 					'completed': 'False',
 					'checked': true,
 					'questionnaire': {
@@ -302,10 +308,12 @@ $(function() {
 				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
 					assess_session_QUALI.attributes[edited_attribute]={
 						"name": name,
+						'unit': '',
 						'val_worst': val_worst,
 						'val_med': val_med,
 						'val_best': val_best,
 						'method': method,
+						'mode': 'normal',
 						'completed': 'False',
 						'checked': true,
 						'questionnaire': {
@@ -331,10 +339,7 @@ $(function() {
 				lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 			};
 		}
-
-
 	});
-
 });
 
 </script>
