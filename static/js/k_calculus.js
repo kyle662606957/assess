@@ -398,8 +398,7 @@ function k_multilinear_answer(i){
 					arbre_gauche.questions_proba_haut = probability;
 					arbre_gauche.update();
 					ask_final_value(Math.round((max_interval + min_interval)*100/2)/100);
-				}
-				else {
+				} else {
 					arbre_gauche.questions_proba_haut = probability;
 					arbre_gauche.update();
 				}
@@ -423,16 +422,17 @@ function k_multilinear_answer(i){
 					for(var l=0; l<assess_session.k_calculus[1].k.length; l++) {
 						var nombreIndice=0;
 						for (var m = 0; m < indices.length; m++) {
-							if (assess_session.k_calculus[1].k[l].ID.indexOf(indices[m]) != -1 && assess_session.k_calculus[1].k[l].ID_attribute.length<indices.length)
+							if (assess_session.k_calculus[1].k[l].ID.indexOf(indices[m]) != -1 && assess_session.k_calculus[1].k[l].ID_attribute.length<indices.length){
 								nombreIndice++;
+							};
 						}
 
-						if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length)
+						if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length) {
 							KASoustraire.push(assess_session.k_calculus[1].k[l])
+						};
 					}
 					var final_k=final_proba;
-					for(var m=0; m<KASoustraire.length; m++)
-					{
+					for(var m=0; m<KASoustraire.length; m++) {
 						final_k-=KASoustraire[m].value;
 					}
 					final_k=Math.round(final_k*1000)/1000;
@@ -466,19 +466,22 @@ function k_multilinear_answer(i){
 }
 
 function k_multilinear_calculate_last_one(i){
-	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-	var indices=String(assess_session.k_calculus[1].k[i].ID).split(",");
-	var KASoustraire=[];
+	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+		indices=String(assess_session.k_calculus[1].k[i].ID).split(","),
+		KASoustraire=[];
 
 	for(var l=0; l<assess_session.k_calculus[1].k.length; l++) {
 		var nombreIndice=0;
 		for (var m = 0; m < indices.length; m++) {
-			if (assess_session.k_calculus[1].k[l].ID.indexOf(indices[m]) != -1 && assess_session.k_calculus[1].k[l].ID_attribute.length<indices.length)
+			if (assess_session.k_calculus[1].k[l].ID.indexOf(indices[m]) != -1 && assess_session.k_calculus[1].k[l].ID_attribute.length<indices.length){
 				nombreIndice++;
+			};
 		}
 
-		if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length)
+		if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length) {
 			KASoustraire.push(assess_session.k_calculus[1].k[l])
+			alert("On soustrait\n"+k[l]{"ID"});
+		}
 	}
 
 	var final_k=1;
