@@ -45,23 +45,23 @@
 		$('#main_graph').hide();
 		$('#functions').hide();
 
-		var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-		var settings=asses_session.settings;
+		var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+		var settings=assess_session.settings;
 
 		// We fill the table
-		for (var i = 0; i < asses_session.attributes.length; i++) {
-			if (!asses_session.attributes[i].checked) //if note activated
+		for (var i = 0; i < assess_session.attributes.length; i++) {
+			if (!assess_session.attributes[i].checked) //if note activated
 				continue; //we pass to the next one
-			var text = '<tr><td>' + asses_session.attributes[i].name + '</td><td>' + asses_session.attributes[i].method + '</td><td>' + asses_session.attributes[i].questionnaire.number + '</td>';
+			var text = '<tr><td>' + assess_session.attributes[i].name + '</td><td>' + assess_session.attributes[i].method + '</td><td>' + assess_session.attributes[i].questionnaire.number + '</td>';
 
-			if (asses_session.attributes[i].questionnaire.number !== 3) {
-				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + asses_session.attributes[i].name + '">Assess</button></td>';
+			if (assess_session.attributes[i].questionnaire.number !== 3) {
+				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + assess_session.attributes[i].name + '">Assess</button></td>';
 			} else {
 				text += '<td>Three points max</td>';
 			}
 
-			if (asses_session.attributes[i].questionnaire.number > 0) {
-				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + asses_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			if (assess_session.attributes[i].questionnaire.number > 0) {
+				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
 				text += '<td>No assessment yet</td>';
 			}
@@ -73,13 +73,13 @@
 							if (confirm("Are you sure ?") == false) {
 									return
 							};
-							asses_session.attributes[_i].questionnaire = {
+							assess_session.attributes[_i].questionnaire = {
 									'number': 0,
 									'points': [],
 									'utility': {}
 							};
 							// backup local
-							localStorage.setItem("asses_session", JSON.stringify(asses_session));
+							localStorage.setItem("assess_session", JSON.stringify(assess_session));
 							//refresh the page
 							window.location.reload();
 					});
@@ -102,17 +102,17 @@
 
 			// which index is it ?
 			var indice;
-			for (var j = 0; j < asses_session.attributes.length; j++) {
-				if (asses_session.attributes[j].name == name) {
+			for (var j = 0; j < assess_session.attributes.length; j++) {
+				if (assess_session.attributes[j].name == name) {
 					indice = j;
 				}
 			}
 
-			var mode = asses_session.attributes[indice].mode;
-			var val_min = asses_session.attributes[indice].val_min;
-			var val_max = asses_session.attributes[indice].val_max;
-			var method = asses_session.attributes[indice].method;
-			var unit = asses_session.attributes[indice].unit;
+			var mode = assess_session.attributes[indice].mode;
+			var val_min = assess_session.attributes[indice].val_min;
+			var val_max = assess_session.attributes[indice].val_max;
+			var method = assess_session.attributes[indice].method;
+			var unit = assess_session.attributes[indice].unit;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -139,13 +139,13 @@
 					
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
+					if (assess_session.attributes[indice].questionnaire.number == 0) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
 						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
 						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					}
@@ -197,10 +197,10 @@
 
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([gain_certain, final_proba]);
-								asses_session.attributes[indice].questionnaire.number += 1;
+								assess_session.attributes[indice].questionnaire.points.push([gain_certain, final_proba]);
+								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
+								localStorage.setItem("assess_session", JSON.stringify(assess_session));
 								// we reload the page
 								window.location.reload();
 							}
@@ -250,11 +250,11 @@
 					arbre_droite.questions_proba_haut = settings.proba_le;
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
+					if (assess_session.attributes[indice].questionnaire.number == 0) {
 						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2 + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
 						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4 + ' ' + unit;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
 						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4 + ' ' + unit;
 					}
 
@@ -296,10 +296,10 @@
 
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([parseFloat(arbre_droite.questions_val_max), final_proba * 2]);
-								asses_session.attributes[indice].questionnaire.number += 1;
+								assess_session.attributes[indice].questionnaire.points.push([parseFloat(arbre_droite.questions_val_max), final_proba * 2]);
+								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
+								localStorage.setItem("assess_session", JSON.stringify(assess_session));
 								// we reload the page
 								window.location.reload();
 							}
@@ -332,15 +332,15 @@
 				(function() {
 
 					// VARIABLES
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
+					if (assess_session.attributes[indice].questionnaire.number == 0) {
 						var min_interval = val_min;
 						var max_interval = val_max;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = asses_session.attributes[indice].questionnaire.points[0][0];
+					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
+						var min_interval = assess_session.attributes[indice].questionnaire.points[0][0];
 						var max_interval = val_max;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
 						var min_interval = val_min;
-						var max_interval = asses_session.attributes[indice].questionnaire.points[0][0];
+						var max_interval = assess_session.attributes[indice].questionnaire.points[0][0];
 					}
 
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
@@ -362,7 +362,7 @@
 					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>')
 
 					function utility_finder(gain) {
-						var points = asses_session.attributes[indice].questionnaire.points;
+						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
 							if (mode == 'normal') {
 								return 0;
@@ -419,10 +419,10 @@
 							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
-								asses_session.attributes[indice].questionnaire.number += 1;
+								assess_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
+								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
+								localStorage.setItem("assess_session", JSON.stringify(assess_session));
 								// we reload the page
 								window.location.reload();
 							}
@@ -455,17 +455,17 @@
 				(function() {
 
 					// VARIABLES
-					if (asses_session.attributes[indice].questionnaire.number == 0) {
+					if (assess_session.attributes[indice].questionnaire.number == 0) {
 						var min_interval = val_min;
 						var max_interval = val_max;
 						p = 0.5;
-					} else if (asses_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = asses_session.attributes[indice].questionnaire.points[0][0];
+					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
+						var min_interval = assess_session.attributes[indice].questionnaire.points[0][0];
 						var max_interval = val_max;
 						p = 0.25;
-					} else if (asses_session.attributes[indice].questionnaire.number == 2) {
+					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
 						var min_interval = val_min;
-						var max_interval = asses_session.attributes[indice].questionnaire.points[0][0];
+						var max_interval = assess_session.attributes[indice].questionnaire.points[0][0];
 						p = 0.75;
 					}
 
@@ -488,7 +488,7 @@
 					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
 
 					function utility_finder(gain) {
-						var points = asses_session.attributes[indice].questionnaire.points;
+						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
 							if (mode == 'normal') {
 								return 0;
@@ -546,10 +546,10 @@
 							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
-								asses_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
-								asses_session.attributes[indice].questionnaire.number += 1;
+								assess_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
+								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
-								localStorage.setItem("asses_session", JSON.stringify(asses_session));
+								localStorage.setItem("assess_session", JSON.stringify(assess_session));
 								// we reload the page
 								window.location.reload();
 							}
@@ -589,16 +589,16 @@
 
 			// which index is it ?
 			var indice;
-			for (var j = 0; j < asses_session.attributes.length; j++) {
-				if (asses_session.attributes[j].name == name) {
+			for (var j = 0; j < assess_session.attributes.length; j++) {
+				if (assess_session.attributes[j].name == name) {
 					indice = j;
 				}
 			}
 
-			var val_min = asses_session.attributes[indice].val_min;
-			var val_max = asses_session.attributes[indice].val_max;
-			var mode = asses_session.attributes[indice].mode;
-			var points = asses_session.attributes[indice].questionnaire.points.slice();
+			var val_min = assess_session.attributes[indice].val_min;
+			var val_max = assess_session.attributes[indice].val_max;
+			var mode = assess_session.attributes[indice].mode;
+			var points = assess_session.attributes[indice].questionnaire.points.slice();
 
 			if (mode == "normal") {
 				points.push([val_max, 1]);

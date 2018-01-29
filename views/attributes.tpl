@@ -71,17 +71,17 @@
             if (confirm("Are you sure ?") == false) {
                 return
             };
-            localStorage.removeItem("asses_session");
+            localStorage.removeItem("assess_session");
             window.location.reload();
         });
         $('li.manage').addClass("active");
 
-        var asses_session = JSON.parse(localStorage.getItem("asses_session"));
+        var assess_session = JSON.parse(localStorage.getItem("assess_session"));
         var edit_mode = false;
         var edited_attribute=0;
 
-        if (!asses_session) {
-            asses_session = {
+        if (!assess_session) {
+            assess_session = {
                 "attributes": [],
                 "k_calculus": [{
                     "method": "multiplicative",
@@ -105,12 +105,12 @@
                     "display": "trees"
                 }
             };
-            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+            localStorage.setItem("assess_session", JSON.stringify(assess_session));
         }
 
         function isAttribute(name) {
-            for (var i = 0; i < asses_session.attributes.length; i++) {
-                if (asses_session.attributes[i].name == name) {
+            for (var i = 0; i < assess_session.attributes.length; i++) {
+                if (assess_session.attributes[i].name == name) {
                     return true;
                 }
             }
@@ -122,18 +122,18 @@
             var i = $(element).val();
 
             //we modify the propriety
-            var asses_session = JSON.parse(localStorage.getItem("asses_session"));
-            asses_session.attributes[i].checked = checked;
+            var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+            assess_session.attributes[i].checked = checked;
 
             //we update the assess_session storage
-            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+            localStorage.setItem("assess_session", JSON.stringify(assess_session));
         }
 
         function sync_table() {
             $('#table_attributes').empty();
-            if (asses_session) {
-                for (var i = 0; i < asses_session.attributes.length; i++) {
-                    var attribute = asses_session.attributes[i];
+            if (assess_session) {
+                for (var i = 0; i < assess_session.attributes.length; i++) {
+                    var attribute = assess_session.attributes[i];
                     var text_table = "<tr>";
                     if (attribute.checked)
                         text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" checked></td>';
@@ -157,9 +157,9 @@
                             if (confirm("Are you sure ?") == false) {
                                 return
                             };
-                            asses_session.attributes.splice(_i, 1);
+                            assess_session.attributes.splice(_i, 1);
                             // backup local
-                            localStorage.setItem("asses_session", JSON.stringify(asses_session));
+                            localStorage.setItem("assess_session", JSON.stringify(assess_session));
                             //refresh the page
                             window.location.reload();
                         });
@@ -169,7 +169,7 @@
                         $('#edit_' + _i).click(function() {
                           edit_mode=true;
                           edited_attribute=_i;
-                          var attribute_edit = asses_session.attributes[_i];
+                          var attribute_edit = assess_session.attributes[_i];
                           $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
                           $('#att_name').val(attribute_edit.name);
                           $('#att_unit').val(attribute_edit.unit);
@@ -226,7 +226,7 @@
 
             else {
               if (edit_mode==false) {
-                asses_session.attributes.push({
+                assess_session.attributes.push({
                     "name": name,
                     'unit': unit,
                     'val_min': val_min,
@@ -243,7 +243,7 @@
                 });
               } else {
                 if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
-                  asses_session.attributes[edited_attribute]={
+                  assess_session.attributes[edited_attribute]={
                     "name": name,
                     'unit': unit,
                     'val_min': val_min,
@@ -263,7 +263,7 @@
                 $('#add_attribute h2').text("Add a new attribute");
               }
                 sync_table();
-                localStorage.setItem("asses_session", JSON.stringify(asses_session));
+                localStorage.setItem("assess_session", JSON.stringify(assess_session));
             }
 
 
