@@ -18,7 +18,7 @@
             <th>Method</th>
 			<th>Mode</th>
             <th>Edit</th>
-            <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
+            <th><button type="button" class="btn btn-danger del_simu"><img src='/static/img/delete.ico' style='width:16px;'/></button></th>
         </tr>
     </thead>
     <tbody id="table_attributes">
