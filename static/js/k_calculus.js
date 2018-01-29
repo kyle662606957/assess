@@ -347,7 +347,7 @@ function k_multilinear_answer(i){
 			for (var l = 0; l < len; l++){
 				if(!assess_session.attributes[l].checked){continue} //if not checked we don't put it
 				
-				mode = assess_session.attributes[ID_att[m]].mode;
+				mode = ((m<ID_att.length) ? assess_session.attributes[ID_att[m]].mode : assess_session.attributes[ID_att[ID_att.length-1]].mode);
 				
 				if(l==mon_k.ID_attribute[m] && assess_session.attributes[l].mode=="normal")//if the attribut is in our list
 				{
