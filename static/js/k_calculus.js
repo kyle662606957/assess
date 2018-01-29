@@ -99,6 +99,7 @@ $(function() {
 		update_method_button("multiplicative"); //update the active methode for k_kalculus
 		update_k_list(0);
 		show_list();
+		$("#K_computation").show();
 		$('#table_attributes').html("");
 		ki_calculated();
 	});
@@ -109,6 +110,7 @@ $(function() {
 		update_method_button("multilinear");
 		update_k_list(1);
 		show_list();
+		$("#K_computation").hide();
 		$('#table_attributes').html("");
 		ki_calculated();
 	});

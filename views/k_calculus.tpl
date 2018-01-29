@@ -41,23 +41,25 @@
 	<br/>
 
 	<!---------------------- K computation ---------------------->
-	<div class="page-header">
-	  <h3>K computation</h3>
-	</div>
+	<div id="K_computation">
+		<div class="page-header">
+		  <h3>K computation</h3>
+		</div>
 
-	<div class="alert alert-info" role="alert" id="calculatek_box_multiplicative" >
-	  You need to calculate all k<sub>i</sub> in order to calculate K.
-	</div>
+		<div class="alert alert-info" role="alert" id="calculatek_box_multiplicative" >
+		  You need to calculate all k<sub>i</sub> in order to calculate K.
+		</div>
 
-	<div class="alert alert-info" role="alert" id="calculatek_box_multilinear" >
-	  There is no need to calculate K in multilinear.
-	</div>
+		<div class="alert alert-info" role="alert" id="calculatek_box_multilinear" >
+		  There is no need to calculate K in multilinear.
+		</div>
 
-	<div style="text-align:center;" id="GK">
-		<span class="h4">K = <span id="GK_value"></span> </span><button type="button" class="btn btn-default btn-lg" id="button_calculate_k" style="text-align:center">Compute</button>
+		<div style="text-align:center;" id="GK">
+			<span class="h4">K = <span id="GK_value"></span> </span><button type="button" class="btn btn-default btn-lg" id="button_calculate_k" style="text-align:center">Compute</button>
+			<br/>
+		</div>
 		<br/>
 	</div>
-	<br/>
 
 	<!---------------------- Choose utility function for each attributes ---------------------->
 	<div class="page-header">
@@ -115,26 +117,17 @@ $(function() {
 	}
 
 	//we toggle the button we used
-	for(var i=0; i<asses_session.k_calculus.length; i++)
-	{
-		if(asses_session.k_calculus[i].active==true)
-		{
+	for(var i=0; i<asses_session.k_calculus.length; i++) {
+		if(asses_session.k_calculus[i].active==true) {
 			$("#button_"+asses_session.k_calculus[i].method).removeClass('btn-default');
 			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-primary');
 			update_k_list(i);
 			show_list();
-		}
-		else
-		{
+		} else {
 			$("#button_"+asses_session.k_calculus[i].method).removeClass('btn-primary');
 			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-default');
 		}
 	}
-
-
-
-
-
 });
 </script>
 
