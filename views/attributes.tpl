@@ -226,7 +226,7 @@ $(function() {
 		} else {
 			if (edit_mode==false) {
 				assess_session.attributes.push({
-					"type": "quantitative",
+					"type": "Quantitative",
 					"name": name,
 					'unit': unit,
 					'val_min': val_min,
@@ -244,7 +244,7 @@ $(function() {
 			} else {
 				if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
 					assess_session.attributes[edited_attribute]={
-						"type": "quantitative",
+						"type": "Quantitative",
 						"name": name,
 						'unit': unit,
 						'val_min': val_min,
