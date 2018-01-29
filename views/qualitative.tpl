@@ -31,6 +31,8 @@
         <label for="att_name">Name :</label>
         <input type="text" class="form-control" id="att_name" placeholder="Name">
     </div>
+	
+	<h3> Please rank the values by order of preference: </h3>
 
     <div class="form-group">
         <label for="att_value_worst">Least preferred value:</label>
