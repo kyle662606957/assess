@@ -11,11 +11,12 @@
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
+			<th>Type</th>
             <th>Attribute name</th>
-			<th>Unit</th> ///////////////////////////////////
+			<th>Unit</th>
             <th>Values</th>
             <th>Method</th>
-			<th>Mode</th> ///////////////////////////////////
+			<th>Mode</th>
             <th>Edit</th>
             <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
         </tr>
@@ -197,7 +198,8 @@ $(function() {
 					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
 
 
-				text_table += '<td>' + attribute.name + '</td>' +
+				text_table += '<td>' + attribute.type + '</td>' +
+							  '<td>' + attribute.name + '</td>' +
 							  '<td>' + attribute.unit + '</td>' +
 							  '<td><ul><li>' + attribute.val_worst + '</li>';
 							  
@@ -289,6 +291,7 @@ $(function() {
 		else {
 			if (edit_mode==false) {
 				assess_session_QUALI.attributes.push({
+					"type": "qualitative",
 					"name": name,
 					'unit': '',
 					'val_worst': val_worst,
@@ -300,13 +303,14 @@ $(function() {
 					'checked': true,
 					'questionnaire': {
 						'number': 0,
-						'points': {},//{'val_worst' : [0, -1], 'val_best' : [1, -2]},
+						'points': {},
 						'utility': {}
 					}
 				});
 			} else {
 				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
 					assess_session_QUALI.attributes[edited_attribute]={
+						"type": "qualitative",
 						"name": name,
 						'unit': '',
 						'val_worst': val_worst,
@@ -329,11 +333,14 @@ $(function() {
 			
 			sync_table();
 			localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+			
+			/// On vide les zones de texte
 			$('#att_name').val("");
 			$('#att_value_worst').val("");
 			$('#att_value_med_1').val("");
 			$('#att_value_best').val("");
 			
+			/// On ramène le nombre d'éléments intermédiaires à 1
 			for (var ii=val_med.length; ii>1; ii--) {
 				var longueur = document.getElementById('list_med_values').getElementsByTagName('li').length;
 				lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
