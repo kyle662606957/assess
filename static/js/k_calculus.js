@@ -324,6 +324,7 @@ function k_multilinear_answer(i){
 		ID_att = mon_k.ID_attribute,
 		name = mon_k.attribute;
 		
+		
 	// we delete the slect div
 	$('#k_calculus_info').hide();
 	
