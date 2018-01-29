@@ -313,7 +313,14 @@ function update_active_button_multilinear(){
 	}
 }
 
-
+/// Function to test if an object (obj) appears in the list (list_to_test)
+function isInList(obj, list_to_test) {
+	if (list_to_test.indexOf(obj) != -1){
+		return true;
+	} else {
+		return false;
+	};
+};
 
 //// Définition de la fonction qui va calculer K en MULTILINEAIRE 
 function k_multilinear_answer(i){
@@ -349,7 +356,7 @@ function k_multilinear_answer(i){
 					attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
 					attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
 					
-				if (l in ID_att) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
+				if (isInList(l, ID_att) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
 					gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 				} else {
 					gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
@@ -357,7 +364,7 @@ function k_multilinear_answer(i){
 				
 				gain_haut += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 				gain_bas += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-			}
+			};
 
 
 			// INTERFACE
