@@ -1,5 +1,9 @@
 %include('header_init.tpl', heading='Manage your attributes')
 
+<br />
+<br />
+<h2 style="display:inline-block; margin-right: 40px;"> Delete all attributes: </h2>
+<button type="button" class="btn btn-default del_simu">Delete</button>
 <h2> List of current attributes: </h2>
 <table class="table">
     <thead>
