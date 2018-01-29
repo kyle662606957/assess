@@ -480,7 +480,7 @@ function k_multilinear_calculate_last_one(i){
 
 		if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length) {
 			KASoustraire.push(assess_session.k_calculus[1].k[l]);
-			alert("On soustrait\n"+k[l]["ID"]);
+			alert(l+"\nOn soustrait\n"+assess_session.k_calculus[1].k[l]["ID"]);
 		};
 	}
 
