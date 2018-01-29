@@ -9,14 +9,13 @@
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
-			<th>Type</th>
             <th>Attribute name</th>
-			<th>Unit</th>
+            <th>Unit</th>
             <th>Values</th>
             <th>Method</th>
-			<th>Mode</th>
+            <th>Mode</th>
             <th>Edit</th>
-            <th><button type="button" class="btn btn-danger del_simu"><img src='/static/img/delete.ico' style='width:16px;'/></button></th>
+            <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
         </tr>
     </thead>
     <tbody id="table_attributes">
@@ -141,14 +140,10 @@ $(function() {
 				else
 					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
 
-				text_table += '<td>' + attribute.type + '</td>'+
-							  '<td>' + attribute.name + '</td>'+
-							  '<td>' + attribute.unit + '</td>'+
-							  '<td>[' + attribute.val_min + ',' + attribute.val_max + ']</td>'+
-							  '<td>' + attribute.method + '</td>'+
-							  '<td>' + attribute.mode + '</td>'+
-							  '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
-							  '<td><button type="button" class="btn btn-default del_simu"><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></button></td></tr>';
+
+
+				text_table += '<td>' + attribute.name + '</td><td>' + attribute.unit + '</td><td>[' + attribute.val_min + ',' + attribute.val_max + ']</td><td>' + attribute.method + '</td><td>' + attribute.mode + '</td>';
+				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
 
 				$('#table_attributes').append(text_table);
 
@@ -230,7 +225,6 @@ $(function() {
 		} else {
 			if (edit_mode==false) {
 				assess_session.attributes.push({
-					"type": "quantitative",
 					"name": name,
 					'unit': unit,
 					'val_min': val_min,
@@ -248,7 +242,6 @@ $(function() {
 			} else {
 				if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
 					assess_session.attributes[edited_attribute]={
-						"type": "quantitative",
 						"name": name,
 						'unit': unit,
 						'val_min': val_min,
