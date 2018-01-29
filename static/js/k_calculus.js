@@ -341,57 +341,24 @@ function k_multilinear_answer(i){
 			// VARIABLES
 			var gain_certain = gain_haut = gain_bas = "",
 				len = assess_session.attributes.length; // nombre d'attributs total
-				m = 0;
-				mode = assess_session.attributes[ID_att[m]].mode; // mode du premier attribut
 			
 			for (var l = 0; l < len; l++){
 				if(!assess_session.attributes[l].checked){continue} //if not checked we don't put it
 				
-				mode = ((m<ID_att.length) ? assess_session.attributes[ID_att[m]].mode : assess_session.attributes[ID_att[ID_att.length-1]].mode);
-				
-				if(l==mon_k.ID_attribute[m] && assess_session.attributes[l].mode=="normal")//if the attribut is in our list
-				{
-					gain_certain += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_haut += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_bas += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					m++;
-				}
-				else if(l==mon_k.ID_attribute[m] && assess_session.attributes[l].mode=="reverse")
-				{
-					gain_certain += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_haut += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_bas += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-				}
-				else if(l!=mon_k.ID_attribute[m] && assess_session.attributes[l].mode=="normal")//if the attribut is in our list
-				{
-					gain_certain += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_haut += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_bas += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					m++;
-				}
-				else if(l!=mon_k.ID_attribute[m] && assess_session.attributes[l].mode=="reverse")
-				{
-					gain_certain += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_haut += assess_session.attributes[l].val_min + ' ' + assess_session.attributes[l].unit+' <br/> ';
-					gain_bas += assess_session.attributes[l].val_max + ' ' + assess_session.attributes[l].unit+' <br/> ';
-				}
-			}
-			
-				// for (var l=0; l < len; l++) {
-					// var attrib = assess_session.attributes[assess_session.k_calculus[type].k[l].ID_attribute]
-						// attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
-						// attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
-						
-					// if (attrib.name == name) {
-						// gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-					// } else {
-						// gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-					// };
+				var attrib = assess_session.attributes[l],
+					attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
+					attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
 					
-					// gain_haut += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-					// gain_bas += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
-						
-				// }
+				if (l in ID_att) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
+					gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+				} else {
+					gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+				};
+				
+				gain_haut += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+				gain_bas += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
+			}
+
 
 			// INTERFACE
 			//on cache le bouton
