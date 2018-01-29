@@ -480,18 +480,16 @@ function k_multilinear_calculate_last_one(i){
 
 		if(nombreIndice==assess_session.k_calculus[1].k[l].ID_attribute.length) {
 			KASoustraire.push(assess_session.k_calculus[1].k[l]);
-			alert(l+"\nOn soustrait\n"+assess_session.k_calculus[1].k[l]["ID"]);
 		};
 	}
 
 	var final_k=1;
-	for(var m=0; m<KASoustraire.length; m++)
-	{
+	for(var m=0; m<KASoustraire.length; m++){
 		final_k-=KASoustraire[m].value;
 	}
 	final_k=Math.round(final_k*1000)/1000;
 
-	assess_session.k_calculus[1].k[i].value=final_k; //for multilinear it's 1
+	assess_session.k_calculus[1].k[i].value=final_k;
 	// backup local
 	localStorage.setItem("assess_session", JSON.stringify(assess_session));
 	// we reload the list
@@ -502,14 +500,13 @@ function k_multilinear_calculate_last_one(i){
 }
 
 //// Définition de la fonction qui va calculer K en MULTIPLICATIF 
-function k_answer(i, type) 
-{
-
-	 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-		var method = 'PE';
-		var settings = assess_session.settings;
-		var mon_k = assess_session.k_calculus[type].k[i];
-		var name = mon_k.attribute;
+function k_answer(i, type) {
+	 	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+			method = 'PE',
+			settings = assess_session.settings,
+			mon_k = assess_session.k_calculus[type].k[i],
+			name = mon_k.attribute;
+		
 		for (var j = 0; j < assess_session.attributes.length; j++) {
 			if (assess_session.attributes[j].name == name) {
 				var mon_attribut = assess_session.attributes[j];
@@ -648,23 +645,21 @@ function k_answer(i, type)
 
 }
 
-
-
-
 //#######################################################################################
 //#######################              CALCULATE K             ##########################
 //#######################################################################################
 
-
 function ki_calculated() {
-	var kiNumber = $("#table_k_attributes tr").length;
-	var kiNumberCalculated = 0;
-	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-	var method = (assess_session.k_calculus[0].active) ? 0 : 1;
-	var ma_list = assess_session.k_calculus[method].k;
+	var kiNumber = $("#table_k_attributes tr").length,
+		kiNumberCalculated = 0,
+		assess_session = JSON.parse(localStorage.getItem("assess_session"))
+		method = ((assess_session.k_calculus[0].active) ? 0 : 1),
+		ma_list = assess_session.k_calculus[method].k;
+		
 	for (var i = 0; i < kiNumber; i++) {
-		if (ma_list[i].value != null)//so we have calculated this value!
+		if (ma_list[i].value != null){ //if we have calculated this value!
 			kiNumberCalculated++;
+		};
 	}
 
 	if (kiNumber != kiNumberCalculated) {

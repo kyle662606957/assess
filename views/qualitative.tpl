@@ -33,34 +33,24 @@
     </div>
 
     <div class="form-group">
-        <label for="att_value_worst">Least prefered value:</label>
+        <label for="att_value_worst">Least preferred value:</label>
         <input type="text" class="form-control" id="att_value_worst" placeholder="Worst value">
     </div>
 	
 	<div class="form-group">
-        <label for="att_value_med">Medium value(s):</label>
+        <label for="att_value_med">Intermediary value(s):</label>
 			<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
 			<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
 			<ol id="list_med_values">
-				<li><input type="text" class="form-control" id="att_value_med_1" placeholder='Value Med 1'/></li>
+				<li><input type="text" class="form-control" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
 			</ol>
     </div>
 	
     <div class="form-group">
-        <label for="att_value_best">Most prefered value:</label>
+        <label for="att_value_best">Most preferred value:</label>
         <input type="text" class="form-control" id="att_value_best" placeholder="Best value">
     </div>
-	
-    <div class="form-group">
-        <label for="att_method">Method: (for now, it's always forced to PE)</label>
-        <select class="form-control" id="att_method">
-          <option value="PE">Probability Equivalence</option>
-          <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
-		  <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
-          <option value="LE">Lottery Equivalence</option>
-        </select>
-    </div>
-	
+		
     <button type="submit" class="btn btn-default" id="submit">Submit</button>
 
 </div>
@@ -256,7 +246,6 @@ del_value_med.addEventListener('click', function() {
 							};
 							
 							$('#att_value_best').val(attribute_edit.val_best);
-							$('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
 						});
                     })(i);
                 }
@@ -277,16 +266,6 @@ del_value_med.addEventListener('click', function() {
 			};
 
             var method = "PE";
-            <!-- if ($("select option:selected").text() == "Probability Equivalence") { -->
-                <!-- method = "PE"; -->
-            <!-- } else if ($("select option:selected").text() == "Lottery Equivalence") { -->
-                <!-- method = "LE"; -->
-            <!-- } else if ($("select option:selected").text() == "Certainty Equivalence - Constant Probability") { -->
-                <!-- method = "CE_Constant_Prob"; -->
-            <!-- } else if ($("select option:selected").text() == "Certainty Equivalence - Variable Probability") { -->
-                <!-- method = "CE_Variable_Prob"; -->
-            <!-- } -->
-
             
             if (name=="" || val_worst=="" || val_best=="") {
                 alert('Please fill correctly all the fields');
@@ -296,7 +275,7 @@ del_value_med.addEventListener('click', function() {
             } else if (isOneValueOfTheListEmpty(val_med)) {
 				alert("One of your medium values is empty");
 			} else if (val_worst==val_best) {
-				alert("The least prefered and most prefered values are the same");
+				alert("The least preferred and most preferred values are the same");
 			} else if (areAllValuesDifferent(val_med, val_worst, val_best)==false) {
 				alert("At least one of the values is appearing more than once");
 			}
