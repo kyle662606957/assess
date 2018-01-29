@@ -291,7 +291,7 @@ $(function() {
 		else {
 			if (edit_mode==false) {
 				assess_session_QUALI.attributes.push({
-					"type": "qualitative",
+					"type": "Qualitative",
 					"name": name,
 					'unit': '',
 					'val_worst': val_worst,
@@ -310,7 +310,7 @@ $(function() {
 			} else {
 				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
 					assess_session_QUALI.attributes[edited_attribute]={
-						"type": "qualitative",
+						"type": "Qualitative",
 						"name": name,
 						'unit': '',
 						'val_worst': val_worst,
