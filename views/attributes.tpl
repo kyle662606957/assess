@@ -141,8 +141,14 @@ $(function() {
 
 
 
-				text_table += '<td>' + attribute.name + '</td><td>' + attribute.unit + '</td><td>[' + attribute.val_min + ',' + attribute.val_max + ']</td><td>' + attribute.method + '</td><td>' + attribute.mode + '</td>';
-				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td><td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;"/></td></tr>';
+				text_table += '<td>' + attribute.type + '</td>'+
+							  '<td>' + attribute.name + '</td>'+
+							  '<td>' + attribute.unit + '</td>'+
+							  '<td>[' + attribute.val_min + ',' + attribute.val_max + ']</td>'+
+							  '<td>' + attribute.method + '</td>'+
+							  '<td>' + attribute.mode + '</td>''+
+							  '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
+							  '<td><button type="button" class="btn btn-default"><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
 
 				$('#table_attributes').append(text_table);
 

@@ -207,7 +207,7 @@ $(function() {
 							  '<td>' + attribute.mode + '</td>';
 							  
 				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
-							  '<td><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px;text-align:center"/></td></tr>';
+							  '<td><button type="button" class="btn btn-default"><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
 
 				$('#table_attributes').append(text_table);
 
