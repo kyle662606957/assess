@@ -1,11 +1,5 @@
 %include('header_init.tpl', heading='Manage your qualitative attributes')
 
-<!--br />
-<br />
-
-<h2 style="display:inline-block; margin-right: 40px;">Delete all attributes: </h2>
-<button type="button" class="btn btn-default del_simu">Delete</button -->
-
 <h2>List of current attributes:</h2>
 <table class="table">
     <thead>
@@ -25,14 +19,15 @@
     </tbody>
 </table>
 
-<br /><br />
+<br />
+<br />
 
-<div id="add_attribute">
+<div id="add_attribute_QUALI">
     <h2> Add a new qualitative attribute: </h2>
 
     <div class="form-group">
-        <label for="att_name">Name :</label>
-        <input type="text" class="form-control" id="att_name" placeholder="Name">
+        <label for="att_name_QUALI">Name :</label>
+        <input type="text" class="form-control" id="att_name_QUALI" placeholder="Name">
     </div>
 	
 	<h3> Please rank the values by order of preference: </h3>
@@ -291,7 +286,7 @@ $(function() {
 		else {
 			if (edit_mode==false) {
 				assess_session_QUALI.attributes.push({
-					"type": "qualitative",
+					"type": "Qualitative",
 					"name": name,
 					'unit': '',
 					'val_worst': val_worst,
@@ -310,7 +305,7 @@ $(function() {
 			} else {
 				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
 					assess_session_QUALI.attributes[edited_attribute]={
-						"type": "qualitative",
+						"type": "Qualitative",
 						"name": name,
 						'unit': '',
 						'val_worst': val_worst,

@@ -1,28 +1,27 @@
 %include('header_init.tpl', heading='Manage your attributes')
 
-<br />
-<br />
-<h2 style="display:inline-block; margin-right: 40px;"> Delete all attributes: </h2>
-<button type="button" class="btn btn-default del_simu">Delete</button>
-<h2> List of current attributes: </h2>
+<h2>List of current attributes:</h2>
 <table class="table">
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
+			<th>Type</th>
             <th>Attribute name</th>
             <th>Unit</th>
             <th>Values</th>
             <th>Method</th>
             <th>Mode</th>
             <th>Edit</th>
-            <th><img src='/static/img/delete.ico' style='width:16px;' class="del_simu" /></th>
+            <th><button type="button" class="btn btn-danger del_simu"><img src='/static/img/delete.ico' style='width:16px;'/></button></th>
         </tr>
     </thead>
     <tbody id="table_attributes">
     </tbody>
 </table>
+
 <br />
 <br />
+
 <div id="add_attribute">
     <h2> Add a new attribute: </h2>
 
@@ -225,6 +224,7 @@ $(function() {
 		} else {
 			if (edit_mode==false) {
 				assess_session.attributes.push({
+					"type": "Quantitative",
 					"name": name,
 					'unit': unit,
 					'val_min': val_min,
@@ -242,6 +242,7 @@ $(function() {
 			} else {
 				if (confirm("Are you sure you want to edit the attribute? All assessements will be deleted") == true) {
 					assess_session.attributes[edited_attribute]={
+						"type": "Quantitative",
 						"name": name,
 						'unit': unit,
 						'val_min': val_min,
