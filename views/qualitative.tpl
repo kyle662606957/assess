@@ -202,7 +202,7 @@ $(function() {
 							  '<td>' + attribute.mode + '</td>';
 							  
 				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
-							  '<td><button type="button" class="btn btn-default"><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
+							  '<td><button type="button" class="btn btn-default" id="deleteK' + i + '" ><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
 
 				$('#table_attributes').append(text_table);
 
@@ -213,7 +213,7 @@ $(function() {
 
 				(function(_i) {
 					$('#deleteK' + _i).click(function() {
-						if (confirm("Are you sure ?") == false) {
+						if (confirm("You are about to delete the attribute "+assess_session_QUALI.attributes[_i].name+".\nAre you sure ?") == false) {
 							return
 						};
 						assess_session_QUALI.attributes.splice(_i, 1);
