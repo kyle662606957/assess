@@ -187,7 +187,7 @@ $(function() {
 				var attribute = assess_session_QUALI.attributes[i];
 				
 				var text_table = "<tr>";
-				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '(attribute.checked ? "checked" : "")'></td>'+
+				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '+(attribute.checked ? "checked" : "")+'></td>'+
 							  '<td>' + attribute.type + '</td>' +
 							  '<td>' + attribute.name + '</td>' +
 							  '<td>' + attribute.unit + '</td>' +
