@@ -133,20 +133,15 @@ $(function() {
 		if (assess_session) {
 			for (var i = 0; i < assess_session.attributes.length; i++) {
 				var attribute = assess_session.attributes[i];
+				
 				var text_table = "<tr>";
-				if (attribute.checked)
-					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" checked></td>';
-				else
-					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
-
-
-
-				text_table += '<td>' + attribute.type + '</td>'+
+				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '(attribute.checked ? "checked" : "")'></td>'+
+							  '<td>' + attribute.type + '</td>'+
 							  '<td>' + attribute.name + '</td>'+
 							  '<td>' + attribute.unit + '</td>'+
 							  '<td>[' + attribute.val_min + ',' + attribute.val_max + ']</td>'+
 							  '<td>' + attribute.method + '</td>'+
-							  '<td>' + attribute.mode + '</td>''+
+							  '<td>' + attribute.mode + '</td>'+
 							  '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
 							  '<td><button type="button" class="btn btn-default"><img id="deleteK' + i + '" src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
 

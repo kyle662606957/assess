@@ -185,15 +185,10 @@ $(function() {
 		if (assess_session_QUALI) {
 			for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
 				var attribute = assess_session_QUALI.attributes[i];
-				var text_table = "<tr>";
 				
-				if (attribute.checked)
-					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" checked></td>';
-				else
-					text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" ></td>';
-
-
-				text_table += '<td>' + attribute.type + '</td>' +
+				var text_table = "<tr>";
+				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '(attribute.checked ? "checked" : "")'></td>'+
+							  '<td>' + attribute.type + '</td>' +
 							  '<td>' + attribute.name + '</td>' +
 							  '<td>' + attribute.unit + '</td>' +
 							  '<td><ul><li>' + attribute.val_worst + '</li>';
