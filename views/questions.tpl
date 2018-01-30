@@ -6,10 +6,11 @@
 		<thead>
 			<tr>
 				<th>Attribute</th>
+				<th>Type</th>
 				<th>Method</th>
 				<th>Number of assessed points</th>
 				<th>Assess another point</th>
-				<th>Calculate utility function</th>
+				<th>Display utility graph</th>
 				<th>Reset assessements</th>
 			</tr>
 		</thead>
@@ -45,44 +46,49 @@
 		$('#main_graph').hide();
 		$('#functions').hide();
 
-		var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-		var settings=assess_session.settings;
+		var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+			settings = assess_session.settings;
 
 		// We fill the table
 		for (var i = 0; i < assess_session.attributes.length; i++) {
-			if (!assess_session.attributes[i].checked) //if note activated
-				continue; //we pass to the next one
-			var text = '<tr><td>' + assess_session.attributes[i].name + '</td><td>' + assess_session.attributes[i].method + '</td><td>' + assess_session.attributes[i].questionnaire.number + '</td>';
-
-			if (assess_session.attributes[i].questionnaire.number !== 3) {
-				text += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + assess_session.attributes[i].name + '">Assess</button></td>';
+			if (!assess_session.attributes[i].checked) //if this attribute is not activated
+				continue; //we skip this attribute and go to the next one
+				
+			var attribute = assess_session.attributes[i],
+				text_table = '<tr><td>' + attribute.name + '</td>'+
+							 '<td>' + attribute.type + '</td>'+
+							 '<td>' + attribute.method + '</td>'+
+							 '<td>' + attribute.questionnaire.number + '</td>';
+							
+			if (attribute.questionnaire.number !== 3) {
+				text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '">Assess</button></td>';
 			} else {
-				text += '<td>Three points max</td>';
+				text_table += '<td>Three points max</td>';
 			}
 
-			if (assess_session.attributes[i].questionnaire.number > 0) {
-				text += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + assess_session.attributes[i].name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			if (attribute.questionnaire.number > 0) {
+				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
-				text += '<td>No assessment yet</td>';
+				text_table += '<td>No assessment yet</td>';
 			}
 
-			$('#table_attributes').append(text);
+			$('#table_attributes').append(text_table);
 
 			(function(_i) {
-					$('#deleteK' + _i).click(function() {
-							if (confirm("Are you sure ?") == false) {
-									return
-							};
-							assess_session.attributes[_i].questionnaire = {
-									'number': 0,
-									'points': [],
-									'utility': {}
-							};
-							// backup local
-							localStorage.setItem("assess_session", JSON.stringify(assess_session));
-							//refresh the page
-							window.location.reload();
-					});
+				$('#deleteK' + _i).click(function() {
+					if (confirm("Are you sure ?") == false) {
+							return
+					};
+					assess_session.attributes[_i].questionnaire = {
+							'number': 0,
+							'points': [],
+							'utility': {}
+					};
+					// backup local
+					localStorage.setItem("assess_session", JSON.stringify(assess_session));
+					//refresh the page
+					window.location.reload();
+				});
 			})(i);
 		}
 
@@ -108,11 +114,11 @@
 				}
 			}
 
-			var mode = assess_session.attributes[indice].mode;
-			var val_min = assess_session.attributes[indice].val_min;
-			var val_max = assess_session.attributes[indice].val_max;
-			var method = assess_session.attributes[indice].method;
-			var unit = assess_session.attributes[indice].unit;
+			var mode = assess_session.attributes[indice].mode,
+				val_min = assess_session.attributes[indice].val_min,
+				val_max = assess_session.attributes[indice].val_max,
+				method = assess_session.attributes[indice].method,
+				unit = assess_session.attributes[indice].unit;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -159,7 +165,7 @@
 					arbre_pe.display();
 					arbre_pe.update();
 
-					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>');
+					$('#trees').append('</div><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button></div>');
 
 					// FUNCTIONS
 					function sync_values() {

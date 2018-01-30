@@ -1,7 +1,7 @@
 %include('header_init.tpl', heading='Manage your qualitative attributes')
 
 <h2>List of current attributes:</h2>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
@@ -22,7 +22,7 @@
 <br />
 <br />
 
-<div id="add_attribute_QUALI">
+<div id="add_attribute_QUALI" style="width:50%;margin-left:15px">
     <h2> Add a new qualitative attribute: </h2>
 
     <div class="form-group">
@@ -42,7 +42,7 @@
 			<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
 			<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
 			<ol id="list_med_values">
-				<li><input type="text" class="form-control" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
+				<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
 			</ol>
     </div>
 	
@@ -93,7 +93,7 @@ $(function() {
 	$('#edit_attribute').hide();
 
 	$('.del_simu').click(function() {
-		if (confirm("Are you sure ?") == false) {
+		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
 			return
 		};
 		localStorage.removeItem("assess_session_QUALI");
@@ -202,7 +202,7 @@ $(function() {
 							  '<td>' + attribute.mode + '</td>';
 							  
 				text_table += '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
-							  '<td><button type="button" class="btn btn-default" id="deleteK' + i + '" ><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
+							  '<td><button type="button" class="btn btn-default" id="deleteK'+i+'" ><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
 
 				$('#table_attributes').append(text_table);
 
