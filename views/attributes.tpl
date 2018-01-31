@@ -120,7 +120,7 @@ var list_med_values = document.getElementById('list_med_values_quali'),
 add_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
 	var new_item = document.createElement('li');
-	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Intermediary Value " + String(longueur+1) +"'/>";
+	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_quali_"+ String(longueur+1) +"' placeholder='Intermediary Value " + String(longueur+1) +"'/>";
 	lists[longueur-1].parentNode.appendChild(new_item);
 });
 
