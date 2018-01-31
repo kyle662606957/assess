@@ -114,11 +114,11 @@ function update_method_button(type){
 	
 	for(var i=0; i<list_types.length; i++){
 		if(list_types[i].type==type){
-			$("#button_"+list_types[i].type).removeClass('btn-default');
-			$("#button_"+list_types[i].type).addClass('btn-success');
+			$("#button_"+list_types[i]).removeClass('btn-default');
+			$("#button_"+list_types[i]).addClass('btn-success');
 		} else {
-			$("#button_"+list_types[i].type).removeClass('btn-success');
-			$("#button_"+list_types[i].type).addClass('btn-default');
+			$("#button_"+list_types[i]).removeClass('btn-success');
+			$("#button_"+list_types[i]).addClass('btn-default');
 		}
 	}
 }
@@ -128,8 +128,8 @@ $(function() {
 	///  ACTION FROM BUTTON QUANTITATIVE
 	$("#button_Quantitative").click(function () {
 		update_method_button("Quantitative"); //update the active type of new attribute
-		$("#form_quanti").fadeIn(500);
 		$("#form_quali").fadeOut(500);
+		$("#form_quanti").fadeIn(500);
 	});
 
 	///  ACTION FROM BUTTON QUALITATIVE
