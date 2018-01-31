@@ -191,13 +191,13 @@ $(function() {
 							  '<td>' + attribute.type + '</td>' +
 							  '<td>' + attribute.name + '</td>' +
 							  '<td>' + attribute.unit + '</td>' +
-							  '<td><table><tr>' + attribute.val_min + '</tr>';
+							  '<td><table><tr><td>' + attribute.val_min + '</td></tr>';
 							  
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-					text_table += '<tr>' + attribute.val_med[ii] + '</tr>';
+					text_table += '<tr><td>' + attribute.val_med[ii] + '</td></tr>';
 				};
 					
-				text_table += '<tr>' + attribute.val_max + '</tr></table>'+
+				text_table += '<tr><td>' + attribute.val_max + '</td></tr></table>'+
 							  '<td>' + attribute.method + '</td>' +
 							  '<td>' + attribute.mode + '</td>';
 							  

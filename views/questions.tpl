@@ -252,14 +252,7 @@
 					arbre_droite.questions_proba_haut = settings.proba_le;
 
 					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (assess_session.attributes[indice].questionnaire.number == 0) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2 + ' ' + unit;
-					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4 + ' ' + unit;
-					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
-						arbre_droite.questions_val_max = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4 + ' ' + unit;
-					}
-
+					arbre_droite.questions_val_max = parseFloat(question_val) + ' ' + unit;
 					arbre_droite.questions_val_min = val_min + ' ' + unit;
 					arbre_droite.display();
 					arbre_droite.update();
@@ -298,7 +291,7 @@
 
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
-								assess_session.attributes[indice].questionnaire.points.push([parseFloat(arbre_droite.questions_val_max), final_proba * 2]);
+								assess_session.attributes[indice].questionnaire.points[question_val] = final_proba*2;
 								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session", JSON.stringify(assess_session));
