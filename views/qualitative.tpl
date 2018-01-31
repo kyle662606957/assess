@@ -22,12 +22,12 @@
 <br />
 <br />
 
-<div id="add_attribute_QUALI" style="width:50%;margin-left:25%;margin-bottom:50px;">
+<div id="add_attribute" style="width:50%;margin-left:25%;margin-bottom:50px;">
     <h2> Add a new qualitative attribute: </h2>
 
     <div class="form-group">
-        <label for="att_name_QUALI">Name :</label>
-        <input type="text" class="form-control" id="att_name_QUALI" placeholder="Name">
+        <label for="att_name">Name :</label>
+        <input type="text" class="form-control" id="att_name" placeholder="Name">
     </div>
 	
 	<h3> Please rank the values by order of preference: </h3>
