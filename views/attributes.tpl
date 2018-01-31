@@ -26,8 +26,8 @@
     <h2> Add a new attribute: </h2>
 	
 	<div id="button_type" style="text-align:center;">
-		<button type="button" class="btn btn-success btn-lg" id="button_quanti">Quantitative</button>
-		<button type="button" class="btn btn-success btn-lg" id="button_quali">Qualitative</button>
+		<button type="button" class="btn btn-default btn-lg" id="button_Quantitative">Quantitative</button>
+		<button type="button" class="btn btn-default btn-lg" id="button_Qualitative">Qualitative</button>
 	</div>
 	
     <!------------ FORM FOR A QUANTITATIVE ATTRIBUTE ------------>
@@ -103,6 +103,41 @@
 %include('js.tpl')
 
 <script>
+
+/// Function that manages the influence of the "button_type" buttons (Quantitative/Qualitative) (just the design : green/white)
+function update_method_button(type){
+	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+	
+	for(var i=0; i<assess_session.attributes.length; i++){
+		if(assess_session.attributes[i].type==type){
+			$("#button_"+assess_session.attributes[i].type).removeClass('btn-default');
+			$("#button_"+assess_session.attributes[i].type).addClass('btn-success');
+		} else {
+			$("#button_"+assess_session.attributes[i].type).removeClass('btn-success');
+			$("#button_"+assess_session.attributes[i].type).addClass('btn-default');
+		}
+	}
+}
+
+/// Action from Quantitative/Qualitative button
+$(function() {
+	///  ACTION FROM BUTTON QUANTITATIVE
+	$("#button_Quantitative").click(function () {
+		update_method_button("Quantitative"); //update the active type of new attribute
+		$("#form_quanti").show();
+		$("#form_quali").hide();
+	});
+
+	///  ACTION FROM BUTTON QUALITATIVE
+	$("#button_Qualitative").click(function () {
+		update_method_button("Qualitative"); //update the active type of new attribute
+		$("#form_quanti").hide();
+		$("#form_quali").show();
+	});
+});
+
+
+
 $(function() {
 
 	$('#edit_attribute').hide();
