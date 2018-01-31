@@ -113,8 +113,8 @@ $('li.manage').addClass("active");
 /////////////////////////////////////////////////////////////////////////////////////////
 var list_med_values = document.getElementById('list_med_values_quali'),
 	lists = list_med_values.getElementsByTagName('li'),
-	add_value_med = document.getElementById('add_value_med'),
-	del_value_med = document.getElementById('del_value_med');
+	add_value_med = document.getElementById('add_value_med_quali'),
+	del_value_med = document.getElementById('del_value_med_quali');
 
 /// Defines what happens when clicking on the "Add an item" button
 add_value_med.addEventListener('click', function() {
