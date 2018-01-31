@@ -128,15 +128,15 @@ $(function() {
 	///  ACTION FROM BUTTON QUANTITATIVE
 	$("#button_Quantitative").click(function () {
 		update_method_button("Quantitative"); //update the active type of new attribute
-		$("#form_quanti").show();
-		$("#form_quali").hide();
+		$("#form_quanti").fadeIn(500);
+		$("#form_quali").fadeOut(500);
 	});
 
 	///  ACTION FROM BUTTON QUALITATIVE
 	$("#button_Qualitative").click(function () {
 		update_method_button("Qualitative"); //update the active type of new attribute
-		$("#form_quanti").hide();
-		$("#form_quali").show();
+		$("#form_quanti").fadeOut(500);
+		$("#form_quali").fadeIn(500);
 	});
 });
 
