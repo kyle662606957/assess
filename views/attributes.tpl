@@ -103,18 +103,22 @@
 %include('js.tpl')
 
 <script>
+//First we hide the attributes creation forms, and we highlight the "Manage" tab
+$("#form_quanti").hide();
+$("#form_quali").hide();
+$('li.manage').addClass("active");
 
 /// Function that manages the influence of the "button_type" buttons (Quantitative/Qualitative) (just the design : green/white)
 function update_method_button(type){
-	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+	var list_types = ["Quantitative", "Qualitative"];
 	
-	for(var i=0; i<assess_session.attributes.length; i++){
-		if(assess_session.attributes[i].type==type){
-			$("#button_"+assess_session.attributes[i].type).removeClass('btn-default');
-			$("#button_"+assess_session.attributes[i].type).addClass('btn-success');
+	for(var i=0; i<list_types.length; i++){
+		if(list_types[i].type==type){
+			$("#button_"+list_types[i].type).removeClass('btn-default');
+			$("#button_"+list_types[i].type).addClass('btn-success');
 		} else {
-			$("#button_"+assess_session.attributes[i].type).removeClass('btn-success');
-			$("#button_"+assess_session.attributes[i].type).addClass('btn-default');
+			$("#button_"+list_types[i].type).removeClass('btn-success');
+			$("#button_"+list_types[i].type).addClass('btn-default');
 		}
 	}
 }
@@ -139,8 +143,7 @@ $(function() {
 
 
 $(function() {
-
-	$('#edit_attribute').hide();
+	//$('#edit_attribute').hide();
 
 	$('.del_simu').click(function() {
 		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
@@ -149,7 +152,6 @@ $(function() {
 		localStorage.removeItem("assess_session");
 		window.location.reload();
 	});
-	$('li.manage').addClass("active");
 
 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 	var edit_mode = false;
