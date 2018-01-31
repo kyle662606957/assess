@@ -108,6 +108,8 @@
 				question_name = question_id[0],
 				question_val = question_id[1],
 				question_index = question_id[2];
+				
+			alert("question_name"+question_name+"\nquestion_val"+question_val+"\nquestion_index"+question_index);
 
 			// we delete the slect div
 			$('#select').hide();
