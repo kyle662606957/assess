@@ -82,11 +82,6 @@
 					text_table += '<tr><td>-</td><td> : </td>'+
 								  '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
-				
-					// } else {
-						// text_table += </tr>';
-					// };
-				};				
 			}; 
 			
 			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.method=="Normal"?1:0)+'</td></tr></table></td>';
