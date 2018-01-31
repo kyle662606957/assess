@@ -62,38 +62,38 @@
 			<label><input name="mode" type="checkbox" id="att_mode_quanti" placeholder="Mode"> The min value is preferred (decreasing utility function)</label>
 		</div>
 
-		<button type="submit" class="btn btn-default" id="submit_quanti">Submit</button>
+		<button type="submit" class="btn btn-success" id="submit_quanti">Submit</button>
 	</div>
 	
 	<!------------ FORM FOR A QUALITATIVE ATTRIBUTE ------------>
 	<div id="form_quali">
 		<div class="form-group">
-			<label for="att_name_quali">Name :</label>
+			<label for="att_name_quali">Name:</label>
 			<input type="text" class="form-control" id="att_name_quali" placeholder="Name">
 		</div>
 		
 		<h3> Please rank the values by order of preference: </h3>
 
 		<div class="form-group">
-			<label for="att_value_worst">Least preferred value:</label>
-			<input type="text" class="form-control" id="att_value_worst" placeholder="Worst value">
+			<label for="att_value_min_quali">Least preferred value:</label>
+			<input type="text" class="form-control" id="att_value_min_quali" placeholder="Worst value">
 		</div>
 		
 		<div class="form-group">
-			<label for="att_value_med">Intermediary value(s):</label>
-				<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
-				<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
+			<label for="att_value_med_quali">Intermediary value(s):</label>
+				<input type="button" class="btn btn-default" id="add_value_med_quali" value="Add an item"/>   
+				<input type="button" class="btn btn-default" id="del_value_med_quali" value="Delete last item"/>
 				<ol id="list_med_values">
-					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
+					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediary Value 1'/></li>
 				</ol>
 		</div>
 		
 		<div class="form-group">
-			<label for="att_value_best">Most preferred value:</label>
-			<input type="text" class="form-control" id="att_value_best" placeholder="Best value">
+			<label for="att_value_max_quali">Most preferred value:</label>
+			<input type="text" class="form-control" id="att_value_max_quali" placeholder="Best value">
 		</div>
 			
-		<button type="submit" class="btn btn-default" id="submit">Submit</button>
+		<button type="submit" class="btn btn-success" id="submit_quali">Submit</button>
 	</div>
 	
 	
@@ -141,10 +141,9 @@ $(function() {
 });
 
 
-
+/// FUNCTION FOR A QUANTITATIVE ATTRIBUTE
 $(function() {
-	//$('#edit_attribute').hide();
-
+	// When you click on the RED BIN // Delete the wole session
 	$('.del_simu').click(function() {
 		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
 			return
@@ -153,9 +152,9 @@ $(function() {
 		window.location.reload();
 	});
 
-	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-	var edit_mode = false;
-	var edited_attribute=0;
+	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+		edit_mode = false,
+		edited_attribute=0;
 
 	if (!assess_session) {
 		assess_session = {
@@ -185,15 +184,21 @@ $(function() {
 		localStorage.setItem("assess_session", JSON.stringify(assess_session));
 	}
 
+	///////////////////////////////////////////////////////////////////////
+	//////////////////////         FUNCTIONS         //////////////////////
+	///////////////////////////////////////////////////////////////////////
+	
+	// Function to know if "name" is an existing attribute of the current session
 	function isAttribute(name) {
 		for (var i = 0; i < assess_session.attributes.length; i++) {
 			if (assess_session.attributes[i].name == name) {
 				return true;
-			}
-		}
+			};
+		};
 		return false;
-	}
+	};
 	
+	// Function to check if there is an underscore in the typed values
 	function isThereUnderscore(val_list, val_min, val_max){
 		var list_len = val_list.length;
 		for (var i=0; i<list_len; i++) {
@@ -378,6 +383,9 @@ $(function() {
 		}
 	});
 });
+
+/// FUNCTION FOR A QUALITATIVE ATTRIBUTE
+
 </script>
 </body>
 

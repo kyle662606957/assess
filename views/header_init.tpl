@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+	
 
     <title>ASSESS THIBAUT</title>
 
@@ -20,6 +21,10 @@
     <!-- Custom Fonts -->
     <link href="{{ get_url('static', path='font-awesome-4.1.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 
+	<!-- Favicon -->
+	<link href="{{ get_url('static', path='img/favicon.ico') }}" rel="icon"/>
+	
+	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

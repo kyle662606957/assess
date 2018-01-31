@@ -89,25 +89,12 @@ del_value_med.addEventListener('click', function() {
 
 
 $(function() {
-
-	$('#edit_attribute').hide();
-
-	$('.del_simu').click(function() {
-		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
-			return
-		};
-		localStorage.removeItem("assess_session_QUALI");
-		window.location.reload();
-	});
-	
-	$('li.manage_quali').addClass("active");
-
-	var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
+	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 	var edit_mode = false;
 	var edited_attribute=0;
 
-	if (!assess_session_QUALI) {
-		assess_session_QUALI = {
+	if (!assess_session) {
+		assess_session = {
 			"attributes": [],
 			"k_calculus": [{
 				"method": "multiplicative",
@@ -131,12 +118,12 @@ $(function() {
 				"display": "trees"
 			}
 		};
-		localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+		localStorage.setItem("assess_session", JSON.stringify(assess_session));
 	}
 
 	function isAttribute(name) {
-		for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
-			if (assess_session_QUALI.attributes[i].name == name) {
+		for (var i = 0; i < assess_session.attributes.length; i++) {
+			if (assess_session.attributes[i].name == name) {
 				return true;
 			}
 		}
@@ -186,19 +173,20 @@ $(function() {
 		var i = $(element).val();
 
 		//we modify the propriety
-		var assess_session_QUALI = JSON.parse(localStorage.getItem("assess_session_QUALI"));
-		assess_session_QUALI.attributes[i].checked = checked;
+		var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+		assess_session.attributes[i].checked = checked;
 
-		//we update the assess_session_QUALI storage
-		localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+		//we update the assess_session storage
+		localStorage.setItem("assess_session", JSON.stringify(assess_session));
 	}
 
 	function sync_table() {
 		$('#table_attributes').empty();
-		if (assess_session_QUALI) {
-			for (var i = 0; i < assess_session_QUALI.attributes.length; i++) {
-				var attribute = assess_session_QUALI.attributes[i];
+		if (assess_session) {
+			for (var i = 0; i < assess_session.attributes.length; i++) {
+				var attribute = assess_session.attributes[i];
 				
+				///
 				var text_table = "<tr>";
 				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '+(attribute.checked ? "checked" : "")+'></td>'+
 							  '<td>' + attribute.type + '</td>' +
@@ -226,12 +214,12 @@ $(function() {
 
 				(function(_i) {
 					$('#deleteK' + _i).click(function() {
-						if (confirm("You are about to delete the attribute "+assess_session_QUALI.attributes[_i].name+".\nAre you sure ?") == false) {
+						if (confirm("You are about to delete the attribute "+assess_session.attributes[_i].name+".\nAre you sure ?") == false) {
 							return
 						};
-						assess_session_QUALI.attributes.splice(_i, 1);
+						assess_session.attributes.splice(_i, 1);
 						// backup local
-						localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+						localStorage.setItem("assess_session", JSON.stringify(assess_session));
 						//refresh the page
 						window.location.reload();
 					});
@@ -241,7 +229,7 @@ $(function() {
 					$('#edit_' + _i).click(function() {
 						edit_mode=true;
 						edited_attribute=_i;
-						var attribute_edit = assess_session_QUALI.attributes[_i];
+						var attribute_edit = assess_session.attributes[_i];
 						$('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
 						$('#att_name').val(attribute_edit.name);
 						$('#att_value_worst').val(attribute_edit.val_min);
@@ -295,7 +283,7 @@ $(function() {
 
 		else {
 			if (edit_mode==false) {
-				assess_session_QUALI.attributes.push({
+				assess_session.attributes.push({
 					"type": "Qualitative",
 					"name": name,
 					'unit': '',
@@ -314,7 +302,7 @@ $(function() {
 				});
 			} else {
 				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
-					assess_session_QUALI.attributes[edited_attribute]={
+					assess_session.attributes[edited_attribute]={
 						"type": "Qualitative",
 						"name": name,
 						'unit': '',
@@ -337,7 +325,7 @@ $(function() {
 			}
 			
 			sync_table();
-			localStorage.setItem("assess_session_QUALI", JSON.stringify(assess_session_QUALI));
+			localStorage.setItem("assess_session", JSON.stringify(assess_session));
 			
 			/// On vide les zones de texte
 			$('#att_name').val("");
