@@ -122,11 +122,11 @@
 				}
 			}
 
-			var mode = assess_session.attributes[indice].mode,
-				val_min = assess_session.attributes[indice].val_min,
+			var val_min = assess_session.attributes[indice].val_min,
 				val_max = assess_session.attributes[indice].val_max,
+				unit = assess_session.attributes[indice].unit,
 				method = assess_session.attributes[indice].method,
-				unit = assess_session.attributes[indice].unit;
+				mode = assess_session.attributes[indice].mode;
 
 			function random_proba(proba1, proba2) {
 				var coin = Math.round(Math.random());
@@ -154,8 +154,8 @@
 					
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
-					arbre_pe.questions_val_max = (mode=="normal"? val_max : val_min) + ' ' + unit;
-					arbre_pe.questions_val_min = (mode=="normal"? val_min : val_max) + ' ' + unit;
+					arbre_pe.questions_val_max = (mode=="Normal"? val_max : val_min) + ' ' + unit;
+					arbre_pe.questions_val_min = (mode=="Normal"? val_min : val_max) + ' ' + unit;
 					arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					
 					arbre_pe.display();
