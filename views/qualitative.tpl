@@ -166,6 +166,19 @@ $(function() {
 		return true;
 	};
 	
+	function isThereUnderscore(val_list, val_min, val_max){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if (val_list[i].search("_")!=-1){
+				return false;
+			};
+		};
+		if (val_min.search("_")!=-1 || val_max.search("_")!=-1){
+			return false;
+		};
+		return true;
+	};
+	
 	
 
 	function checked_button_clicked(element) {
@@ -276,6 +289,8 @@ $(function() {
 			alert("The least preferred and most preferred values are the same");
 		} else if (areAllValuesDifferent(val_med, val_min, val_max)==false) {
 			alert("At least one of the values is appearing more than once");
+		} else if (isThereUnderscore(val_med, val_min, val_max)==false) {
+			alert("Please don't write a '_' in your values");
 		}
 
 		else {

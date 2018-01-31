@@ -115,6 +115,19 @@ $(function() {
 		}
 		return false;
 	}
+	
+	function isThereUnderscore(val_list, val_min, val_max){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if (val_list[i].search("_")!=-1){
+				return false;
+			};
+		};
+		if (val_min.search("_")!=-1 || val_max.search("_")!=-1){
+			return false;
+		};
+		return true;
+	};
 
 	function checked_button_clicked(element) {
 		var checked = $(element).prop("checked");
@@ -222,7 +235,11 @@ $(function() {
 			alert ("Minimum value must be inferior to maximum value");
 		} else if (val_min<0 || val_max<0 ) {
 			alert ("Values must be positive or zero");
-		} else {
+		} else if (isThereUnderscore([name, unit], val_min, val_max)==false) {
+			alert("Please don't write a '_' in your values");
+		}
+		
+		else {
 			if (edit_mode==false) {
 				assess_session.attributes.push({
 					"type": "Quantitative",
