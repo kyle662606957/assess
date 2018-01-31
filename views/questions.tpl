@@ -60,16 +60,16 @@
 							 '<td>' + attribute.method + '</td>'+
 							 '<td>' + attribute.questionnaire.number + '</td>';
 							
-			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td>0</td></tr>';
+			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td> : </td><td>0</td></tr>';
 			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-				text_table += '<tr><td>' + attribute.val_med[ii] + '</td>'; 
+				text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>'; 
 				if(attribute.questionnaire.points[attribute.val_med[ii]]){
 					text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
 				} else {
 					text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
 			}; 
-			text_table += '<tr><td>' + attribute.val_max + '</td><td>1</td></tr></table></td>';
+			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>1</td></tr></table></td>';
 
 			if (attribute.questionnaire.number > 0) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
