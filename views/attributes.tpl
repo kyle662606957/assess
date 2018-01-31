@@ -547,7 +547,7 @@ $(function() {
 			
 			/// On ramène le nombre d'éléments intermédiaires à 1
 			for (var ii=val_med.length; ii>1; ii--) {
-				var longueur = document.getElementById('list_med_values').getElementsByTagName('li').length;
+				var longueur = document.getElementById('list_med_values_quali').getElementsByTagName('li').length;
 				lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 			};
 			$("#form_quali").fadeOut(500);	
