@@ -113,7 +113,7 @@ function update_method_button(type){
 	var list_types = ["Quantitative", "Qualitative"];
 	
 	for(var i=0; i<list_types.length; i++){
-		if(list_types[i].type==type){
+		if(type==list_types[i]){
 			$("#button_"+list_types[i]).removeClass('btn-default');
 			$("#button_"+list_types[i]).addClass('btn-success');
 		} else {
