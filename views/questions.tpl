@@ -87,7 +87,7 @@
 			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 
 			if (attribute.questionnaire.number > 0) {
-				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 			} else {
 				text_table += '<td>No assessment yet</td>';
 			}
@@ -713,7 +713,7 @@
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////// CLICK ON THE UTILITY BUTTON ////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$('.calc_util').click(function() {
+		$('.calc_util_quanti').click(function() {
 			// we store the name of the attribute
 			var name = $(this).attr('id').slice(2);
 			// we hide the slect div
@@ -921,6 +921,59 @@
 			});
 
 		});
+	
+		
+		/// When you click on a QUALITATIVE utility function button
+		$('.calc_util_quali').click(function() {
+			// we store the name of the attribute
+			var utility_name = $(this).attr('id').slice(2);
+			
+			// we delete the select div
+			$('#select').hide();
+			//$('#attribute_name').show().html(question_name.toUpperCase());
+
+			// which index is it ?
+			var indice;
+			for (var j = 0; j < assess_session.attributes.length; j++) {
+				if (assess_session.attributes[j].name == utility_name) {
+					indice = j;
+				}
+			}
+
+			var val_min = assess_session.attributes[indice].val_min,
+				val_max = assess_session.attributes[indice].val_max,
+				val_med = assess_session.attributes[indice].val_med,
+				list_names = [].concat(val_min, val_med, val_max),
+				points = assess_session.attributes[indice].questionnaire.points,
+				list_points = [];
+
+			points[val_min] = 0; //On force l'utilité de la pire à 0
+			points[val_max] = 1; //On force l'utilité de la meilleure à 1
+			
+			for (var ii=0, len=list_names.length; ii<len; ii++) {
+				list_points.push(points[list_names[ii]]);
+			};
+			
+			function addGraph(data_graph, names_graph) {
+				$.post('ajax', 
+					JSON.stringify({
+						"type": "svg_QUALI",
+						"data": data_graph,
+						"list_names": names_graph,
+						"width": 6
+					}), 
+				function(data2) {
+					$('#main_graph').append(data2);
+				});
+			}
+			
+			$('#main_graph').show().empty();
+			addGraph(list_points, list_names);
+			
+		});
+		
+
+	
 	});
 </script>
 <!-- Library to copy into clipboard -->
