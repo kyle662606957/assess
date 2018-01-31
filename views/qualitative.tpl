@@ -22,7 +22,7 @@
 <br />
 <br />
 
-<div id="add_attribute_QUALI" style="width:50%;margin-left:15px">
+<div id="add_attribute_QUALI" style="width:50%;margin-left:25%;margin-bottom:50px;">
     <h2> Add a new qualitative attribute: </h2>
 
     <div class="form-group">
@@ -288,7 +288,7 @@ $(function() {
 					'val_med': val_med,
 					'val_best': val_best,
 					'method': method,
-					'mode': 'normal',
+					'mode': 'Normal',
 					'completed': 'False',
 					'checked': true,
 					'questionnaire': {
@@ -307,7 +307,7 @@ $(function() {
 						'val_med': val_med,
 						'val_best': val_best,
 						'method': method,
-						'mode': 'normal',
+						'mode': 'Normal',
 						'completed': 'False',
 						'checked': true,
 						'questionnaire': {

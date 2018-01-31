@@ -22,7 +22,7 @@
 <br />
 <br />
 
-<div id="add_attribute" style="margin-left:25%">
+<div id="add_attribute" style="width:50%;margin-left:25%;margin-bottom:25px;">
     <h2> Add a new attribute: </h2>
 
     <div class="form-group">
@@ -176,7 +176,7 @@ $(function() {
 					  $('#att_value_min').val(attribute_edit.val_min);
 					  $('#att_value_max').val(attribute_edit.val_max);
 					  $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
-					  if (attribute_edit.mode=="normal") {
+					  if (attribute_edit.mode=="Normal") {
 						$('#att_mode').prop('checked', false);
 					  } else {
 						$('#att_mode').prop('checked', true);
@@ -209,9 +209,9 @@ $(function() {
 		}
 
 		if ($('input[name=mode]').is(':checked')) {
-			var mode = "reversed";
+			var mode = "Reversed";
 		} else {
-			var mode = "normal";
+			var mode = "Normal";
 		}
 
 		if (!(name || unit || val_min || val_max) || isNaN(val_min) || isNaN(val_max)) {
