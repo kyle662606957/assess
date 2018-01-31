@@ -60,7 +60,7 @@
 							 '<td>' + attribute.method + '</td>'+
 							 '<td>' + attribute.questionnaire.number + '</td>';
 							
-			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.method=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			if (attribute.method == "PE" || attribute.method == "LE"){
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
@@ -75,7 +75,7 @@
 			} else {
 				for (var key in attribute.questionnaire.points){
 					text_table += '<tr><td>' + key + '</td><td> : </td>'+
-								  '<td>' + attribute.questionnaire.points[ii] + '</td></tr>';
+								  '<td>' + attribute.questionnaire.points[key] + '</td></tr>';
 				};
 				
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
@@ -84,7 +84,7 @@
 				};
 			}; 
 			
-			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.method=="Normal"?1:0)+'</td></tr></table></td>';
+			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 
 			if (attribute.questionnaire.number > 0) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
