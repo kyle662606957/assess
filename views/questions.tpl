@@ -342,8 +342,8 @@
 				(function() {
 
 					// VARIABLES
-					var min_interval = (assess_session.attributes[indice].questionnaire.number==2 ? Object.keys(assess_session.attributes[indice].questionnaire.points)[0] : val_min),  
-						max_interval = (assess_session.attributes[indice].questionnaire.number==1 ? Object.keys(assess_session.attributes[indice].questionnaire.points)[0] : val_max); 
+					var min_interval = (assess_session.attributes[indice].questionnaire.number==2 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_min)),  
+						max_interval = (assess_session.attributes[indice].questionnaire.number==1 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_max)); 
 					
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
@@ -354,9 +354,9 @@
 
 					// SETUP ARBRE GAUCHE
 					arbre_ce.questions_proba_haut = settings.proba_ce;
-					arbre_ce.questions_val_max = max_interval + ' ' + unit;
-					arbre_ce.questions_val_min = min_interval + ' ' + unit;
-					arbre_ce.questions_val_mean = gain + ' ' + unit;
+					arbre_ce.questions_val_max = String(max_interval) + ' ' + unit;
+					arbre_ce.questions_val_min = String(min_interval) + ' ' + unit;
+					arbre_ce.questions_val_mean = String(gain) + ' ' + unit;
 					arbre_ce.display();
 					arbre_ce.update();
 
