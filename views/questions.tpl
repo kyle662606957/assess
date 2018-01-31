@@ -109,8 +109,6 @@
 				question_val = question_id[1],
 				question_index = question_id[2];
 				
-			alert("question_name"+question_name+"\nquestion_val"+question_val+"\nquestion_index"+question_index);
-
 			// we delete the slect div
 			$('#select').hide();
 			$('#attribute_name').show().html(question_name.toUpperCase());
@@ -156,9 +154,9 @@
 					
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
-					
 					arbre_pe.questions_val_max = (mode=="normal"? val_max : val_min) + ' ' + unit;
 					arbre_pe.questions_val_min = (mode=="normal"? val_min : val_max) + ' ' + unit;
+					arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
 					
 					arbre_pe.display();
 					arbre_pe.update();

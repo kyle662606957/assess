@@ -22,7 +22,7 @@
 <br />
 <br />
 
-<div id="add_attribute">
+<div id="add_attribute" style="margin-left:25%">
     <h2> Add a new attribute: </h2>
 
     <div class="form-group">
@@ -230,9 +230,9 @@ $(function() {
 					'unit': unit,
 					'val_min': val_min,
 					'val_med': [
-						parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min)),
-						parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min)), //yes, it's (val_max+val_min)/2, but it looks better ^^
-						parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min))
+						String(parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min))),
+						String(parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min))), //yes, it's (val_max+val_min)/2, but it looks better ^^
+						String(parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min)))
 					],
 					'val_max': val_max,
 					'method': method,
@@ -253,9 +253,9 @@ $(function() {
 						'unit': unit,
 						'val_min': val_min,
 						'val_med': [
-							parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min)),
-							parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min)), //yes, it's (val_max+val_min)/2, but it looks better ^^
-							parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min))
+							String(parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min))),
+							String(parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min))), //yes, it's (val_max+val_min)/2, but it looks better ^^
+							String(parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min)))
 						],
 						'val_max': val_max,
 						'method': method,
