@@ -86,11 +86,21 @@
 			
 			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 
-			if (attribute.questionnaire.number > 0) {
-				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			if (attribute.type=="Quantitative") {
+				if (attribute.questionnaire.number > 0) {
+					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
+				} else {
+					text_table += '<td>No assessment yet</td>';
+				};
 			} else {
-				text_table += '<td>No assessment yet</td>';
-			}
+				if (attribute.questionnaire.number === attribute.val_med.length) {
+					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">Utility graph</button></td>';
+				} else {
+					text_table += '<td>Please assess all the medium values</td>';
+				};
+			};
+			
+			text_table += '<td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 
 			$('#table_attributes').append(text_table);
 
@@ -727,18 +737,21 @@
 				}
 			}
 
-			var val_min = assess_session.attributes[indice].val_min;
-			var val_max = assess_session.attributes[indice].val_max;
-			var mode = assess_session.attributes[indice].mode;
-			var points = assess_session.attributes[indice].questionnaire.points.slice();
-
-			if (mode == "normal") {
-				points.push([val_max, 1]);
-				points.push([val_min, 0]);
-			} else {
-				points.push([val_max, 0]);
-				points.push([val_min, 1]);
-			}
+			var val_min = assess_session.attributes[indice].val_min,
+				val_max = assess_session.attributes[indice].val_max,
+				mode = assess_session.attributes[indice].mode,
+				points_dict = assess_session.attributes[indice].questionnaire.points,
+				points=[];
+				
+			for (key in points_dict) {
+				points.push([parseFloat(key), parseFloat(points_dict[key])]);
+			};
+			
+			points.push([val_min, (mode == "Normal" ? 0 : 1)]);
+			points.push([val_max, (mode == "Normal" ? 1 : 0)]);
+			
+			alert(points.join(" - "));
+			
 			var json_2_send = {
 				"type": "calc_util_multi"
 			};
