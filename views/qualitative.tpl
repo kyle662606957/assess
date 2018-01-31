@@ -191,13 +191,13 @@ $(function() {
 							  '<td>' + attribute.type + '</td>' +
 							  '<td>' + attribute.name + '</td>' +
 							  '<td>' + attribute.unit + '</td>' +
-							  '<td><ul><li>' + attribute.val_worst + '</li>';
+							  '<td><ul><li>' + attribute.val_min + '</li>';
 							  
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 					text_table += '<li>' + attribute.val_med[ii] + '</li>';
 				};
 					
-				text_table += '<li>' + attribute.val_best + '</li></td>'+
+				text_table += '<li>' + attribute.val_max + '</li></td>'+
 							  '<td>' + attribute.method + '</td>' +
 							  '<td>' + attribute.mode + '</td>';
 							  
@@ -231,7 +231,7 @@ $(function() {
 						var attribute_edit = assess_session_QUALI.attributes[_i];
 						$('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
 						$('#att_name').val(attribute_edit.name);
-						$('#att_value_worst').val(attribute_edit.val_worst);
+						$('#att_value_worst').val(attribute_edit.val_min);
 						$('#att_value_med_1').val(attribute_edit.val_med[0]);
 						
 						for (var ii=2, len=attribute_edit.val_med.length; ii<len+1; ii++) {
@@ -243,7 +243,7 @@ $(function() {
 							$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);
 						};
 						
-						$('#att_value_best').val(attribute_edit.val_best);
+						$('#att_value_best').val(attribute_edit.val_max);
 					});
 				})(i);
 			}
@@ -254,10 +254,10 @@ $(function() {
 
 	$('#submit').click(function() {
 		var name = $('#att_name').val(),
-			val_worst = $('#att_value_worst').val(),
+			val_min = $('#att_value_worst').val(),
 			nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length,
 			val_med = [],
-			val_best = $('#att_value_best').val();
+			val_max = $('#att_value_best').val();
 			
 		for (var ii=1; ii<nb_med_values+1; ii++){
 			val_med.push($('#att_value_med_'+ii).val());
@@ -265,16 +265,16 @@ $(function() {
 
 		var method = "PE";
 		
-		if (name=="" || val_worst=="" || val_best=="") {
+		if (name=="" || val_min=="" || val_max=="") {
 			alert('Please fill correctly all the fields');
 		}
 		else if (isAttribute(name) && (edit_mode == false)) {
 			alert ("An attribute with the same name already exists");
 		} else if (isOneValueOfTheListEmpty(val_med)) {
 			alert("One of your medium values is empty");
-		} else if (val_worst==val_best) {
+		} else if (val_min==val_max) {
 			alert("The least preferred and most preferred values are the same");
-		} else if (areAllValuesDifferent(val_med, val_worst, val_best)==false) {
+		} else if (areAllValuesDifferent(val_med, val_min, val_max)==false) {
 			alert("At least one of the values is appearing more than once");
 		}
 
@@ -284,9 +284,9 @@ $(function() {
 					"type": "Qualitative",
 					"name": name,
 					'unit': '',
-					'val_worst': val_worst,
+					'val_min': val_min,
 					'val_med': val_med,
-					'val_best': val_best,
+					'val_max': val_max,
 					'method': method,
 					'mode': 'Normal',
 					'completed': 'False',
@@ -303,9 +303,9 @@ $(function() {
 						"type": "Qualitative",
 						"name": name,
 						'unit': '',
-						'val_worst': val_worst,
+						'val_min': val_min,
 						'val_med': val_med,
-						'val_best': val_best,
+						'val_max': val_max,
 						'method': method,
 						'mode': 'Normal',
 						'completed': 'False',

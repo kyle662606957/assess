@@ -57,16 +57,16 @@
 							'<td>' + attribute.questionnaire.number + '</td>';
 							
 				
-			text_table += '<td><ul><li>' + attribute.val_worst + ' : 0</li>';
+			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>0</td></tr>';
 			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-				text_table += '<li>' + attribute.val_med[ii] + ' : '; 
+				text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>'; 
 				if(attribute.questionnaire.points[attribute.val_med[ii]]){
-					text_table += attribute.questionnaire.points[attribute.val_med[ii]];
+					text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
 				} else {
-					text_table += '<button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</li>';
+					text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
 			}; 
-			text_table += '<li>' + attribute.val_best + ' : 1</li></ul></td>';
+			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>1</td></tr></table></td>';
 
 			if (attribute.questionnaire.number === attribute.val_med.length) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td>';
@@ -121,9 +121,9 @@
 				}
 			}
 
-			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
+			var val_min = assess_session_QUALI.attributes[indice].val_min,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
-				val_best = assess_session_QUALI.attributes[indice].val_best,
+				val_max = assess_session_QUALI.attributes[indice].val_max,
 				method = assess_session_QUALI.attributes[indice].method;
 
 			function random_proba(proba1, proba2) {
@@ -158,8 +158,8 @@
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
 					
-					arbre_pe.questions_val_max = val_best;
-					arbre_pe.questions_val_min = val_worst;
+					arbre_pe.questions_val_max = val_max;
+					arbre_pe.questions_val_min = val_min;
 					
 					arbre_pe.display();
 					arbre_pe.update();
@@ -271,15 +271,15 @@
 				}
 			}
 
-			var val_worst = assess_session_QUALI.attributes[indice].val_worst,
-				val_best = assess_session_QUALI.attributes[indice].val_best,
+			var val_min = assess_session_QUALI.attributes[indice].val_min,
+				val_max = assess_session_QUALI.attributes[indice].val_max,
 				val_med = assess_session_QUALI.attributes[indice].val_med,
-				list_names = [].concat(val_worst, val_med, val_best),
+				list_names = [].concat(val_min, val_med, val_max),
 				points = assess_session_QUALI.attributes[indice].questionnaire.points,
 				list_points = [];
 
-			points[val_worst] = 0; //On force l'utilité de la pire à 0
-			points[val_best] = 1; //On force l'utilité de la meilleure à 1
+			points[val_min] = 0; //On force l'utilité de la pire à 0
+			points[val_max] = 1; //On force l'utilité de la meilleure à 1
 			
 			for (var ii=0, len=list_names.length; ii<len; ii++) {
 				list_points.push(points[list_names[ii]]);
