@@ -235,7 +235,7 @@ $(function() {
 			alert ("Minimum value must be inferior to maximum value");
 		} else if (val_min<0 || val_max<0 ) {
 			alert ("Values must be positive or zero");
-		} else if (isThereUnderscore([name, unit], val_min, val_max)==false) {
+		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
 			alert("Please don't write a '_' in your values");
 		}
 		
