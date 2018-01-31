@@ -103,18 +103,21 @@
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		$('.answer_quest').click(function() {
-			// we store the name of the attribute
-			var name = $(this).attr('id').slice(2);
+			// we store the name, value, and index of the attribute
+			var question_id = $(this).attr('id').slice(2).split('_'),
+				question_name = question_id[0],
+				question_val = question_id[1],
+				question_index = question_id[2];
 
 			// we delete the slect div
 			$('#select').hide();
-			$('#attribute_name').show().html(name.toUpperCase());
+			$('#attribute_name').show().html(question_name.toUpperCase());
 
 
 			// which index is it ?
 			var indice;
 			for (var j = 0; j < assess_session.attributes.length; j++) {
-				if (assess_session.attributes[j].name == name) {
+				if (assess_session.attributes[j].name == question_name) {
 					indice = j;
 				}
 			}
@@ -143,24 +146,12 @@
 					// VARIABLES
 					var probability = 0.75,
 						min_interval = 0,
-						max_interval = 1;
+						max_interval = 1,
+						gain_certain = parseFloat(question_val);
 
 					// INTERFACE
 					var arbre_pe = new Arbre('pe', '#trees', settings.display, "PE");
 					
-
-					// The certain gain will change whether it is the 1st, 2nd or 3rd questionnaire
-					if (assess_session.attributes[indice].questionnaire.number == 0) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 2;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) / 4;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
-						var gain_certain = parseFloat(val_min) + (parseFloat(val_max) - parseFloat(val_min)) * 3 / 4;
-						arbre_pe.questions_val_mean = gain_certain + ' ' + unit;
-					}
-
 					// SETUP ARBRE GAUCHE
 					arbre_pe.questions_proba_haut = probability;
 					
@@ -208,7 +199,7 @@
 
 							if (final_proba <= 1 && final_proba >= 0) {
 								// we save it
-								assess_session.attributes[indice].questionnaire.points.push([gain_certain, final_proba]);
+								assess_session.attributes[indice].questionnaire.points[String(gain_certain)]=final_proba;
 								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session", JSON.stringify(assess_session));
