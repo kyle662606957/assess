@@ -83,7 +83,7 @@
 			<label for="att_value_med_quali">Intermediary value(s):</label>
 				<input type="button" class="btn btn-default" id="add_value_med_quali" value="Add an item"/>   
 				<input type="button" class="btn btn-default" id="del_value_med_quali" value="Delete last item"/>
-				<ol id="list_med_values">
+				<ol id="list_med_values_quali">
 					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediary Value 1'/></li>
 				</ol>
 		</div>
@@ -107,6 +107,32 @@
 $("#form_quanti").hide();
 $("#form_quali").hide();
 $('li.manage').addClass("active");
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires
+//////////////////////////////////////////////////////////////////////////////////////
+var list_med_values = document.getElementById('list_med_values_quali'),
+	lists = list_med_values.getElementsByTagName('li'),
+	add_value_med = document.getElementById('add_value_med'),
+	del_value_med = document.getElementById('del_value_med');
+
+/// Defines what happens when clicking on the "Add an item" button
+add_value_med.addEventListener('click', function() {
+	var longueur = lists.length;
+	var new_item = document.createElement('li');
+	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Intermediary Value " + String(longueur+1) +"'/>";
+	lists[longueur-1].parentNode.appendChild(new_item);
+});
+
+/// Defines what happens when clicking on the "Delete last item" button
+del_value_med.addEventListener('click', function() {
+	var longueur = lists.length;
+	if (longueur!=1){
+		lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
+	} else {
+		alert("Please put at least one medium value for the attribute "+$('#att_name').val());
+	};
+});
 
 /// Function that manages the influence of the "button_type" buttons (Quantitative/Qualitative) (just the design : green/white)
 function update_method_button(type){
@@ -141,8 +167,11 @@ $(function() {
 });
 
 
-/// FUNCTION FOR A QUANTITATIVE ATTRIBUTE
 $(function() {
+	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+		edit_mode = false,
+		edited_attribute=0;
+		
 	// When you click on the RED BIN // Delete the wole session
 	$('.del_simu').click(function() {
 		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
@@ -151,11 +180,8 @@ $(function() {
 		localStorage.removeItem("assess_session");
 		window.location.reload();
 	});
-
-	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
-		edit_mode = false,
-		edited_attribute=0;
-
+	
+	// Create a new session if there is no existing one yet
 	if (!assess_session) {
 		assess_session = {
 			"attributes": [],
@@ -182,7 +208,7 @@ $(function() {
 			}
 		};
 		localStorage.setItem("assess_session", JSON.stringify(assess_session));
-	}
+	};
 
 	///////////////////////////////////////////////////////////////////////
 	//////////////////////         FUNCTIONS         //////////////////////
@@ -196,6 +222,31 @@ $(function() {
 			};
 		};
 		return false;
+	};
+	
+	// Function to know if at least one element of val_list is empty
+	function isOneValueOfTheListEmpty(val_list){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if(val_list[i] == ""){return true}
+		};
+		return false;
+	};
+	
+	// Function to know if each typed value is different from the others
+	function areAllValuesDifferent(val_list, val_min, val_max){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if (val_list[i] == val_min || val_list[i] == val_max){
+				return false;
+			};
+			for (var j=0; j<list_len; j++) {
+				if(val_list[i] == val_list[j] && i!=j){
+					return false;
+				}
+			}
+		};
+		return true;
 	};
 	
 	// Function to check if there is an underscore in the typed values
@@ -212,77 +263,114 @@ $(function() {
 		return true;
 	};
 
+	// Function to change the property of a checked box
 	function checked_button_clicked(element) {
-		var checked = $(element).prop("checked");
-		var i = $(element).val();
+		var assess_session = JSON.parse(localStorage.getItem("assess_session")),
+			checked = $(element).prop("checked"),
+			i = $(element).val();
 
-		//we modify the propriety
-		var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-		assess_session.attributes[i].checked = checked;
-
-		//we update the assess_session storage
-		localStorage.setItem("assess_session", JSON.stringify(assess_session));
+		assess_session.attributes[i].checked = checked; // we modify the propriety
+		localStorage.setItem("assess_session", JSON.stringify(assess_session)); // we update the assess_session storage
 	}
 
+	// Function to update the attributes table
 	function sync_table() {
 		$('#table_attributes').empty();
 		if (assess_session) {
 			for (var i = 0; i < assess_session.attributes.length; i++) {
 				var attribute = assess_session.attributes[i];
 				
-				var text_table = "<tr>";
-				text_table += '<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '+(attribute.checked ? "checked" : "")+'></td>'+
-							  '<td>' + attribute.type + '</td>'+
-							  '<td>' + attribute.name + '</td>'+
-							  '<td>' + attribute.unit + '</td>'+
-							  '<td>[' + attribute.val_min + ',' + attribute.val_max + ']</td>'+
-							  '<td>' + attribute.method + '</td>'+
-							  '<td>' + attribute.mode + '</td>'+
-							  '<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
-							  '<td><button type="button" class="btn btn-default" id="deleteK'+i+'"><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
-
+				var text_table = "<tr>"+
+					'<td><input type="checkbox" id="checkbox_' + i + '" value="' + i + '" name="' + attribute.name + '" '+(attribute.checked ? "checked" : "")+'></td>'+
+					'<td>' + attribute.type + '</td>'+
+					'<td>' + attribute.name + '</td>'+
+					'<td>' + attribute.unit + '</td>';
+					
+				if (attribute.type == "Quantitative") {
+					text_table += '<td>[' + attribute.val_min + ',' + attribute.val_max + ']</td>';
+				} 
+				else if (attribute.type == "Qualitative") {
+					text_table += '<td><table><tr><td>' + attribute.val_min + '</td></tr>';
+					for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
+						text_table += '<tr><td>' + attribute.val_med[ii] + '</td></tr>';
+					};
+					text_table += '<tr><td>' + attribute.val_max + '</td></tr></table>';
+				};
+				
+				text_table += '<td>' + attribute.method + '</td>'+
+					'<td>' + attribute.mode + '</td>'+
+					'<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
+					'<td><button type="button" class="btn btn-default" id="deleteK'+i+'"><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
+				};
+				
 				$('#table_attributes').append(text_table);
 
-				//we will define the action when we click on the check input
+				//We define the action when we click on the State check input
 				$('#checkbox_' + i).click(function() {
 					checked_button_clicked($(this))
 				});
-
+				
+				// Defines what happens when you click on a Delete button
 				(function(_i) {
 					$('#deleteK' + _i).click(function() {
 						if (confirm("You are about to delete the attribute "+assess_session.attributes[_i].name+".\nAre you sure ?") == false) {
 							return
 						};
 						assess_session.attributes.splice(_i, 1);
-						// backup local
-						localStorage.setItem("assess_session", JSON.stringify(assess_session));
-						//refresh the page
-						window.location.reload();
+						localStorage.setItem("assess_session", JSON.stringify(assess_session));// backup local
+						window.location.reload();//refresh the page
 					});
 				})(i);
 
+				// Defines what happend when you click on the Edit button
 				(function(_i) {
 					$('#edit_' + _i).click(function() {
-					  edit_mode=true;
-					  edited_attribute=_i;
-					  var attribute_edit = assess_session.attributes[_i];
-					  $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
-					  $('#att_name_quanti').val(attribute_edit.name);
-					  $('#att_unit_quanti').val(attribute_edit.unit);
-					  $('#att_value_min_quanti').val(attribute_edit.val_min);
-					  $('#att_value_max_quanti').val(attribute_edit.val_max);
-					  $('#att_method_quanti option[value='+attribute_edit.method+']').prop('selected', true);
-					  if (attribute_edit.mode=="Normal") {
-						$('#att_mode_quanti').prop('checked', false);
-					  } else {
-						$('#att_mode_quanti').prop('checked', true);
-					  }
+						edit_mode=true;
+						edited_attribute=_i;
+						var attribute_edit = assess_session.attributes[_i];
+						
+						$('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
+						
+						if (attribute_edit.type == "Quantitative") {
+							update_method_button("Quantitative"); //update the active type of attribute
+							$("#form_quali").fadeOut(500);
+							$("#form_quanti").fadeIn(500);
+							
+							// Rewrites the existing values inside the textboxes
+							$('#att_name_quanti').val(attribute_edit.name);
+							$('#att_unit_quanti').val(attribute_edit.unit);
+							$('#att_value_min_quanti').val(attribute_edit.val_min);
+							$('#att_value_max_quanti').val(attribute_edit.val_max);
+							$('#att_method_quanti option[value='+attribute_edit.method+']').prop('selected', true);
+							$('#att_mode_quanti').prop('checked', (attribute_edit.mode=="Normal" ? false : true));
+						} 
+						else if (attribute_edit.type == "Qualitative") {
+							update_method_button("Qualitative"); //update the active type of attribute
+							$("#form_quanti").fadeOut(500);
+							$("#form_quali").fadeIn(500);
+							
+							$('#att_name').val(attribute_edit.name);
+							$('#att_value_worst').val(attribute_edit.val_min);
+							$('#att_value_med_1').val(attribute_edit.val_med[0]);
+							
+							for (var ii=2, len=attribute_edit.val_med.length; ii<len+1; ii++) {
+								var longueur = lists.length,
+									new_item = document.createElement('li');
+								new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
+								lists[longueur-1].parentNode.appendChild(new_item);
+								
+								$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);
+							};
+							
+							$('#att_value_best').val(attribute_edit.val_max);
+						}
 					});
 				})(i);
 			}
 
 		}
 	}
+	
 	sync_table();
 
 	var name = $('#att_name_quanti').val();

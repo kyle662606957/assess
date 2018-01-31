@@ -41,7 +41,7 @@
         <label for="att_value_med">Intermediary value(s):</label>
 			<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
 			<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
-			<ol id="list_med_values">
+			<ol id="list_med_values_quali">
 				<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
 			</ol>
     </div>
@@ -64,7 +64,7 @@
 <script>
 
 // Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires
-var list_med_values = document.getElementById('list_med_values'),
+var list_med_values = document.getElementById('list_med_values_quali'),
 	lists = list_med_values.getElementsByTagName('li'),
 	add_value_med = document.getElementById('add_value_med'),
 	del_value_med = document.getElementById('del_value_med');
@@ -253,9 +253,9 @@ $(function() {
 	}
 	sync_table();
 
-	$('#submit').click(function() {
-		var name = $('#att_name').val(),
-			val_min = $('#att_value_worst').val(),
+	$('#submit_quali').click(function() {
+		var name = $('#att_name_quali').val(),
+			val_min = $('#att_value_min_quali').val(),
 			nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length,
 			val_med = [],
 			val_max = $('#att_value_best').val();
