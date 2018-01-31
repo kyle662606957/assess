@@ -108,9 +108,9 @@ $("#form_quanti").hide();
 $("#form_quali").hide();
 $('li.manage').addClass("active");
 
-//////////////////////////////////////////////////////////////////////////////////////
-// Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires
-//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+// Fonctions pour ajouter/supprimer des zones de texte pour les valeurs intermédiaires //
+/////////////////////////////////////////////////////////////////////////////////////////
 var list_med_values = document.getElementById('list_med_values_quali'),
 	lists = list_med_values.getElementsByTagName('li'),
 	add_value_med = document.getElementById('add_value_med'),
@@ -301,8 +301,7 @@ $(function() {
 					'<td>' + attribute.mode + '</td>'+
 					'<td><button type="button" id="edit_' + i + '" class="btn btn-default btn-xs">Edit</button></td>'+
 					'<td><button type="button" class="btn btn-default" id="deleteK'+i+'"><img src="/static/img/delete.ico" style="width:16px"/></button></td></tr>';
-				};
-				
+								
 				$('#table_attributes').append(text_table);
 
 				//We define the action when we click on the State check input
@@ -349,32 +348,29 @@ $(function() {
 							$("#form_quanti").fadeOut(500);
 							$("#form_quali").fadeIn(500);
 							
-							$('#att_name').val(attribute_edit.name);
-							$('#att_value_worst').val(attribute_edit.val_min);
-							$('#att_value_med_1').val(attribute_edit.val_med[0]);
+							$('#att_name_quali').val(attribute_edit.name);
+							$('#att_value_min_quali').val(attribute_edit.val_min);
+							$('#att_value_med_quali_1').val(attribute_edit.val_med[0]);
 							
 							for (var ii=2, len=attribute_edit.val_med.length; ii<len+1; ii++) {
 								var longueur = lists.length,
 									new_item = document.createElement('li');
-								new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
+								new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_quali_"+ String(longueur+1) +"' placeholder='Value Med " + String(longueur+1) +"'/>";
 								lists[longueur-1].parentNode.appendChild(new_item);
 								
-								$('#att_value_med_'+ii).val(attribute_edit.val_med[ii-1]);
+								$('#att_value_med_quali_'+ii).val(attribute_edit.val_med[ii-1]);
 							};
 							
-							$('#att_value_best').val(attribute_edit.val_max);
+							$('#att_value_max_quali').val(attribute_edit.val_max);
 						}
 					});
 				})(i);
 			}
-
 		}
 	}
-	
 	sync_table();
 
-	var name = $('#att_name_quanti').val();
-
+	/// Defines what happens when you click on the QUANTITATIVE Submit button
 	$('#submit_quanti').click(function() {
 		var name = $('#att_name_quanti').val(),
 			unit = $('#att_unit_quanti').val(),
@@ -392,11 +388,8 @@ $(function() {
 			method = "CE_Variable_Prob";
 		}
 
-		if ($('input[name=mode]').is(':checked')) {
-			var mode = "Reversed";
-		} else {
-			var mode = "Normal";
-		}
+		var mode = ($('input[name=mode]').is(':checked') ? "Reversed" : "Normal");
+		
 
 		if (!(name || unit || val_min || val_max) || isNaN(val_min) || isNaN(val_max)) {
 			alert('Please fill correctly all the fields');
@@ -468,11 +461,99 @@ $(function() {
 			$('#att_value_max_quanti').val("");
 			$('#att_method_quanti option[value="PE"]').prop('selected', true);
 			$('#att_mode_quanti').prop('checked', false);
+			
+			$("#form_quanti").fadeOut(500);
+		}
+	});
+	
+	/// Defines what happens when you click on the QUALITATIVE Submit button
+	$('#submit_quali').click(function() {
+		var name = $('#att_name_quali').val(),
+			val_min = $('#att_value_min_quali').val(),
+			nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length,
+			val_med = [],
+			val_max = $('#att_value_max_quali').val();
+			
+		for (var ii=1; ii<nb_med_values+1; ii++){
+			val_med.push($('#att_value_med_quali_'+ii).val());
+		};
+
+		var method = "PE";
+		
+		if (name=="" || val_min=="" || val_max=="") {
+			alert('Please fill correctly all the fields');
+		} else if (isAttribute(name) && (edit_mode == false)) {
+			alert ("An attribute with the same name already exists");
+		} else if (isOneValueOfTheListEmpty(val_med)) {
+			alert("One of your medium values is empty");
+		} else if (val_min==val_max) {
+			alert("The least preferred and most preferred values are the same");
+		} else if (areAllValuesDifferent(val_med, val_min, val_max)==false) {
+			alert("At least one of the values is appearing more than once");
+		} else if (isThereUnderscore(val_med, val_min, val_max)==false) {
+			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
+		}
+		else {
+			if (edit_mode==false) {
+				assess_session.attributes.push({
+					"type": "Qualitative",
+					"name": name,
+					'unit': '',
+					'val_min': val_min,
+					'val_med': val_med,
+					'val_max': val_max,
+					'method': method,
+					'mode': 'Normal',
+					'completed': 'False',
+					'checked': true,
+					'questionnaire': {
+						'number': 0,
+						'points': {},
+						'utility': {}
+					}
+				});
+			} else {
+				if (confirm("Are you sure you want to edit this attribute? All assessements will be deleted") == true) {
+					assess_session.attributes[edited_attribute]={
+						"type": "Qualitative",
+						"name": name,
+						'unit': '',
+						'val_min': val_min,
+						'val_med': val_med,
+						'val_max': val_max,
+						'method': method,
+						'mode': 'Normal',
+						'completed': 'False',
+						'checked': true,
+						'questionnaire': {
+							'number': 0,
+							'points': {},
+							'utility': {}
+						}
+					};
+				}
+				edit_mode=false;
+				$('#add_attribute h2').text("Add a new attribute");
+			}
+			
+			sync_table();
+			localStorage.setItem("assess_session", JSON.stringify(assess_session));
+			
+			/// On vide les zones de texte
+			$('#att_name_quali').val("");
+			$('#att_value_min_quali').val("");
+			$('#att_value_med_quali_1').val("");
+			$('#att_value_max_quali').val("");
+			
+			/// On ramène le nombre d'éléments intermédiaires à 1
+			for (var ii=val_med.length; ii>1; ii--) {
+				var longueur = document.getElementById('list_med_values').getElementsByTagName('li').length;
+				lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
+			};
+			$("#form_quali").fadeOut(500);	
 		}
 	});
 });
-
-/// FUNCTION FOR A QUALITATIVE ATTRIBUTE
 
 </script>
 </body>
