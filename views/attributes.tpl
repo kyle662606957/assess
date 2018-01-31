@@ -156,6 +156,7 @@ $(function() {
 		update_method_button("Quantitative"); //update the active type of new attribute
 		$("#form_quali").fadeOut(500);
 		$("#form_quanti").fadeIn(500);
+		window.scrollBy(0, 500);
 	});
 
 	///  ACTION FROM BUTTON QUALITATIVE
@@ -163,6 +164,7 @@ $(function() {
 		update_method_button("Qualitative"); //update the active type of new attribute
 		$("#form_quanti").fadeOut(500);
 		$("#form_quali").fadeIn(500);
+		window.scrollBy(0, 500);
 	});
 });
 
