@@ -470,7 +470,7 @@ $(function() {
 	$('#submit_quali').click(function() {
 		var name = $('#att_name_quali').val(),
 			val_min = $('#att_value_min_quali').val(),
-			nb_med_values = document.getElementById('list_med_values').getElementsByTagName('li').length,
+			nb_med_values = document.getElementById('list_med_values_quali').getElementsByTagName('li').length,
 			val_med = [],
 			val_max = $('#att_value_max_quali').val();
 			
