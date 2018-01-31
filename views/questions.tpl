@@ -49,7 +49,7 @@
 		var assess_session = JSON.parse(localStorage.getItem("assess_session")),
 			settings = assess_session.settings;
 
-		// We fill the table
+		// We fill the table of the existing attributes and assessments
 		for (var i = 0; i < assess_session.attributes.length; i++) {
 			if (!assess_session.attributes[i].checked) //if this attribute is not activated
 				continue; //we skip this attribute and go to the next one
@@ -60,11 +60,16 @@
 							 '<td>' + attribute.method + '</td>'+
 							 '<td>' + attribute.questionnaire.number + '</td>';
 							
-			if (attribute.questionnaire.number !== 3) {
-				text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '">Assess</button></td>';
-			} else {
-				text_table += '<td>Three points max</td>';
-			}
+			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td>0</td></tr>';
+			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
+				text_table += '<tr><td>' + attribute.val_med[ii] + '</td>'; 
+				if(attribute.questionnaire.points[attribute.val_med[ii]]){
+					text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
+				} else {
+					text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+				};
+			}; 
+			text_table += '<tr><td>' + attribute.val_max + '</td><td>1</td></tr></table></td>';
 
 			if (attribute.questionnaire.number > 0) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
@@ -269,7 +274,7 @@
 					arbre_droite.update();
 
 					// we add the choice button
-					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default lottery_a">A</button><button type="button" class="btn btn-default lottery_b">B</button></div>')
+					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default lottery_a">Lottery A</button><button type="button" class="btn btn-default lottery_b">Lottery B</button></div>')
 
 
 					function treat_answer(data) {
@@ -365,7 +370,7 @@
 					arbre_ce.update();
 
 					// we add the choice button
-					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">A</button><button type="button" class="btn btn-default" id="lottery">B</button></div>')
+					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button></div>')
 
 					function utility_finder(gain) {
 						var points = assess_session.attributes[indice].questionnaire.points;
@@ -491,7 +496,7 @@
 					arbre_cepv.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Gain with certainty</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
+					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
 
 					function utility_finder(gain) {
 						var points = assess_session.attributes[indice].questionnaire.points;

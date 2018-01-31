@@ -229,6 +229,11 @@ $(function() {
 					"name": name,
 					'unit': unit,
 					'val_min': val_min,
+					'val_med': [
+						parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min)),
+						parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min)), //yes, it's (val_max+val_min)/2, but it looks better ^^
+						parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min))
+					],
 					'val_max': val_max,
 					'method': method,
 					'mode': mode,
@@ -247,6 +252,11 @@ $(function() {
 						"name": name,
 						'unit': unit,
 						'val_min': val_min,
+						'val_med': [
+							parseFloat(val_min)+.25*(parseFloat(val_max)-parseFloat(val_min)),
+							parseFloat(val_min)+.50*(parseFloat(val_max)-parseFloat(val_min)), //yes, it's (val_max+val_min)/2, but it looks better ^^
+							parseFloat(val_min)+.75*(parseFloat(val_max)-parseFloat(val_min))
+						],
 						'val_max': val_max,
 						'method': method,
 						'mode': mode,
