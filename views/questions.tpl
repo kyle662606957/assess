@@ -60,7 +60,7 @@
 							 '<td>' + attribute.method + '</td>'+
 							 '<td>' + attribute.questionnaire.number + '</td>';
 							
-			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td> : </td><td>0</td></tr>';
+			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>0</td></tr>';
 			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 				text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>'; 
 				if(attribute.questionnaire.points[attribute.val_med[ii]]){
@@ -86,7 +86,7 @@
 					};
 					assess_session.attributes[_i].questionnaire = {
 							'number': 0,
-							'points': [],
+							'points': {},
 							'utility': {}
 					};
 					// backup local

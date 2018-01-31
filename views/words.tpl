@@ -166,8 +166,8 @@
 
 					$('#trees').append('</div><div class=choice style="text-align: center;">'+
 										'<p>Which option do you prefer?</p>'+
-										'<button type="button" class="btn btn-default" id="gain"> A </button>'+
-										'<button type="button" class="btn btn-default" id="lottery"> B </button></div>');
+										'<button type="button" class="btn btn-default" id="gain"> Certain gain </button>'+
+										'<button type="button" class="btn btn-default" id="lottery"> Lottery </button></div>');
 
 					// FUNCTIONS
 					function sync_values() {
