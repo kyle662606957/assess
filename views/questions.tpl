@@ -60,16 +60,36 @@
 							 '<td>' + attribute.method + '</td>'+
 							 '<td>' + attribute.questionnaire.number + '</td>';
 							
-			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>0</td></tr>';
-			for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-				text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>'; 
-				if(attribute.questionnaire.points[attribute.val_med[ii]]){
-					text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
-				} else {
-					text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.method=="Normal"?0:1)+'</td></tr>';
+			
+			if (attribute.method == "PE" || attribute.method == "LE"){
+				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
+					text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>';
+
+					if(attribute.questionnaire.points[attribute.val_med[ii]]){
+						text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
+					} else {
+						text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+					};
 				};
+			} else {
+				for (var key in attribute.questionnaire.points){
+					text_table += '<tr><td>' + key + '</td><td> : </td>'+
+								  '<td>' + attribute.questionnaire.points[ii] + '</td></tr>';
+				};
+				
+				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
+					text_table += '<tr><td>-</td><td> : </td>'+
+								  '<td><button type="button" class="btn btn-default btn-xs answer_quest" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
+				};
+				
+					// } else {
+						// text_table += </tr>';
+					// };
+				};				
 			}; 
-			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>1</td></tr></table></td>';
+			
+			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.method=="Normal"?1:0)+'</td></tr></table></td>';
 
 			if (attribute.questionnaire.number > 0) {
 				text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util" id="u_' + attribute.name + '">Utility function</button></td><td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
@@ -327,17 +347,9 @@
 				(function() {
 
 					// VARIABLES
-					if (assess_session.attributes[indice].questionnaire.number == 0) {
-						var min_interval = val_min;
-						var max_interval = val_max;
-					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = assess_session.attributes[indice].questionnaire.points[0][0];
-						var max_interval = val_max;
-					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
-						var min_interval = val_min;
-						var max_interval = assess_session.attributes[indice].questionnaire.points[0][0];
-					}
-
+					var min_interval = (assess_session.attributes[indice].questionnaire.number==2 ? Object.keys(assess_session.attributes[indice].questionnaire.points)[0] : val_min),  
+						max_interval = (assess_session.attributes[indice].questionnaire.number==1 ? Object.keys(assess_session.attributes[indice].questionnaire.points)[0] : val_max); 
+					
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
 
@@ -359,13 +371,13 @@
 					function utility_finder(gain) {
 						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
-							if (mode == 'normal') {
+							if (mode == 'Normal') {
 								return 0;
 							} else {
 								return 1;
 							}
 						} else if (gain == val_max) {
-							if (mode == 'normal') {
+							if (mode == 'Normal') {
 								return 1;
 							} else {
 								return 0;
@@ -414,7 +426,7 @@
 							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
-								assess_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
+								assess_session.attributes[indice].questionnaire.points[final_gain]=final_utility;
 								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session", JSON.stringify(assess_session));
