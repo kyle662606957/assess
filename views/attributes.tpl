@@ -463,6 +463,8 @@ $(function() {
 			$('#att_mode_quanti').prop('checked', false);
 			
 			$("#form_quanti").fadeOut(500);
+			$("#button_Quantitative").removeClass('btn-success');
+			$("#button_Quantitative").addClass('btn-default');	
 		}
 	});
 	
@@ -550,7 +552,9 @@ $(function() {
 				var longueur = document.getElementById('list_med_values_quali').getElementsByTagName('li').length;
 				lists[longueur-1].parentNode.removeChild(lists[longueur-1]);
 			};
-			$("#form_quali").fadeOut(500);	
+			$("#form_quali").fadeOut(500);
+			$("#button_Qualitative").removeClass('btn-success');
+			$("#button_Qualitative").addClass('btn-default');			
 		}
 	});
 });
