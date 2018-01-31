@@ -366,17 +366,9 @@
 					function utility_finder(gain) {
 						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
-							if (mode == 'Normal') {
-								return 0;
-							} else {
-								return 1;
-							}
+							return (mode == 'Normal' ? 0 : 1);
 						} else if (gain == val_max) {
-							if (mode == 'Normal') {
-								return 1;
-							} else {
-								return 0;
-							}
+							return (mode == 'Normal' ? 1 : 0);
 						} else {
 							for (var i = 0; i < points.length; i++) {
 								if (points[i][0] == gain) {
@@ -421,7 +413,7 @@
 							console.log(utility_finder(parseFloat(arbre_ce.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
-								assess_session.attributes[indice].questionnaire.points[final_gain]=final_utility;
+								assess_session.attributes[indice].questionnaire.points[String(final_gain)]=parseFloat(final_utility);
 								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session", JSON.stringify(assess_session));
