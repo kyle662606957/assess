@@ -80,7 +80,7 @@
 
 			(function(_i) {
 				$('#deleteK' + _i).click(function() {
-					if (confirm("Are you sure ?") == false) {
+					if (confirm("Are you sure you want to delete all the assessments for "+assess_session_QUALI.attributes[_i].name+"?") == false) {
 						return
 					};
 					assess_session_QUALI.attributes[_i].questionnaire = {

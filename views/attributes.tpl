@@ -67,7 +67,7 @@ $(function() {
 	$('#edit_attribute').hide();
 
 	$('.del_simu').click(function() {
-		if (confirm("Are you sure ?") == false) {
+		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
 			return
 		};
 		localStorage.removeItem("assess_session");
