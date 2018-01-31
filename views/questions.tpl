@@ -750,8 +750,6 @@
 			points.push([val_min, (mode == "Normal" ? 0 : 1)]);
 			points.push([val_max, (mode == "Normal" ? 1 : 0)]);
 			
-			alert(points.join(" - "));
-			
 			var json_2_send = {
 				"type": "calc_util_multi"
 			};
