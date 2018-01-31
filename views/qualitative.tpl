@@ -290,7 +290,7 @@ $(function() {
 		} else if (areAllValuesDifferent(val_med, val_min, val_max)==false) {
 			alert("At least one of the values is appearing more than once");
 		} else if (isThereUnderscore(val_med, val_min, val_max)==false) {
-			alert("Please don't write a '_' in your values");
+			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
 		}
 
 		else {

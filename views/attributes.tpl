@@ -24,38 +24,79 @@
 
 <div id="add_attribute" style="width:50%;margin-left:25%;margin-bottom:25px;">
     <h2> Add a new attribute: </h2>
+	
+	<div id="button_type" style="text-align:center;">
+		<button type="button" class="btn btn-success btn-lg" id="button_quanti">Quantitative</button>
+		<button type="button" class="btn btn-success btn-lg" id="button_quali">Qualitative</button>
+	</div>
+	
+    <!------------ FORM FOR A QUANTITATIVE ATTRIBUTE ------------>
+	<div id="form_quanti">
+		<div class="form-group">
+			<label for="att_name_quanti">Name:</label>
+			<input type="text" class="form-control" id="att_name_quanti" placeholder="Name">
+		</div>
 
-    <div class="form-group">
-        <label for="att_name">Name:</label>
-        <input type="text" class="form-control" id="att_name" placeholder="Name">
-    </div>
+		<div class="form-group">
+			<label for="att_unit_quanti">Unit:</label>
+			<input type="text" class="form-control" id="att_unit_quanti" placeholder="Unit">
+		</div>
+		<div class="form-group">
+			<label for="att_value_min_quanti">Min value:</label>
+			<input type="text" class="form-control" id="att_value_min_quanti" placeholder="Value">
+		</div>
+		<div class="form-group">
+			<label for="att_value_max_quanti">Max value:</label>
+			<input type="text" class="form-control" id="att_value_max_quanti" placeholder="Value">
+		</div>
+		<div class="form-group">
+			<label for="att_method_quanti">Method:</label>
+			<select class="form-control" id="att_method_quanti">
+			  <option value="PE">Probability Equivalence</option>
+			  <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
+				  <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
+			  <option value="LE">Lottery Equivalence</option>
+			</select>
+		</div>
+		<div class="checkbox">
+			<label><input name="mode" type="checkbox" id="att_mode_quanti" placeholder="Mode"> The min value is preferred (decreasing utility function)</label>
+		</div>
 
-    <div class="form-group">
-        <label for="att_unit">Unit:</label>
-        <input type="text" class="form-control" id="att_unit" placeholder="Unit">
-    </div>
-    <div class="form-group">
-        <label for="att_value_min">Min value:</label>
-        <input type="text" class="form-control" id="att_value_min" placeholder="Value">
-    </div>
-    <div class="form-group">
-        <label for="att_value_max">Max value:</label>
-        <input type="text" class="form-control" id="att_value_max" placeholder="Value">
-    </div>
-    <div class="form-group">
-        <label for="att_method">Method:</label>
-        <select class="form-control" id="att_method">
-          <option value="PE">Probability Equivalence</option>
-          <option value="CE_Constant_Prob">Certainty Equivalence - Constant Probability</option>
-		      <option value="CE_Variable_Prob">Certainty Equivalence - Variable Probability</option>
-          <option value="LE">Lottery Equivalence</option>
-        </select>
-    </div>
-    <div class="checkbox">
-        <label><input name="mode" type="checkbox" id="att_mode" placeholder="Mode"> The min value is preferred (decreasing utility function)</label>
-    </div>
+		<button type="submit" class="btn btn-default" id="submit_quanti">Submit</button>
+	</div>
+	
+	<!------------ FORM FOR A QUALITATIVE ATTRIBUTE ------------>
+	<div id="form_quali">
+		<div class="form-group">
+			<label for="att_name_quali">Name :</label>
+			<input type="text" class="form-control" id="att_name_quali" placeholder="Name">
+		</div>
+		
+		<h3> Please rank the values by order of preference: </h3>
 
-    <button type="submit" class="btn btn-default" id="submit">Submit</button>
+		<div class="form-group">
+			<label for="att_value_worst">Least preferred value:</label>
+			<input type="text" class="form-control" id="att_value_worst" placeholder="Worst value">
+		</div>
+		
+		<div class="form-group">
+			<label for="att_value_med">Intermediary value(s):</label>
+				<input type="button" class="btn btn-default" id="add_value_med" value="Add an item"/>   
+				<input type="button" class="btn btn-default" id="del_value_med" value="Delete last item"/>
+				<ol id="list_med_values">
+					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_1" placeholder='Intermediary Value 1'/></li>
+				</ol>
+		</div>
+		
+		<div class="form-group">
+			<label for="att_value_best">Most preferred value:</label>
+			<input type="text" class="form-control" id="att_value_best" placeholder="Best value">
+		</div>
+			
+		<button type="submit" class="btn btn-default" id="submit">Submit</button>
+	</div>
+	
+	
 </div>
 
 %include('header_end.tpl')
@@ -184,15 +225,15 @@ $(function() {
 					  edited_attribute=_i;
 					  var attribute_edit = assess_session.attributes[_i];
 					  $('#add_attribute h2').text("Edit attribute "+attribute_edit.name);
-					  $('#att_name').val(attribute_edit.name);
-					  $('#att_unit').val(attribute_edit.unit);
-					  $('#att_value_min').val(attribute_edit.val_min);
-					  $('#att_value_max').val(attribute_edit.val_max);
-					  $('#att_method option[value='+attribute_edit.method+']').prop('selected', true);
+					  $('#att_name_quanti').val(attribute_edit.name);
+					  $('#att_unit_quanti').val(attribute_edit.unit);
+					  $('#att_value_min_quanti').val(attribute_edit.val_min);
+					  $('#att_value_max_quanti').val(attribute_edit.val_max);
+					  $('#att_method_quanti option[value='+attribute_edit.method+']').prop('selected', true);
 					  if (attribute_edit.mode=="Normal") {
-						$('#att_mode').prop('checked', false);
+						$('#att_mode_quanti').prop('checked', false);
 					  } else {
-						$('#att_mode').prop('checked', true);
+						$('#att_mode_quanti').prop('checked', true);
 					  }
 					});
 				})(i);
@@ -202,13 +243,13 @@ $(function() {
 	}
 	sync_table();
 
-	var name = $('#att_name').val();
+	var name = $('#att_name_quanti').val();
 
-	$('#submit').click(function() {
-		var name = $('#att_name').val(),
-			unit = $('#att_unit').val(),
-			val_min = parseInt($('#att_value_min').val()),
-			val_max = parseInt($('#att_value_max').val());
+	$('#submit_quanti').click(function() {
+		var name = $('#att_name_quanti').val(),
+			unit = $('#att_unit_quanti').val(),
+			val_min = parseInt($('#att_value_min_quanti').val()),
+			val_max = parseInt($('#att_value_max_quanti').val());
 
 		var method = "PE";
 		if ($("select option:selected").text() == "Probability Equivalence") {
@@ -236,7 +277,7 @@ $(function() {
 		} else if (val_min<0 || val_max<0 ) {
 			alert ("Values must be positive or zero");
 		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
-			alert("Please don't write a '_' in your values");
+			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
 		}
 		
 		else {
@@ -258,7 +299,7 @@ $(function() {
 					'checked': true,
 					'questionnaire': {
 						'number': 0,
-						'points': [],
+						'points': {},
 						'utility': {}
 					}
 				});
@@ -281,7 +322,7 @@ $(function() {
 						'checked': true,
 						'questionnaire': {
 							'number': 0,
-							'points': [],
+							'points': {},
 							'utility': {}
 						}
 					};
@@ -291,12 +332,12 @@ $(function() {
 			}
 			sync_table();
 			localStorage.setItem("assess_session", JSON.stringify(assess_session));
-			$('#att_name').val("");
-			$('#att_unit').val("");
-			$('#att_value_min').val("");
-			$('#att_value_max').val("");
-			$('#att_method option[value="PE"]').prop('selected', true);
-			$('#att_mode').prop('checked', false);
+			$('#att_name_quanti').val("");
+			$('#att_unit_quanti').val("");
+			$('#att_value_min_quanti').val("");
+			$('#att_value_max_quanti').val("");
+			$('#att_method_quanti option[value="PE"]').prop('selected', true);
+			$('#att_mode_quanti').prop('checked', false);
 		}
 	});
 });
