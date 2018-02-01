@@ -20,7 +20,6 @@
 </table>
 
 <br />
-<br />
 
 <div id="add_attribute" style="width:50%;margin-left:25%;margin-bottom:25px;">
     <h2> Add a new attribute: </h2>

@@ -76,9 +76,6 @@
                     <li class="credits">
                         <a href="{{ get_url('/credits') }}"><i class="fa fa-fw fa-users"></i>Credits</a>
                     </li>
-                    <li class="questions_quali">
-                        <a href="{{ get_url('/words') }}"><i class="fa fa-fw fa-search"></i>Qualitative - Utility assessment</a>
-                    </li>
 					
 				</ul>
 			</div>
