@@ -2,7 +2,7 @@
 <h3 id="attribute_name"></h3>
 
 <div id="select">
-	<table class="table">
+	<table class="table" style="text-align:center">
 		<thead>
 			<tr>
 				<th>Attribute</th>
@@ -55,13 +55,13 @@
 				continue; //we skip this attribute and go to the next one
 				
 			var attribute = assess_session.attributes[i],
-				text_table = '<tr><td style="text-align:center;vertical-align:center">' + attribute.name + '</td>'+
-							 '<td style="text-align:center;vertical-align:center">' + attribute.type + '</td>'+
-							 '<td style="text-align:center;vertical-align:center">' + attribute.method + '</td>';
+				text_table = '<tr><td style="text-align:center;vertical-align:middle">' + attribute.name + '</td>'+
+							 '<td style="text-align:center;vertical-align:middle">' + attribute.type + '</td>'+
+							 '<td style="text-align:center;vertical-align:middle">' + attribute.method + '</td>';
 			
 			/// Already assessed points
 			// First row
-			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
@@ -88,7 +88,7 @@
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table style="width:100%"><tr><td> </td></tr>'; //First row
+			text_table += '<td><table><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
@@ -120,7 +120,7 @@
 				};
 			};
 			
-			text_table += '<td style="text-align:center;vertical-align:center"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 
 			$('#table_attributes').append(text_table);
 
