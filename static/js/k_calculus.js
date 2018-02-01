@@ -355,8 +355,8 @@ function k_multilinear_answer(i){
 				if(!assess_session.attributes[l].checked){continue} //if not checked we don't put it
 				
 				var attrib = assess_session.attributes[l],
-					attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
-					attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
+					attrib_favorite = (attrib.mode=="Normal"? attrib.val_max : attrib.val_min),
+					attrib_other = (attrib.mode=="Normal"? attrib.val_min : attrib.val_max);
 					
 				if (isInList(l, ID_att)) { // Si l'attribut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
 					gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
@@ -555,8 +555,8 @@ function k_multiplicative_answer(i) {
 
 				for (var l=0; l < len; l++) {
 					var attrib = assess_session.attributes[assess_session.k_calculus[0].k[l].ID_attribute]
-						attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
-						attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
+						attrib_favorite = (attrib.mode=="Normal"? attrib.val_max : attrib.val_min),
+						attrib_other = (attrib.mode=="Normal"? attrib.val_min : attrib.val_max);
 						
 					if (attrib.name == name) {
 						gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
@@ -854,7 +854,7 @@ function list()
 			var val_max=monAttribut.val_max;
 			var val_min=monAttribut.val_min;
 			if (points.length > 0 && monAttribut.checked) {
-				if (mode=="normal") {
+				if (mode=="Normal") {
 					points.push([val_max, 1]);
 					points.push([val_min, 0]);
 				}
