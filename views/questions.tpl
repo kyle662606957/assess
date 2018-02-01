@@ -61,12 +61,12 @@
 			
 			/// Already assessed points
 			// First row
-			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td>  :  </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-					text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>';
+					text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td>  :  </td>';
 
 					if(attribute.questionnaire.points[attribute.val_med[ii]]){
 						text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td></tr>';
@@ -76,19 +76,19 @@
 				};
 			} else {
 				for (var key in attribute.questionnaire.points){
-					text_table += '<tr><td>' + key + '</td><td> : </td>'+
+					text_table += '<tr><td>' + key + '</td><td>  :  </td>'+
 								  '<td>' + attribute.questionnaire.points[key] + '</td></tr>';
 				};
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
-					text_table += '<tr><td>-</td><td> : </td><td>-</td></tr>';
+					text_table += '<tr><td>-</td><td>  :  </td><td>-</td></tr>';
 				};
 			}; 
 			// Last row
-			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
+			text_table += '<tr><td>' + attribute.val_max + '</td><td>  :  </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table style="width:100%"><tr><td> </td></tr>'; //First row
+			text_table += '<td><table"><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
