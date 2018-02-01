@@ -2,14 +2,14 @@
 <h3 id="attribute_name"></h3>
 
 <div id="select">
-	<table class="table table-striped">
-		<thead style="text-align:center">
+	<table class="table">
+		<thead>
 			<tr>
 				<th>Attribute</th>
 				<th>Type</th>
 				<th>Method</th>
-				<th>Already assessed points</th>
-				<th>Assess/Edit a point</th>
+				<th>Assessed points</th>
+				<th>Assess/Edit</th>
 				<th>Utility graph</th>
 				<th>Reset</th>
 			</tr>
@@ -61,7 +61,7 @@
 			
 			/// Already assessed points
 			// First row
-			text_table += '<td><table class="table"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
@@ -88,7 +88,7 @@
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table class="table"><tr><td> </td></tr>'; //First row
+			text_table += '<td><table style="width:100%"><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
