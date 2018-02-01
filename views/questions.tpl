@@ -88,7 +88,7 @@
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table"><tr><td> </td></tr>'; //First row
+			text_table += '<td><table><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
