@@ -3,7 +3,7 @@
 
 <div id="select">
 	<table class="table table-striped">
-		<thead>
+		<thead style="text-align:center">
 			<tr>
 				<th>Attribute</th>
 				<th>Type</th>
@@ -61,7 +61,7 @@
 			
 			/// Already assessed points
 			// First row
-			text_table += '<td><table><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table class="table"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
@@ -88,7 +88,7 @@
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table><tr><td> </td></tr>'; //First row
+			text_table += '<td><table class="table"><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
