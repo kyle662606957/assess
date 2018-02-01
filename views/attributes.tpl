@@ -432,7 +432,7 @@ $(function() {
 			alert("Please don't write an underscore ( _ ) in your values.");
 		} else if (isThereHyphen([name, unit], String(val_min), String(val_max))==false) {
 			alert("Please don't write a hyphen ( - ) in your values.");
-		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
+		} else if (isThereBlankSpace([name, unit], String(val_min), String(val_max))==false) {
 			alert("Please don't write a blank space in your values.");
 		}
 		
