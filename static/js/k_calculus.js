@@ -628,7 +628,7 @@ function k_multiplicative_answer(i) {
 							assess_session.k_calculus[0].k[i].value = final_proba; // We put the k value for the MULTIPLICATIVE first
 							
 							if (assess_session.k_calculus[1].k[i].value == null){ // (if you have not answered it yet)
-								assess_session.k_calculus[1].k[i].value=final_k; // We put the k value for the MULTILINEAR as well
+								assess_session.k_calculus[1].k[i].value = final_proba; // We put the k value for the MULTILINEAR as well
 							}
 							// backup local
 							localStorage.setItem("assess_session", JSON.stringify(assess_session));
