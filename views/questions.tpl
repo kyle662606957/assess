@@ -2,7 +2,7 @@
 <h3 id="attribute_name"></h3>
 
 <div id="select">
-	<table class="table" style="text-align:center">
+	<table class="table">
 		<thead>
 			<tr>
 				<th>Attribute</th>
@@ -108,15 +108,15 @@
 			/// Utility functions
 			if (attribute.type=="Quantitative") {
 				if (attribute.questionnaire.number > 0) {
-					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
+					text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
 				} else {
-					text_table += '<td>No assessment yet</td>';
+					text_table += '<td style="text-align:center;vertical-align:middle">No assessment yet</td>';
 				};
 			} else {
 				if (attribute.questionnaire.number === attribute.val_med.length) {
-					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">Utility graph</button></td>';
+					text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">Utility graph</button></td>';
 				} else {
-					text_table += '<td>Please assess all the medium values</td>';
+					text_table += '<td style="text-align:center;vertical-align:middle">Please assess all the medium values</td>';
 				};
 			};
 			
