@@ -395,7 +395,6 @@
 					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button></div>')
 
 					function utility_finder(gain) {
-						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
 							return (mode == 'Normal' ? 0 : 1);
 						} else if (gain == val_max) {
@@ -493,6 +492,11 @@
 						var max_interval = assess_session.attributes[indice].questionnaire.points[0][0];
 						p = 0.75;
 					}
+					
+					var number = assess_session.attributes[indice].questionnaire.number,
+						min_interval = (number==1 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_min)),  
+						max_interval = (number==2 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_max)), 
+						p = (number==0 ? 0.5 : (number==1 ? 0.25 : 0.75));
 
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
@@ -513,25 +517,16 @@
 					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
 
 					function utility_finder(gain) {
-						var points = assess_session.attributes[indice].questionnaire.points;
 						if (gain == val_min) {
-							if (mode == 'normal') {
-								return 0;
-							} else {
-								return 1;
-							}
+							return (mode == 'Normal' ? 0 : 1);
 						} else if (gain == val_max) {
-							if (mode == 'normal') {
-								return 1;
-							} else {
-								return 0;
-							}
+							return (mode == 'Normal' ? 1 : 0);
 						} else {
-							for (var i = 0; i < points.length; i++) {
-								if (points[i][0] == gain) {
-									return points[i][1];
+							for (var key in assess_session.attributes[indice].questionnaire.points) {
+								if (gain == key) {
+									return assess_session.attributes[indice].questionnaire.points[key];
 								}
-							}
+							};
 						}
 					}
 
@@ -571,7 +566,7 @@
 							console.log(utility_finder(parseFloat(arbre_cepv.questions_val_min)));
 							if (final_gain <= max_interval && final_gain >= min_interval) {
 								// we save it
-								assess_session.attributes[indice].questionnaire.points.push([final_gain, final_utility]);
+								assess_session.attributes[indice].questionnaire.points[String(final_gain)]=parseFloat(final_utility);
 								assess_session.attributes[indice].questionnaire.number += 1;
 								// backup local
 								localStorage.setItem("assess_session", JSON.stringify(assess_session));

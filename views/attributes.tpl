@@ -263,6 +263,34 @@ $(function() {
 		};
 		return true;
 	};
+	
+	// Function to check if there is a hyphen in the typed values
+	function isThereHyphen(val_list, val_min, val_max){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if (val_list[i].search("-")!=-1){
+				return false;
+			};
+		};
+		if (val_min.search("-")!=-1 || val_max.search("-")!=-1){
+			return false;
+		};
+		return true;
+	};
+	
+	// Function to check if there is a blank space in the typed values
+	function isThereBlankSpace(val_list, val_min, val_max){
+		var list_len = val_list.length;
+		for (var i=0; i<list_len; i++) {
+			if (val_list[i].search(" ")!=-1){
+				return false;
+			};
+		};
+		if (val_min.search(" ")!=-1 || val_max.search(" ")!=-1){
+			return false;
+		};
+		return true;
+	};
 
 	// Function to change the property of a checked box
 	function checked_button_clicked(element) {
@@ -401,7 +429,11 @@ $(function() {
 		} else if (val_min<0 || val_max<0 ) {
 			alert ("Values must be positive or zero");
 		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
-			alert("Please don't write an underscore ( _ ) in your values.\nBut you can put spaces");
+			alert("Please don't write an underscore ( _ ) in your values.");
+		} else if (isThereHyphen([name, unit], String(val_min), String(val_max))==false) {
+			alert("Please don't write a hyphen ( - ) in your values.");
+		} else if (isThereUnderscore([name, unit], String(val_min), String(val_max))==false) {
+			alert("Please don't write a blank space in your values.");
 		}
 		
 		else {
