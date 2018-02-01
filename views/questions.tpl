@@ -8,10 +8,10 @@
 				<th>Attribute</th>
 				<th>Type</th>
 				<th>Method</th>
-				<th>Number of assessed points</th>
-				<th>Assess another point</th>
-				<th>Display utility graph</th>
-				<th>Reset assessements</th>
+				<th>Already assessed points</th>
+				<th>Assess/Edit a point</th>
+				<th>Utility graph</th>
+				<th>Reset</th>
 			</tr>
 		</thead>
 		<tbody id="table_attributes">
@@ -55,21 +55,23 @@
 				continue; //we skip this attribute and go to the next one
 				
 			var attribute = assess_session.attributes[i],
-				text_table = '<tr><td>' + attribute.name + '</td>'+
-							 '<td>' + attribute.type + '</td>'+
-							 '<td>' + attribute.method + '</td>'+
-							 '<td>' + attribute.questionnaire.number + '</td>';
-							
+				text_table = '<tr><td style="text-align:center;vertical-align:center">' + attribute.name + '</td>'+
+							 '<td style="text-align:center;vertical-align:center">' + attribute.type + '</td>'+
+							 '<td style="text-align:center;vertical-align:center">' + attribute.method + '</td>';
+			
+			/// Already assessed points
+			// First row
 			text_table += '<td><table style="width:100%"><tr><td>' + attribute.val_min + '</td><td> : </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
+			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 					text_table += '<tr><td>' + attribute.val_med[ii] + '</td><td> : </td>';
 
 					if(attribute.questionnaire.points[attribute.val_med[ii]]){
-						text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td>';
+						text_table += '<td>' + attribute.questionnaire.points[attribute.val_med[ii]] + '</td></tr>';
 					} else {
-						text_table += '<td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+						text_table += '<td>-</td></tr>';
 					};
 				};
 			} else {
@@ -77,15 +79,33 @@
 					text_table += '<tr><td>' + key + '</td><td> : </td>'+
 								  '<td>' + attribute.questionnaire.points[key] + '</td></tr>';
 				};
-				
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
-					text_table += '<tr><td>-</td><td> : </td>'+
-								  '<td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
+					text_table += '<tr><td>-</td><td> : </td><td>-</td></tr>'+
 				};
 			}; 
-			
+			// Last row
 			text_table += '<tr><td>' + attribute.val_max + '</td><td> : </td><td>'+(attribute.mode=="Normal"?1:0)+'</td></tr></table></td>';
 
+			
+			/// Assess / Edit another point
+			text_table += '<td><table style="width:100%"><tr><td></td></tr>'; //First row
+			
+			// Mid rows
+			if (attribute.method == "PE" || attribute.method == "LE"){
+				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
+					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">'+(attribute.questionnaire.points[attribute.val_med[ii]] ? 'Re assess':'Assess')+'</button>' + '</td></tr>';
+				};
+			} else {
+				for (var key in attribute.questionnaire.points){
+					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Re assess</button>' + '</td></tr>';
+				};
+				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
+					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
+				};
+			};
+			text_table += '<tr><td></td></tr></table></td>'; //Last row
+			
+			/// Utility functions
 			if (attribute.type=="Quantitative") {
 				if (attribute.questionnaire.number > 0) {
 					text_table += '<td><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
@@ -100,7 +120,7 @@
 				};
 			};
 			
-			text_table += '<td><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			text_table += '<td style="text-align:center;vertical-align:center"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 
 			$('#table_attributes').append(text_table);
 
