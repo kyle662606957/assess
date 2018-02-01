@@ -16,7 +16,7 @@
 
 <div class="form-inline">
   <div class="form-group">
-    <input type="text" class="form-control" id="password" placeholder="password">
+    <input type="password" class="form-control" id="password" placeholder="password">
   </div>
   <button id="connect" class="btn btn-default">Connect !</button>
 
