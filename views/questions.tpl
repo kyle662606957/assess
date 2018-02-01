@@ -479,20 +479,6 @@
 				(function() {
 
 					// VARIABLES
-					if (assess_session.attributes[indice].questionnaire.number == 0) {
-						var min_interval = val_min;
-						var max_interval = val_max;
-						p = 0.5;
-					} else if (assess_session.attributes[indice].questionnaire.number == 1) {
-						var min_interval = assess_session.attributes[indice].questionnaire.points[0][0];
-						var max_interval = val_max;
-						p = 0.25;
-					} else if (assess_session.attributes[indice].questionnaire.number == 2) {
-						var min_interval = val_min;
-						var max_interval = assess_session.attributes[indice].questionnaire.points[0][0];
-						p = 0.75;
-					}
-					
 					var number = assess_session.attributes[indice].questionnaire.number,
 						min_interval = (number==1 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_min)),  
 						max_interval = (number==2 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_max)), 
@@ -514,7 +500,7 @@
 					arbre_cepv.update();
 
 					// we add the choice button
-					$('#trees').append('<button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button>')
+					$('#trees').append('<div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default" id="gain">Certain gain</button><button type="button" class="btn btn-default" id="lottery">Lottery</button></div>')
 
 					function utility_finder(gain) {
 						if (gain == val_min) {
