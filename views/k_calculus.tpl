@@ -29,7 +29,7 @@
 					<th>K</th>
 					<th>Relative Attribute</th>
 					<th>Value</th>
-					<th><img src="/static/img/delete.ico" style="width:16px;"/></th>
+					<th>Delete Answers</th>
 				</tr>
 			</thead>
 			<tbody id="table_k_attributes"></tbody>
