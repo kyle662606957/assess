@@ -79,11 +79,11 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="att_value_med_quali">Intermediary value(s):</label>
+			<label for="att_value_med_quali">Intermediate value(s):</label>
 				<input type="button" class="btn btn-default" id="add_value_med_quali" value="Add an item"/>   
 				<input type="button" class="btn btn-default" id="del_value_med_quali" value="Delete last item"/>
 				<ol id="list_med_values_quali">
-					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediary Value 1'/></li>
+					<li class="col-auto"><input type="text" class="form-control col-auto" id="att_value_med_quali_1" placeholder='Intermediate Value 1'/></li>
 				</ol>
 		</div>
 		
@@ -119,7 +119,7 @@ var list_med_values = document.getElementById('list_med_values_quali'),
 add_value_med.addEventListener('click', function() {
 	var longueur = lists.length;
 	var new_item = document.createElement('li');
-	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_quali_"+ String(longueur+1) +"' placeholder='Intermediary Value " + String(longueur+1) +"'/>";
+	new_item.innerHTML = "<input type='text' class='form-control' id='att_value_med_quali_"+ String(longueur+1) +"' placeholder='Intermediate Value " + String(longueur+1) +"'/>";
 	lists[longueur-1].parentNode.appendChild(new_item);
 });
 
