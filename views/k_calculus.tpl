@@ -110,22 +110,22 @@
 <script>
 $(function() {
 	$('li.k').addClass("active");
-	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+	var asses_session = JSON.parse(localStorage.getItem("asses_session"));
 
 	function isInArray(value, array) {
 		return array.indexOf(value) > -1;
 	}
 
 	//we toggle the button we used
-	for(var i=0; i<assess_session.k_calculus.length; i++) {
-		if(assess_session.k_calculus[i].active==true) {
-			$("#button_"+assess_session.k_calculus[i].method).removeClass('btn-default');
-			$("#button_"+assess_session.k_calculus[i].method).addClass('btn-primary');
+	for(var i=0; i<asses_session.k_calculus.length; i++) {
+		if(asses_session.k_calculus[i].active==true) {
+			$("#button_"+asses_session.k_calculus[i].method).removeClass('btn-default');
+			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-primary');
 			update_k_list(i);
 			show_list();
 		} else {
-			$("#button_"+assess_session.k_calculus[i].method).removeClass('btn-primary');
-			$("#button_"+assess_session.k_calculus[i].method).addClass('btn-default');
+			$("#button_"+asses_session.k_calculus[i].method).removeClass('btn-primary');
+			$("#button_"+asses_session.k_calculus[i].method).addClass('btn-default');
 		}
 	}
 });
