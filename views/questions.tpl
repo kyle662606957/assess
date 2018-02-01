@@ -88,7 +88,7 @@
 
 			
 			/// Assess / Edit another point
-			text_table += '<td><table style="width:100%"><tr><td></td></tr>'; //First row
+			text_table += '<td><table style="width:100%"><tr><td> </td></tr>'; //First row
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
@@ -103,7 +103,7 @@
 					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
 			};
-			text_table += '<tr><td></td></tr></table></td>'; //Last row
+			text_table += '<tr><td> </td></tr></table></td>'; //Last row
 			
 			/// Utility functions
 			if (attribute.type=="Quantitative") {
