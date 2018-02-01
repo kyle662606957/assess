@@ -80,7 +80,7 @@
 								  '<td>' + attribute.questionnaire.points[key] + '</td></tr>';
 				};
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
-					text_table += '<tr><td>-</td><td> : </td><td>-</td></tr>'+
+					text_table += '<tr><td>-</td><td> : </td><td>-</td></tr>';
 				};
 			}; 
 			// Last row
