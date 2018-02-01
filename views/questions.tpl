@@ -2,7 +2,7 @@
 <h3 id="attribute_name"></h3>
 
 <div id="select">
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>Attribute</th>

@@ -1,7 +1,7 @@
 %include('header_init.tpl', heading='Manage your attributes')
 
 <h2>List of current attributes:</h2>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th style='width:50px;'>State</th>
