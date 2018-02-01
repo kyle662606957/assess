@@ -61,7 +61,7 @@
 			
 			/// Already assessed points
 			// First row
-			text_table += '<td style="margin:0 auto"><table><tr><td>' + attribute.val_min + '</td><td>  :  </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
+			text_table += '<td><table style="margin:0 auto"><tr><td>' + attribute.val_min + '</td><td>  :  </td><td>'+(attribute.mode=="Normal"?0:1)+'</td></tr>';
 			
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
