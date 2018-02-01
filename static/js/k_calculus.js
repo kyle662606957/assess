@@ -239,7 +239,7 @@ function update_k_list(number){
 				$('#k_answer_'+_i).click(function(){
 					$('#k_answer_'+_i).hide();
 					if(number==0) {//multiplicative
-						k_answer(_i, 0);
+						k_multiplicative_answer(_i);
 					} else if(number==1){ //multilinear
 						if (_i == ma_list.length - 1) {
 							k_multilinear_calculate_last_one(_i);
@@ -358,7 +358,7 @@ function k_multilinear_answer(i){
 					attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
 					attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
 					
-				if (isInList(l, ID_att)) { // Si l'attibut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
+				if (isInList(l, ID_att)) { // Si l'attribut étudié fait partie de ceux que l'on calcule pour le cas MULTILINEAIRE 
 					gain_certain += String(attrib.name).toUpperCase() + ' : ' + attrib_favorite + ' ' + attrib.unit + (l==len-1?'':'<br/>');
 				} else {
 					gain_certain += String(attrib.name).toLowerCase() + ' : ' + attrib_other + ' ' + attrib.unit + (l==len-1?'':'<br/>');
@@ -439,7 +439,15 @@ function k_multilinear_answer(i){
 					}
 					final_k=Math.round(final_k*1000)/1000;
 
-					assess_session.k_calculus[1].k[i].value=final_k; //for multilinear it's 1
+					assess_session.k_calculus[1].k[i].value=final_k; // We put the k value for the MULTILINEAR
+					
+					if (i <assess_session.k_calculus[0].k.length) { // Because it's the same question
+						if (assess_session.k_calculus[0].k[i].value == null){ // (if you have not answered it yet)
+							assess_session.k_calculus[0].k[i].value=final_k; // We put the k value for the MULTIPLICATIVE as well
+						}
+					};
+					
+					
 					// backup local
 					localStorage.setItem("assess_session", JSON.stringify(assess_session));
 					// we reload the list
@@ -502,11 +510,11 @@ function k_multilinear_calculate_last_one(i){
 }
 
 //// Définition de la fonction qui va calculer K en MULTIPLICATIF 
-function k_answer(i, type) {
+function k_multiplicative_answer(i) {
 	 	var assess_session = JSON.parse(localStorage.getItem("assess_session")),
 			method = 'PE',
 			settings = assess_session.settings,
-			mon_k = assess_session.k_calculus[type].k[i],
+			mon_k = assess_session.k_calculus[0].k[i],
 			name = mon_k.attribute;
 		
 		for (var j = 0; j < assess_session.attributes.length; j++) {
@@ -543,10 +551,10 @@ function k_answer(i, type) {
 
 				// VARIABLES
 				var gain_certain = gain_haut = gain_bas = '',
-					len = assess_session.k_calculus[type].k.length; // nombre d'attributs avec lesquels on compute le K
+					len = assess_session.k_calculus[0].k.length; // nombre d'attributs avec lesquels on compute le K
 
 				for (var l=0; l < len; l++) {
-					var attrib = assess_session.attributes[assess_session.k_calculus[type].k[l].ID_attribute]
+					var attrib = assess_session.attributes[assess_session.k_calculus[0].k[l].ID_attribute]
 						attrib_favorite = (attrib.mode=="normal"? attrib.val_max : attrib.val_min),
 						attrib_other = (attrib.mode=="normal"? attrib.val_min : attrib.val_max);
 						
@@ -617,12 +625,16 @@ function k_answer(i, type) {
 						if (final_proba <= 1 && final_proba >= 0) {
 
 							// we save it
-							assess_session.k_calculus[type].k[i].value = final_proba;
+							assess_session.k_calculus[0].k[i].value = final_proba; // We put the k value for the MULTIPLICATIVE first
+							
+							if (assess_session.k_calculus[1].k[i].value == null){ // (if you have not answered it yet)
+								assess_session.k_calculus[1].k[i].value=final_k; // We put the k value for the MULTILINEAR as well
+							}
 							// backup local
 							localStorage.setItem("assess_session", JSON.stringify(assess_session));
 							// we reload the list
 							$("#k_value_" + i).hide("fast", function () {
-								update_k_list(type);
+								update_k_list(0);
 								show_list();
 							});
 
