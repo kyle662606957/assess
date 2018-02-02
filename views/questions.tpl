@@ -482,7 +482,7 @@
 					var number = assess_session.attributes[indice].questionnaire.number,
 						min_interval = (number==1 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_min)),  
 						max_interval = (number==2 ? parseFloat(Object.keys(assess_session.attributes[indice].questionnaire.points)[0]) : parseFloat(val_max)), 
-						p = (number==0 ? 0.5 : (number==1 ? 0.25 : 0.75));
+						p = (number==0 ? 0.50 : (number==1 ? 0.25 : 0.75));
 
 					var L = [0.75 * (max_interval - min_interval) + min_interval, 0.25 * (max_interval - min_interval) + min_interval];
 					var gain = Math.round(random_proba(L[0], L[1]));
