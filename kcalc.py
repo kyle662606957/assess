@@ -7,7 +7,7 @@ from scipy.optimize import fsolve
 
 def calculUtilityMultiplicative(myK, myU):
     if len(myK) - 1 == 2:
-        return {'Ulatex':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2")),'Uexcel':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2")), 'U': utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2")), 'k': myK, 'utilities': myU}
+        return {'Ulatex':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2")),'Uexcel':utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2")), 'U': utilite2(myK[0]['value'], myK[1]['value'], myK[2]['value'], convert_to_text(myU[0], myK[0]['attribute']), convert_to_text(myU[1], myK[1]['attribute'])), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 3:
         return {'Ulatex':utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text_latex(myU[0], "x1"), convert_to_text_latex(myU[1], "x2"), convert_to_text_latex(myU[2], "x3")),'Uexcel':utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text_excel(myU[0], "x1"), convert_to_text_excel(myU[1], "x2"), convert_to_text_excel(myU[2], "x3")),'U': utilite3(myK[0]['value'], myK[1]['value'], myK[2]['value'], myK[3]['value'], convert_to_text(myU[0], "x1"), convert_to_text(myU[1], "x2"), convert_to_text(myU[2], "x3")), 'k': myK, 'utilities': myU}
     elif len(myK) - 1 == 4:
