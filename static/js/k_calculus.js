@@ -293,6 +293,7 @@ function show_list(){
 	$("#k_list").fadeIn(500);
 };
 
+
 function get_Active_Method(){
 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 	return ((assess_session.k_calculus[0].active) ? 0 : 1);
@@ -676,8 +677,8 @@ function ki_calculated() {
 		};
 	}
 
-	if (kiNumber != kiNumberCalculated) {
-		if (get_Active_Method() == 0) {
+	if (kiNumber != kiNumberCalculated) { // If the user hasn't calculated all k_i values yet
+		if (get_Active_Method() == 0) { //if we're working with multiplicative
 			$("#calculatek_box_multiplicative").fadeIn("fast");
 			$("#calculatek_box_multilinear").fadeOut("fast");
 		}
@@ -792,8 +793,9 @@ function K_Calculate_Multiplicative() {
 //###########   Choose utility function corresponding to attribute     ##################
 //#######################################################################################
 
-var k_utility_multilinear=[];
-var k_utility_multiliplicative=[];
+var k_utility_multilinear=[],
+	k_utility_multiliplicative=[];
+
 $(function(){
 	$("#button_generate_list").click(function() {
 			list();
@@ -802,65 +804,53 @@ $(function(){
 });
 
 
-function list()
-{
+function list(){
 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
-
-	var listk = assess_session.k_calculus[get_Active_Method()].k;
 
 	k_utility_multilinear=[];
 	k_utility_multiliplicative=[];
 
 	//list of K with corresponding attribute:
 
-	var maList=[];
-	var type=get_Active_Method();
-	if(type==0)
-	{
-		maList=listk;
-		for(var i=0; i< listk.length; i++) {
-			k_utility_multiliplicative.push(null);
-		}
-	}
-	else {
-		for (var i = 0; i < listk.length; i++) {
-			if (listk[i].ID_attribute.length == 1) //if we have a k with jsute 1 indice
-			{
-				maList.push(listk[i]);
-				k_utility_multilinear.push(null);
-			}
-		}
+	var maList=assess_session.k_calculus[get_Active_Method()].k;
+	
+	for(var i=0; i<assess_session.k_calculus[0].k.length; i++) {
+		k_utility_multiliplicative.push(null);
+		k_utility_multilinear.push(null);
 	}
 
-
+	
 	$('#table_attributes').html("");
 	// We fill the table
 	for (var i=0; i < maList.length; i++){
 
-		var monAttribut=assess_session.attributes[maList[i].ID_attribute];
-		var text = '<tr><td>K' + maList[i].ID + '</td>';
-		text+='<td>'+ monAttribut.name + '</td>';
-		text+='<td id="charts_'+i+'"></td>';
-		text+='<td id="functions_'+i+'"></td>';
-		text+='</tr>';
+		var monAttribut=assess_session.attributes[maList[i].ID_attribute],
+			text_table = '<tr>'+
+						'<td>K' + maList[i].ID + '</td>'+
+						'<td>'+ monAttribut.name + '</td>'+
+						'<td id="charts_'+i+'"></td>'+
+						'<td id="functions_'+i+'"></td>'+
+						'</tr>';
 
-		$('#table_attributes').append(text);
+		$('#table_attributes').append(text_table);
 
 		(function(_i) {
-			var json_2_send = {"type": "calc_util", "points":[]};
-			var points = monAttribut.questionnaire.points.slice();
-			var mode = monAttribut.mode;
-			var val_max=monAttribut.val_max;
-			var val_min=monAttribut.val_min;
+			var json_2_send = {"type": "calc_util", "points":[]},
+				val_max=monAttribut.val_max,
+				val_min=monAttribut.val_min,
+				mode = monAttribut.mode,
+				points_dict = assess_session.attributes[indice].questionnaire.points,
+				points=[];
+			///var points = monAttribut.questionnaire.points.slice();
+
+			for (key in points_dict) {
+				points.push([parseFloat(key), parseFloat(points_dict[key])]);
+			};
+			
 			if (points.length > 0 && monAttribut.checked) {
-				if (mode=="Normal") {
-					points.push([val_max, 1]);
-					points.push([val_min, 0]);
-				}
-				else {
-					points.push([val_max, 0]);
-					points.push([val_min, 1]);
-				}
+				points.push([val_min, (mode == "Normal" ? 0 : 1)]);
+				points.push([val_max, (mode == "Normal" ? 1 : 0)]);
+				
 				json_2_send["points"] = points;
 				$.post('ajax', JSON.stringify(json_2_send), function (data) {
 					$.post('ajax', JSON.stringify({
