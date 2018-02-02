@@ -93,14 +93,18 @@
 			// Mid rows
 			if (attribute.method == "PE" || attribute.method == "LE"){
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
-					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">'+(attribute.questionnaire.points[attribute.val_med[ii]] ? 'Re assess':'Assess')+'</button>' + '</td></tr>';
+					if (attribute.questionnaire.points[attribute.val_med[ii]]){
+						text_table += '<tr><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Re assess</button>' + '</td></tr>';
+					} else {
+						text_table += '<tr><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+					};				
 				};
 			} else {
 				for (var key in attribute.questionnaire.points){
-					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Re assess</button>' + '</td></tr>';
+					text_table += '<tr><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Re assess</button>' + '</td></tr>';
 				};
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
-					text_table += '<tr><td><button type="button" class="btn btn-default btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
+					text_table += '<tr><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
 			};
 			text_table += '<tr><td> </td></tr></table></td>'; //Last row
