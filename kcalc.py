@@ -48,9 +48,9 @@ def calculk2(k1, k2):
 # return (U)
 
 def utilite2(k1, k2, k, u1, u2):
-    U = str(k1) + "*" + u1 + "+"
-    U += str(k2) + "*" + u2 + "+"
-    U += str(k * k1 * k2) + "*" + u1 + "*" + u2
+    U = "("+str(k1)+")" + "*" + u1 + "+"
+    U += "("+str(k2)+")" + "*" + u2 + "+"
+    U += "("+str(k * k1 * k2)+")" + "*" + u1 + "*" + u2
     return (U)
 
 # ---- 3 -----
