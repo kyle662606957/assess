@@ -839,9 +839,8 @@ function list(){
 				val_max=monAttribut.val_max,
 				val_min=monAttribut.val_min,
 				mode = monAttribut.mode,
-				points_dict = assess_session.attributes[indice].questionnaire.points,
+				points_dict = monAttribut.questionnaire.points,
 				points=[];
-			///var points = monAttribut.questionnaire.points.slice();
 
 			for (key in points_dict) {
 				points.push([parseFloat(key), parseFloat(points_dict[key])]);
