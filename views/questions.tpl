@@ -55,9 +55,9 @@
 				continue; //we skip this attribute and go to the next one
 				
 			var attribute = assess_session.attributes[i],
-				text_table = '<tr><td style="text-align:center;vertical-align:middle">' + attribute.name + '</td>'+
-							 '<td style="text-align:center;vertical-align:middle">' + attribute.type + '</td>'+
-							 '<td style="text-align:center;vertical-align:middle">' + attribute.method + '</td>';
+				text_table = '<tr><td style="vertical-align:middle">' + attribute.name + '</td>'+
+							 '<td style="vertical-align:middle">' + attribute.type + '</td>'+
+							 '<td style="vertical-align:middle">' + attribute.method + '</td>';
 			
 			/// Already assessed points
 			// First row
@@ -94,37 +94,37 @@
 			if (attribute.method == "PE" || attribute.method == "LE"){
 				for (var ii=0, len=attribute.val_med.length; ii<len; ii++){
 					if (attribute.questionnaire.points[attribute.val_med[ii]]){
-						text_table += '<tr style="height: 22px"><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Re assess</button>' + '</td></tr>';
+						text_table += '<tr style="height: 25px"><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Re assess</button>' + '</td></tr>';
 					} else {
-						text_table += '<tr style="height: 22px"><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
+						text_table += '<tr style="height: 25px"><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + attribute.val_med[ii] + '_' + ii + '">Assess</button>' + '</td></tr>';
 					};				
 				};
 			} else {
 				for (var key in attribute.questionnaire.points){
-					text_table += '<tr style="height: 22px"><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Re assess</button>' + '</td></tr>';
+					text_table += '<tr style="height: 25px"><td><button type="button" class="btn btn-warning btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Re assess</button>' + '</td></tr>';
 				};
 				for (var ii=Object.keys(attribute.questionnaire.points).length; ii<3; ii++){
-					text_table += '<tr style="height: 22px"><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
+					text_table += '<tr style="height: 25px"><td><button type="button" class="btn btn-danger btn-xs answer_quest_'+(attribute.type=="Qualitative"?"quali":"quanti")+'" id="q_' + attribute.name + '_' + ii + '_' + ii + '">Assess</button>' + '</td></tr>';
 				};
 			};
-			text_table += '<tr style="height: 22px"><td> </td></tr></table></td>'; //Last row
+			text_table += '<tr style="height: 25px"><td> </td></tr></table></td>'; //Last row
 			
 			/// Utility functions
 			if (attribute.type=="Quantitative") {
 				if (attribute.questionnaire.number > 0) {
-					text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
+					text_table += '<td style="vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quanti" id="u_' + attribute.name + '">Utility function</button></td>';
 				} else {
-					text_table += '<td style="text-align:center;vertical-align:middle">No assessment yet</td>';
+					text_table += '<td style="vertical-align:middle">No assessment yet</td>';
 				};
 			} else {
 				if (attribute.questionnaire.number === attribute.val_med.length) {
-					text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">Utility graph</button></td>';
+					text_table += '<td style="vertical-align:middle"><button type="button" class="btn btn-default btn-xs calc_util_quali" id="u_' + attribute.name + '">Utility graph</button></td>';
 				} else {
-					text_table += '<td style="text-align:center;vertical-align:middle">Please assess all the medium values</td>';
+					text_table += '<td style="vertical-align:middle">Please assess all the medium values</td>';
 				};
 			};
 			
-			text_table += '<td style="text-align:center;vertical-align:middle"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			text_table += '<td style="vertical-align:middle"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
 
 			$('#table_attributes').append(text_table);
 
