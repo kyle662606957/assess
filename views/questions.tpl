@@ -124,7 +124,7 @@
 				};
 			};
 			
-			text_table += '<td style="vertical-align:middle"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs">Reset</button></td>';
+			text_table += '<td style="vertical-align:middle"><button type="button" id="deleteK' + i + '" class="btn btn-default btn-xs"><i class="fa fa-fw fa-retweet"></i></button></td>';
 
 			$('#table_attributes').append(text_table);
 
