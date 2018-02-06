@@ -387,7 +387,7 @@ function k_multilinear_answer(i){
 			arbre_gauche.update();
 			
 			
-			$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">A</button><button type="button" class="btn btn-default lottery">B</button></div><br/><br/><div ></div>');
+			$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">Certain gain</button><button type="button" class="btn btn-default lottery">Lottery</button></div><br/><br/><div ></div>');
 			//on affiche l'arbre avec un petit effet !
 
 			$("#k_value_"+i).show("fast");
@@ -590,7 +590,7 @@ function k_multiplicative_answer(i) {
 				arbre_gauche.display();
 				arbre_gauche.update();
 
-				$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">A</button><button type="button" class="btn btn-default lottery">B</button></div><br/><br/><div ></div>');
+				$("#k_value_"+i).append('<br/><br/><br/><br/><div class=choice style="text-align: center;"><p>Which option do you prefer?</p><button type="button" class="btn btn-default gain">Certain gain</button><button type="button" class="btn btn-default lottery">Lottery</button></div><br/><br/><div ></div>');
 				//on affiche l'arbre avec un petit effet !
 
 				$("#k_value_"+i).show("fast");
