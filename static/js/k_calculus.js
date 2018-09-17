@@ -794,7 +794,7 @@ function K_Calculate_Multiplicative() {
 //#######################################################################################
 
 var k_utility_multilinear=[],
-	k_utility_multiliplicative=[];
+	k_utility_multiplicative=[];
 
 $(function(){
 	$("#button_generate_list").click(function() {
@@ -808,14 +808,14 @@ function list(){
 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 
 	k_utility_multilinear=[];
-	k_utility_multiliplicative=[];
+	k_utility_multiplicative=[];
 
 	//list of K with corresponding attribute:
 
 	var maList=assess_session.k_calculus[get_Active_Method()].k;
 	
 	for(var i=0; i<assess_session.k_calculus[0].k.length; i++) {
-		k_utility_multiliplicative.push(null);
+		k_utility_multiplicative.push(null);
 		k_utility_multilinear.push(null);
 	}
 
@@ -919,7 +919,7 @@ function list(){
 
 function update_utility(i, data){
 	if(get_Active_Method()==0){  //multiplicative
-		k_utility_multiliplicative[i]=data;
+		k_utility_multiplicative[i]=data;
 	} else {
 		k_utility_multilinear[i]=data;
 	}
@@ -936,13 +936,14 @@ function addTextForm(div, copie, excel, latex) {
 	var copy_button_latex = $('<button class="btn functions_text_form" id= "btn_latex" data-clipboard-text="' + latex + '" title="Click to copy me.">Copy to clipboard (LaTeX format)</button>');
 
 	div.html('')
-	div.append("<div><pre>"+copie+"</pre></div>")
+	div.append("<div><pre>"+copie+"</pre></div>"); // we write the formula. AT THIS POINT, THE TEXT IS UGLY, LET'S TRY TO WRITE IT BETTER
+	
 	div.append(copy_button_dpl);
 	div.append("<br /><br /><br /><br />");
-	div.append("<div><pre>"+excel+"</pre></div>")
+	//div.append("<div><pre>"+excel+"</pre></div>")
 	div.append(copy_button_excel);
 	div.append("<br /><br /><br /><br />");
-	div.append("<div><pre>"+latex+"</pre></div>")
+	// div.append("<div><pre>"+latex+"</pre></div>")
 	div.append(copy_button_latex);
 
 
@@ -977,9 +978,9 @@ $(function(){
 		var assess_session = JSON.parse(localStorage.getItem("assess_session"));
 		if(get_Active_Method()==0)//multiplicative
 		{
-			if(k_utility_multiliplicative.length==0)
+			if(k_utility_multiplicative.length==0)
 			{
-				alert("You need to choose a utility function for all your attribute in the list below");
+				alert("You need to choose a utility function for all your attributes in the list above");
 				return;
 			}
 			if(assess_session.k_calculus[get_Active_Method()].GK==null){
@@ -987,19 +988,19 @@ $(function(){
 				return;
 			}
 
-			for(var i=0; i<k_utility_multiliplicative.length; i++)
+			for(var i=0; i<k_utility_multiplicative.length; i++)
 			{
-				if(k_utility_multiliplicative[i]==null)
+				if(k_utility_multiplicative[i]==null)
 				{
-					alert("You need to choose a utility function for all your attribute in the list below");
+					alert("You need to choose a utility function for all your attributes in the list above");
 					return;
 				}
 			}
 
-			//then we pass here so we can send the ajax request
+			//then we go here so we can send the ajax request
 			var mesK=assess_session.k_calculus[get_Active_Method()].k.slice();
 			mesK.push({value:assess_session.k_calculus[get_Active_Method()].GK});
-			var requete={"type": "utility_calculus_multiplicative", "k":mesK, "utility":k_utility_multiliplicative};
+			var requete={"type": "utility_calculus_multiplicative", "k":mesK, "utility":k_utility_multiplicative};
 
 			$.post('ajax', JSON.stringify(requete), function (data) {
 
@@ -1015,7 +1016,7 @@ $(function(){
 		}
 		else {
 			if (k_utility_multilinear.length == 0) {
-				alert("You need to choose a utility function for all your attribute in the list below");
+				alert("You need to choose a utility function for all your attributes in the list above");
 				return;
 			}
 
@@ -1024,7 +1025,7 @@ $(function(){
 			{
 				if(k_utility_multilinear[i]==null)
 				{
-					alert("You need to choose a utility function for all your attribute in the list below");
+					alert("You need to choose a utility function for all your attributes in the list above");
 					return;
 				}
 			}
@@ -1057,7 +1058,7 @@ function GK_calculated() {
 		if(get_Active_Method()==1)
 			k_utility_multilinear=assess_session.k_calculus[1].GU.utilities;
 		else if(get_Active_Method()==0)
-			k_utility_multiliplicative=assess_session.k_calculus[0].GU.utilities;
+			k_utility_multiplicative=assess_session.k_calculus[0].GU.utilities;
 
 		$('#table_attributes').html("");
 
@@ -1072,7 +1073,7 @@ function GK_calculated() {
 		}
 		else {
 			for (var i = 0; i < listk.length; i++) {
-				if (listk[i].ID_attribute.length == 1) //if we have a k with jsute 1 indice
+				if (listk[i].ID_attribute.length == 1) //if we have a k with only 1 index
 				{
 					maList.push(listk[i]);
 				}
