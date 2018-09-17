@@ -173,7 +173,7 @@ $(function() {
 		edit_mode = false,
 		edited_attribute=0;
 		
-	// When you click on the RED BIN // Delete the wole session
+	// When you click on the RED BIN // Delete the whole session
 	$('.del_simu').click(function() {
 		if (confirm("You are about to delete all the attributes and their assessments.\nAre you sure ?") == false) {
 			return
