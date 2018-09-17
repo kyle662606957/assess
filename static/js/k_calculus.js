@@ -825,7 +825,7 @@ function list(){
 	// We fill the table
 	for (var i=0; i < maList.length; i++){
 		
-		if(maList.type == "Quantitative"){
+		if(maList[i].type == "Quantitative"){
 			var monAttribut=assess_session.attributes[maList[i].ID_attribute],
 				text_table = '<tr>'+
 							'<td>K' + maList[i].ID + '</td>'+
@@ -915,7 +915,7 @@ function list(){
 				}
 			})(i);
 		}
-		elif(maList.type == "Qualitative"){
+		elif(maList[i].type == "Qualitative"){
 			var monAttribut=assess_session.attributes[maList[i].ID_attribute],
 				text_table = '<tr>'+
 							'<td>K' + maList[i].ID + '</td>'+
