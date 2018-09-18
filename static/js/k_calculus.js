@@ -923,7 +923,8 @@ function list(){
 							'<td>Utility graph</td>'+
 							'<td>Radio choices</td>'+
 							'</tr>';
-
+			alert(monAttribut.type);
+			
 			$('#table_attributes').append(text_table);
 		}
 	}
