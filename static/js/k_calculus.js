@@ -915,7 +915,7 @@ function list(){
 				}
 			})(i);
 		}
-		elif(maList[i].type == "Qualitative"){
+		else {
 			var monAttribut=assess_session.attributes[maList[i].ID_attribute],
 				text_table = '<tr>'+
 							'<td>K' + maList[i].ID + '</td>'+
