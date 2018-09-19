@@ -119,11 +119,13 @@ $(function() {
 /// Initializing a MULTIPLICATIVE environment
 function create_multiplicative_k() {
 	var assess_session = JSON.parse(localStorage.getItem("assess_session"));
+	
+	//first we delete the array of k for multiplicative and the GK
 	assess_session.k_calculus[0].k=[];
 	assess_session.k_calculus[0].GK=null;
-	var counter=1;
 	
-	//first we delete the array of k for multiplicative
+	var counter=1;
+	//then we initialize the environment with only the checked attributes
 	for (var i=0; i < assess_session.attributes.length; i++){
 		if(assess_session.attributes[i].checked) {
 			assess_session.k_calculus[0].k.push({
