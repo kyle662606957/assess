@@ -824,109 +824,95 @@ function list(){
 	$('#table_attributes').html("");
 	// We fill the table
 	for (var i=0; i < maList.length; i++){
-		
-		if(maList[i].type == "Quantitative"){
-			var monAttribut=assess_session.attributes[maList[i].ID_attribute],
-				text_table = '<tr>'+
-							'<td>K' + maList[i].ID + '</td>'+
-							'<td>'+ monAttribut.name + '</td>'+
-							'<td id="charts_'+i+'"></td>'+
-							'<td id="functions_'+i+'"></td>'+
-							'</tr>';
 
-			$('#table_attributes').append(text_table);
+		var monAttribut=assess_session.attributes[maList[i].ID_attribute],
+			text_table = '<tr>'+
+						'<td>K' + maList[i].ID + '</td>'+
+						'<td>'+ monAttribut.name + '</td>'+
+						'<td id="charts_'+i+'"></td>'+
+						'<td id="functions_'+i+'"></td>'+
+						'</tr>';
 
-			(function(_i) {
-				var json_2_send = {"type": "calc_util", "points":[]},
-					val_max=monAttribut.val_max,
-					val_min=monAttribut.val_min,
-					mode = monAttribut.mode,
-					points_dict = monAttribut.questionnaire.points,
-					points=[];
+		$('#table_attributes').append(text_table);
 
-				for (key in points_dict) {
-					points.push([parseFloat(key), parseFloat(points_dict[key])]);
-				};
-				
-				if (points.length > 0 && monAttribut.checked) {
-					points.push([val_min, (mode == "Normal" ? 0 : 1)]);
-					points.push([val_max, (mode == "Normal" ? 1 : 0)]);
-					
-					json_2_send["points"] = points;
-					$.post('ajax', JSON.stringify(json_2_send), function (data) {
-						$.post('ajax', JSON.stringify({
-							"type": "svg",
-							"data": data,
-							"min": val_min,
-							"max": val_max,
-							"liste_cord": points,
-							"width": 3
-						}), function (data2) {
+		(function(_i) {
+			var json_2_send = {"type": "calc_util", "points":[]},
+				val_max=monAttribut.val_max,
+				val_min=monAttribut.val_min,
+				mode = monAttribut.mode,
+				points_dict = monAttribut.questionnaire.points,
+				points=[];
 
-							$('#charts_' + _i).append('<div>' + data2 + '</div>');
-							for (var key in data) {
-
-								var functions = "";
-								if (key == 'exp') {
-									functions= '<label style="color:#401539"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_exp"> Exponential (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='exp';
-									(function(_data){$('#checkbox_'+_i+'_exp').click(function(){update_utility(_i, _data)});})(data[key]);
-
-								}
-								else if (key == 'log'){
-									functions='<label style="color:#D9585A"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_log"> Logarithmic (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='log';
-									(function(_data){$('#checkbox_'+_i+'_log').click(function(){update_utility(_i, _data)});})(data[key]);
-								}
-								else if (key == 'pow'){
-									functions='<label style="color:#6DA63C"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_pow"> Power (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='pow';
-									(function(_data){$('#checkbox_'+_i+'_pow').click(function(){update_utility(_i, _data)});})(data[key]);
-								}
-								else if (key == 'quad'){
-									functions='<label style="color:#458C8C"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_quad"> Quadratic (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='quad';
-									(function(_data){$('#checkbox_'+_i+'_quad').click(function(){update_utility(_i, _data)});})(data[key]);
-								}
-								else if (key == 'lin'){
-									functions='<label style="color:#D9B504"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_lin"> Linear (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='lin';
-									(function(_data){$('#checkbox_'+_i+'_lin').click(function(){update_utility(_i, _data)});})(data[key]);
-								}
-								else if (key == 'expo-power'){
-									functions='<label style="color:#26C4EC"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_expo-power"> Expo-Power (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
-									$('#functions_' + _i).append(functions);
-									data[key]['type']='expo-power';
-									(function(_data){$('#checkbox_'+_i+'_expo-power').click(function(){update_utility(_i, _data)});})(data[key]);
-								}
-							}
-						})
-					});
-				} else {
-					if(points.length == 0 && monAttribut.checked)
-						$('#charts_' + _i).append("Please assess a utility function for this attribute");
-					else if(!monAttribut.checked)
-						$('#charts_' + _i).append("The attribute is inactive");
-				}
-			})(i);
-		}
-		else {
-			var monAttribut=assess_session.attributes[maList[i].ID_attribute],
-				text_table = '<tr>'+
-							'<td>K' + maList[i].ID + '</td>'+
-							'<td>'+ monAttribut.name + '</td>'+
-							'<td>Utility graph</td>'+
-							'<td>Radio choices</td>'+
-							'</tr>';
-			alert(monAttribut.type);
+			for (key in points_dict) {
+				points.push([parseFloat(key), parseFloat(points_dict[key])]);
+			};
 			
-			$('#table_attributes').append(text_table);
-		}
+			if (points.length > 0 && monAttribut.checked) {
+				points.push([val_min, (mode == "Normal" ? 0 : 1)]);
+				points.push([val_max, (mode == "Normal" ? 1 : 0)]);
+				
+				json_2_send["points"] = points;
+				$.post('ajax', JSON.stringify(json_2_send), function (data) {
+					$.post('ajax', JSON.stringify({
+						"type": "svg",
+						"data": data,
+						"min": val_min,
+						"max": val_max,
+						"liste_cord": points,
+						"width": 3
+					}), function (data2) {
+
+						$('#charts_' + _i).append('<div>' + data2 + '</div>');
+						for (var key in data) {
+
+							var functions = "";
+							if (key == 'exp') {
+								functions= '<label style="color:#401539"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_exp"> Exponential (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='exp';
+								(function(_data){$('#checkbox_'+_i+'_exp').click(function(){update_utility(_i, _data)});})(data[key]);
+
+							}
+							else if (key == 'log'){
+								functions='<label style="color:#D9585A"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_log"> Logarithmic (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='log';
+								(function(_data){$('#checkbox_'+_i+'_log').click(function(){update_utility(_i, _data)});})(data[key]);
+							}
+							else if (key == 'pow'){
+								functions='<label style="color:#6DA63C"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_pow"> Power (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='pow';
+								(function(_data){$('#checkbox_'+_i+'_pow').click(function(){update_utility(_i, _data)});})(data[key]);
+							}
+							else if (key == 'quad'){
+								functions='<label style="color:#458C8C"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_quad"> Quadratic (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='quad';
+								(function(_data){$('#checkbox_'+_i+'_quad').click(function(){update_utility(_i, _data)});})(data[key]);
+							}
+							else if (key == 'lin'){
+								functions='<label style="color:#D9B504"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_lin"> Linear (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='lin';
+								(function(_data){$('#checkbox_'+_i+'_lin').click(function(){update_utility(_i, _data)});})(data[key]);
+							}
+							else if (key == 'expo-power'){
+								functions='<label style="color:#26C4EC"><input type="radio" name="radio_'+_i+'" id="checkbox_'+_i+'_expo-power"> Expo-Power (' + Math.round(data[key]['r2'] * 100) / 100 + ')</label><br/>';
+								$('#functions_' + _i).append(functions);
+								data[key]['type']='expo-power';
+								(function(_data){$('#checkbox_'+_i+'_expo-power').click(function(){update_utility(_i, _data)});})(data[key]);
+							}
+						}
+					})
+				});
+			} else {
+				if(points.length == 0 && monAttribut.checked)
+					$('#charts_' + _i).append("Please assess a utility function for this attribute");
+				else if(!monAttribut.checked)
+					$('#charts_' + _i).append("The attribute is inactive");
+			}
+		})(i);
 	}
 }
 
