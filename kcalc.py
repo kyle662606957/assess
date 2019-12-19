@@ -335,7 +335,8 @@ def signe(nombre):
         return str(nombre)
 
 
-def convert_to_text(data, x):
+def convert_to_text(data, x):    
+    x=x[0]
     if data['type'] == "exp":
         return "(" + str(round(data['a'], 8)) + "*exp(" + signe(-round(data['b'], 8)) + "*" + x + ")" + signe(round(data['c'], 8)) + ")"
     elif data['type'] == "log":
