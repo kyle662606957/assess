@@ -80,7 +80,10 @@ def generate_fichier(data):
         # on fait une regression à l'aide des points que l'on a dans le
         # questionnaire et on envoit tout ça dans la fonction regressions du
         # fichier fit.py
-        points = monAttribut['questionnaire']['points'][:]
+        pointsY = monAttribut['questionnaire']['points'].values()        
+        pointsX= monAttribut['questionnaire']['points'].keys()
+        pointsX=map(float,pointsX)
+        points=np.stack((pointsX,pointsY),axis=1).tolist()
 
         if len(points) > 0:
             if monAttribut['mode'] == "normal":
